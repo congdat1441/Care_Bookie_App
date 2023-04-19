@@ -1,0 +1,5 @@
+// class ClinicApi {
+//   Future getListClinic(){
+//
+//   }
+// }
