@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:heath_care/view/widgets/login_signup_widget/otp.dart';
 
-import '../../widgets/login_signup_widget/otp_input.dart';
+import 'login_signup_widget/otp_input.dart';
 
 class EnterCodeOTP extends StatefulWidget {
   const EnterCodeOTP({Key? key}) : super(key: key);

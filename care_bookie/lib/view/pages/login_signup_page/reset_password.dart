@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../../widgets/login_signup_widget/mobilephone.dart';
 import 'enter_4code.dart';
+import 'login_signup_widget/mobilephone.dart';
 
 class ResetPassword extends StatelessWidget {
   const ResetPassword({Key? key}) : super(key: key);
@@ -63,11 +63,11 @@ class ResetPassword extends StatelessWidget {
                 child: Container(
                   width: 380,
                   height: 600,
-                  padding: EdgeInsets.fromLTRB(20, 0, 0, 0),
+                  padding: const EdgeInsets.fromLTRB(20, 0, 0, 0),
                   child: Column(
                     children: [
                       Padding(
-                        padding: EdgeInsets.only(left: 10),
+                        padding: const EdgeInsets.only(left: 10),
                         child: Row(
                           children: const [
                             Text(
@@ -88,7 +88,7 @@ class ResetPassword extends StatelessWidget {
                             "Please enter your registered phone number and we will send you a verification code."
                                 "We'll send a verification code in a text message. This helps us eliminate spam - we won't give out your number to any third parties"),
                       ),
-                      Mobileohone(),
+                      const Mobileohone(),
                       GestureDetector(
                         onTap: () {
                           Navigator.push(
@@ -98,10 +98,10 @@ class ResetPassword extends StatelessWidget {
                         },
                         child: Container(
                           width: 330,
-                          padding: EdgeInsets.fromLTRB(0, 20, 30, 0),
+                          padding: const EdgeInsets.fromLTRB(0, 20, 30, 0),
                           child: Column(
                             children: [
-                              Padding(padding: EdgeInsets.only(top: 20)),
+                              const Padding(padding: EdgeInsets.only(top: 20)),
                               Container(
                                 height: 60,
                                 decoration: BoxDecoration(

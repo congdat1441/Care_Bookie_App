@@ -3,7 +3,7 @@ import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:heath_care/view/pages/history_page/history_list_clinics.dart';
 import 'package:heath_care/view/pages/history_page/note_from_doctor.dart';
-import 'package:heath_care/view/widgets/main_page_widget/AppbarCustom.dart';
+import 'package:heath_care/view/pages/main_pages/main_page_widget/AppbarCustom.dart';
 import '../../../../res/constants/colors.dart';
 
 class HistoryPage extends StatelessWidget {
@@ -27,7 +27,7 @@ class HistoryPage extends StatelessWidget {
               children: [
                 const AppbarCustom(),
                 yourHistory(),
-                const HistorylistClinics(),
+                const HistoryListsClinics(),
 
               ],
             ),

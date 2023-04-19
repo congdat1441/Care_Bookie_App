@@ -76,22 +76,22 @@ class _SearchScreenState extends State<SearchScreen> {
         child: Column(
           children: [
             const SizedBox(height: 10),
-            Expanded(
-              child: ListView.builder(
-                itemCount: 20,
-                itemBuilder: (BuildContext context, int index) {
-                  return ListTile(
-                    title: Text("phòng khám giá rẻ $index",style: const TextStyle(
-                        fontWeight: FontWeight.w500,
-                        fontSize: 17,
-                        color: Colors.black,
-                        fontFamily: 'Poppins'
-                    ),
-                    ),
-                  );
-                },
-              ),
-            ),
+            // Expanded(
+            //   child: ListView.builder(
+            //     itemCount: 20,
+            //     itemBuilder: (BuildContext context, int index) {
+            //       return ListTile(
+            //         title: Text("phòng khám giá rẻ $index",style: const TextStyle(
+            //             fontWeight: FontWeight.w500,
+            //             fontSize: 17,
+            //             color: Colors.black,
+            //             fontFamily: 'Poppins'
+            //         ),
+            //         ),
+            //       );
+            //     },
+            //   ),
+            // ),
           ],
         ),
       ),

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../../../../res/constants/colors.dart';
-import '../../../pages/main_pages/clinic/detail_clinic.dart';
+import '../../../../../res/constants/colors.dart';
+import '../detail_clinic.dart';
 
 class ClinicsNearby extends StatefulWidget {
   const ClinicsNearby({Key? key}) : super(key: key);
@@ -35,7 +35,6 @@ class _ClinicsNearbyState extends State<ClinicsNearby> {
             child: Padding(
               padding: const EdgeInsets.fromLTRB(10, 10, 0, 10),
               child: Row(
-                //mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
                   GestureDetector(

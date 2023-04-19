@@ -2,27 +2,27 @@ import 'package:flutter/material.dart';
 
 import '../../../res/constants/colors.dart';
 import '../schedule/schedule_detail_finish.dart';
-class HistorylistClinics extends StatefulWidget {
-  const HistorylistClinics({Key? key}) : super(key: key);
+class HistoryListsClinics extends StatefulWidget {
+  const HistoryListsClinics({Key? key}) : super(key: key);
 
   @override
-  State<HistorylistClinics> createState() => _HistorylistClinicsState();
+  State<HistoryListsClinics> createState() => _HistoryListsClinicsState();
 }
 
-class _HistorylistClinicsState extends State<HistorylistClinics> {
+class _HistoryListsClinicsState extends State<HistoryListsClinics> {
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
         ...[1, 2, 3, 4, 5, 6].map((e) => Padding(
           padding: const EdgeInsets.fromLTRB(10, 20, 0, 10),
-          child: containerhistoryFinish(),
+          child: containerHistoryFinish(),
         ))
       ],
     );
   }
 
-  Widget containerhistoryFinish() {
+  Widget containerHistoryFinish() {
     return Container(
         margin: const EdgeInsets.only(right: 5),
         height: 150,

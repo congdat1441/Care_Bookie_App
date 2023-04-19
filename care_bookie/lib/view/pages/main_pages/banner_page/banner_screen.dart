@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/tween_animation_builder.dart';
-import '../../../models/app_banner.dart';
+import '../../../../models/app_banner.dart';
 import 'banner_item.dart';
 
 class BannerScreen extends StatefulWidget {

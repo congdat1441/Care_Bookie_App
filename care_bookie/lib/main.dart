@@ -2,7 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
 import 'package:heath_care/providers/bottom_navbar_provider.dart';
-import 'package:heath_care/view/pages/login_signup_page/log_in.dart';
+import 'package:heath_care/view/pages/login_signup_page/login.dart';
 import 'package:provider/provider.dart';
 
 void main() async{
