@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:heath_care/view/pages/main_pages/clinic/order_detail_clinic.dart';
 import 'package:heath_care/view/pages/review_page/review_clinic_page/review_clinic.dart';
-import 'package:heath_care/view/widgets/main_page_widget/clinic_widget/ward.dart';
 import '../../../../../res/constants/colors.dart';
 import 'package:flutter_expandable_text/flutter_expandable_text.dart';
 
-import '../../../widgets/main_page_widget/doctor_widget/doctors.dart';
+import '../doctor/doctor_widget/doctors.dart';
+import 'clinic_widget/ward.dart';
 
 class DetailClinic extends StatefulWidget {
   const DetailClinic({Key? key}) : super(key: key);
@@ -54,7 +54,6 @@ class _DetailClinicState extends State<DetailClinic>
           "The CIS Free Clinic",
           style: TextStyle(
               overflow: TextOverflow.ellipsis,
-              //letterSpacing: 2,
               fontSize: 20,
               fontFamily: 'Poppins',
               fontWeight: FontWeight.w500),
@@ -116,8 +115,6 @@ class _DetailClinicState extends State<DetailClinic>
         ),
         stretchModes: const <StretchMode>[
           StretchMode.zoomBackground,
-          // StretchMode.blurBackground,
-          // StretchMode.fadeTitle
         ],
       ),
       bottom: PreferredSize(
@@ -128,8 +125,6 @@ class _DetailClinicState extends State<DetailClinic>
                 borderRadius: BorderRadius.only(
                   topRight: Radius.circular(20),
                   topLeft: Radius.circular(20),
-                  //bottomRight: Radius.circular(10),
-                  // bottomLeft: Radius.circular(10)
                 )),
             margin: const EdgeInsets.fromLTRB(15, 0, 15, 0),
             //padding: const EdgeInsets.only(),

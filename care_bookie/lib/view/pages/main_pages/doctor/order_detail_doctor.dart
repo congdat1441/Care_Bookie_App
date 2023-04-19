@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:heath_care/view/widgets/main_page_widget/order_widget/select_day_order.dart';
+import 'package:heath_care/view/pages/main_pages/main_page_widget/order_widget/select_day_order.dart';
 
 import '../../../../res/constants/colors.dart';
 import '../../review_page/review_doctor_page/review_doctor.dart';
-import '../order_sumary.dart';
+import '../main_page_widget/order_widget/order_sumary.dart';
 
 class OrderDetailDoctor extends StatefulWidget {
   const OrderDetailDoctor({Key? key}) : super(key: key);

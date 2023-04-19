@@ -127,12 +127,12 @@ class _AddReviewClinicState extends State<AddReviewClinic> {
       height: 80,
       color: Colors.white,
       child: Column(
-        children: [Submit()],
+        children: [submit()],
       ),
     );
   }
 
-  Widget Submit() {
+  Widget submit() {
     return Padding(
         padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
         child: Container(

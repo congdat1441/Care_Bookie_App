@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:heath_care/view/widgets/login_signup_widget/password.dart';
-import '../../widgets/login_signup_widget/account.dart';
-import '../../widgets/login_signup_widget/email_Id.dart';
+import 'package:heath_care/view/pages/login_signup_page/login_signup_widget/password.dart';
+import 'login_signup_widget/account.dart';
+import 'login_signup_widget/email_Id.dart';
 
 
 

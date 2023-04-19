@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../res/constants/colors.dart';
+import '../../../../res/constants/colors.dart';
 
 class FavoriteInfos extends StatefulWidget {
   const FavoriteInfos({Key? key}) : super(key: key);

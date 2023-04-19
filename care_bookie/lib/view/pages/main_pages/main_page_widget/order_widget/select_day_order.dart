@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:heath_care/res/constants/colors.dart';
-import '../../../../utils/colors_util.dart';
+import '../../../../../utils/colors_util.dart';
 import 'package:heath_care/utils/date_utils.dart' as date_util;
 
 class SelectDay extends StatefulWidget {

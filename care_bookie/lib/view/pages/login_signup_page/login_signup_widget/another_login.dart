@@ -3,7 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:heath_care/view/pages/layouts_page/navbar_layout.dart';
 
-import '../../../api_services/firebase_services.dart';
+import '../../../../api_services/firebase_services.dart';
 
 class AnotherLogin extends StatefulWidget {
   const AnotherLogin({Key? key}) : super(key: key);

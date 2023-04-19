@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
-import 'package:heath_care/view/widgets/main_page_widget/order_widget/price_order.dart';
-
 import '../../../res/constants/colors.dart';
-import '../../widgets/main_page_widget/order_widget/describe_problem.dart';
-import '../../widgets/main_page_widget/order_widget/info_order_detail.dart';
+import '../main_pages/main_page_widget/order_widget/describe_problem.dart';
+import '../main_pages/main_page_widget/order_widget/info_order_detail.dart';
+import '../main_pages/main_page_widget/order_widget/price_order.dart';
 
 class ScheduleDetailPending extends StatefulWidget {
   const ScheduleDetailPending({Key? key}) : super(key: key);

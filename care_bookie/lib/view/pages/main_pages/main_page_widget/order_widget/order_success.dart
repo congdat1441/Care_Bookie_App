@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:heath_care/res/constants/colors.dart';
 import 'package:heath_care/view/pages/main_pages/main_page.dart';
-import 'package:heath_care/view/widgets/main_page_widget/order_widget/info_order_detail.dart';
-import 'package:heath_care/view/widgets/main_page_widget/order_widget/price_order.dart';
+
+import 'info_order_detail.dart';
+import 'price_order.dart';
 
 class OrderSuccess extends StatefulWidget {
   const OrderSuccess({Key? key}) : super(key: key);

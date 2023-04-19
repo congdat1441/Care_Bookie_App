@@ -1,15 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:flutter_iconly/flutter_iconly.dart';
-import 'package:heath_care/view/widgets/main_page_widget/search_button.dart';
+import 'package:heath_care/view/pages/search_page/search_button.dart';
 import 'package:provider/provider.dart';
 import '../../../../providers/bottom_navbar_provider.dart';
 import '../../../../res/constants/colors.dart';
-import '../../widgets/main_page_widget/AppbarCustom.dart';
-import '../../widgets/main_page_widget/clinic_widget/clinics_nearby.dart';
-import '../../widgets/main_page_widget/doctor_widget/doctors.dart';
-import '../../widgets/main_page_widget/favorite_infos.dart';
+import 'main_page_widget/AppbarCustom.dart';
+import 'clinic/clinic_widget/clinics_nearby.dart';
+import 'doctor/doctor_widget/doctors.dart';
+import 'main_page_widget/favorite_infos.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({
@@ -44,7 +42,7 @@ class _MainPageState extends State<MainPage> {
                     hiPatient(),
                     const SearchButton(),
                     const FavoriteInfos(),
-                    //kindNeedings(),
+                    // kindNeedings(),
                     doctorTitle(),
                     const Doctors(),
                     clinicsNearbyTitles(),

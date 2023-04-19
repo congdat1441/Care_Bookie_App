@@ -1,10 +1,7 @@
-import 'package:firebase_auth/firebase_auth.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:heath_care/res/constants/colors.dart';
-import 'package:heath_care/view/pages/login_signup_page/log_in.dart';
-
-import '../../../api_services/firebase_services.dart';
 
 class PersonalInfomation extends StatefulWidget {
   const PersonalInfomation({Key? key}) : super(key: key);
@@ -66,7 +63,7 @@ class _PersonalInfomationState extends State<PersonalInfomation> {
           dateOfBirth(),
           job(),
           changePassword(),
-          deleAcount(),
+          deleteAccount(),
 
         ],
       ),
@@ -130,8 +127,8 @@ class _PersonalInfomationState extends State<PersonalInfomation> {
           children: [
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              children:  [
-                const Text(
+              children:  const [
+                Text(
                   "Tên",
                   style: TextStyle(
                       fontFamily: 'Poppins',
@@ -175,8 +172,8 @@ class _PersonalInfomationState extends State<PersonalInfomation> {
           children: [
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              children:  [
-                const Text(
+              children:  const [
+                Text(
                   "Số điện thoại",
                   style: TextStyle(
                       fontFamily: 'Poppins',
@@ -220,8 +217,8 @@ class _PersonalInfomationState extends State<PersonalInfomation> {
           children: [
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              children:  [
-                const Text(
+              children:  const [
+                Text(
                   "Địa chỉ Email",
                   style: TextStyle(
                       fontFamily: 'Poppins',
@@ -394,7 +391,7 @@ class _PersonalInfomationState extends State<PersonalInfomation> {
 
   Widget changePassword() {
     return Container(
-      margin: EdgeInsets.only(bottom: 20),
+      margin: const EdgeInsets.only(bottom: 20),
       width: double.maxFinite,
       height: 50,
       decoration: BoxDecoration(
@@ -420,7 +417,7 @@ class _PersonalInfomationState extends State<PersonalInfomation> {
     );
   }
 
-  Widget deleAcount() {
+  Widget deleteAccount() {
     return Container(
       width: double.maxFinite,
       height: 50,

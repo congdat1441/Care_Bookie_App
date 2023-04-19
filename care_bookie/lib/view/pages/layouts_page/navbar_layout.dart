@@ -6,7 +6,6 @@ import 'package:heath_care/providers/bottom_navbar_provider.dart';
 import 'package:provider/provider.dart';
 import '../account_page/account_page.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
-
 import '../history_page/history_page.dart';
 import '../main_pages/main_page.dart';
 import '../schedule/schedule.dart';
@@ -27,7 +26,7 @@ class _NavbarLayoutState extends State<NavbarLayout> {
       TextStyle(fontSize: 10, fontWeight: FontWeight.w600);
 
   static final List<Widget> _widgetOptions = <Widget>[
-    MainPage(),
+    const MainPage(),
     const Schedule(),
     const HistoryPage(),
     const AccountPage()

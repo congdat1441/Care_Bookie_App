@@ -2,11 +2,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:heath_care/res/constants/colors.dart';
-import 'package:heath_care/view/pages/main_pages/order_success.dart';
-import 'package:heath_care/view/widgets/main_page_widget/order_widget/info_order_detail.dart';
-import 'package:heath_care/view/widgets/main_page_widget/order_widget/price_order.dart';
-
-import '../../widgets/main_page_widget/order_widget/describe_problem.dart';
+import 'package:heath_care/view/pages/main_pages/main_page_widget/order_widget/order_success.dart';
+import 'package:heath_care/view/pages/main_pages/main_page_widget/order_widget/price_order.dart';
+import 'describe_problem.dart';
+import 'info_order_detail.dart';
 
 class OrderSumary extends StatefulWidget {
   const OrderSumary({Key? key}) : super(key: key);

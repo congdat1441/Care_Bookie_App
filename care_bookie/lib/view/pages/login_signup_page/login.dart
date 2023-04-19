@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:heath_care/view/pages/login_signup_page/reset_password.dart';
 import 'package:heath_care/view/pages/login_signup_page/sign_up.dart';
-import 'package:heath_care/view/widgets/login_signup_widget/account.dart';
-import 'package:heath_care/view/widgets/login_signup_widget/password.dart';
+import 'package:heath_care/view/pages/login_signup_page/login_signup_widget/account.dart';
+import 'package:heath_care/view/pages/login_signup_page/login_signup_widget/password.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-import '../../widgets/login_signup_widget/another_login.dart';
+import 'login_signup_widget/another_login.dart';
 import '../layouts_page/navbar_layout.dart';
 
 class Login extends StatefulWidget {
