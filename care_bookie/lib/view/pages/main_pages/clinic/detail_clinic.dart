@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
-import 'package:heath_care/view/pages/main_pages/clinic/order_detail_clinic.dart';
-import 'package:heath_care/view/pages/review_page/review_clinic_page/review_clinic.dart';
 import '../../../../../res/constants/colors.dart';
 import 'package:flutter_expandable_text/flutter_expandable_text.dart';
 
+import '../../review_page/review_clinic_page/review_clinic.dart';
 import '../doctor/doctor_widget/doctors.dart';
 import 'clinic_widget/ward.dart';
+import 'order_detail_clinic.dart';
 
 class DetailClinic extends StatefulWidget {
   const DetailClinic({Key? key}) : super(key: key);

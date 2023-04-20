@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
-import 'package:heath_care/view/pages/main_pages/main_page_widget/order_widget/select_day_order.dart';
-
 import '../../../../res/constants/colors.dart';
 import '../main_page_widget/order_widget/order_sumary.dart';
+import '../main_page_widget/order_widget/select_day_order.dart';
 
 class OrderDetailClinic extends StatefulWidget {
   const OrderDetailClinic({Key? key}) : super(key: key);
@@ -358,24 +357,8 @@ class _OrderDetailClinicState extends State<OrderDetailClinic> {
               });
             },
             initiallyExpanded: _isExpanded,
-            children: [
-              Container(
-                margin: const EdgeInsets.only(left: 10, right: 0),
-                padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
-                decoration: BoxDecoration(
-                    borderRadius: const BorderRadius.only(
-                        topLeft: Radius.circular(30),
-                        topRight: Radius.circular(30)),
-                    border: Border.all(width: 0.5, color: Colors.grey)),
-                child: TextFormField(
-                  controller: _controllerTextWord,
-                  maxLines: 10,
-                  maxLength: 350,
-                  decoration: const InputDecoration(
-                    hintText: 'Triệu chứng của bạn',
-                  ),
-                ),
-              ),
+            children: const [
+              // ShareHistory(),
             ],
           ),
         ),

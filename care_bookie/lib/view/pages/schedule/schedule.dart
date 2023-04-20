@@ -1,9 +1,9 @@
+import 'package:care_bookie/view/pages/schedule/schedules_clinic.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:heath_care/view/pages/schedule/schedules_clinic.dart';
-import 'package:heath_care/view/pages/main_pages/main_page_widget/AppbarCustom.dart';
 import '../../../../res/constants/colors.dart';
+import '../main_pages/main_page_widget/AppbarCustom.dart';
 
 class Schedule extends StatefulWidget {
   const Schedule({Key? key}) : super(key: key);

@@ -2,24 +2,24 @@ import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:icons_plus/icons_plus.dart';
 
-class AddAcount extends StatefulWidget {
-  const AddAcount({Key? key}) : super(key: key);
+class AddAccount extends StatefulWidget {
+  const AddAccount({Key? key}) : super(key: key);
 
   @override
-  State<AddAcount> createState() => _AddAcountState();
+  State<AddAccount> createState() => _AddAccountState();
 }
 
-class _AddAcountState extends State<AddAcount> {
+class _AddAccountState extends State<AddAccount> {
   @override
   Widget build(BuildContext context) {
     return Container(
       // color: Colors.green,
-      padding: EdgeInsets.fromLTRB(0, 20, 30, 0),
+      padding: const EdgeInsets.fromLTRB(0, 20, 30, 0),
       // color: Colors.orange,
       width: 330,
       child: TextFormField(
         // textAlign: TextAlign.left,
-          style: TextStyle(color: Colors.black),
+          style: const TextStyle(color: Colors.black),
           validator: (value) {
             if (value == null || value.isEmpty) {
               return "Add your phone number";

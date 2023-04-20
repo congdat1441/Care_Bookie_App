@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
-import 'package:heath_care/view/pages/main_pages/doctor/detail_doctor.dart';
-
 import '../../../../../res/constants/colors.dart';
+import '../detail_doctor.dart';
 
 class Doctors extends StatefulWidget {
   const Doctors({Key? key}) : super(key: key);

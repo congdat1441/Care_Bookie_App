@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter/rendering.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
-import 'package:heath_care/providers/bottom_navbar_provider.dart';
 import 'package:provider/provider.dart';
+import '../../../providers/bottom_navbar_provider.dart';
 import '../account_page/account_page.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
+import '../favorite_page/favorite_page.dart';
 import '../history_page/history_page.dart';
 import '../main_pages/main_page.dart';
 import '../schedule/schedule.dart';
@@ -29,6 +30,7 @@ class _NavbarLayoutState extends State<NavbarLayout> {
     const MainPage(),
     const Schedule(),
     const HistoryPage(),
+    const FavoritePage(),
     const AccountPage()
   ];
 
@@ -82,13 +84,13 @@ class _NavbarLayoutState extends State<NavbarLayout> {
                     ),
                   ),
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    padding: const EdgeInsets.symmetric(horizontal: 5),
                     child: GNav(
                       rippleColor: const Color(0xFF2b85e6),
                       hoverColor: const Color(0xFF2b85e6),
-                      gap: 10,
+                      gap: 5,
                       activeColor: const Color(0xFFFAF1F1),
-                      iconSize: 25,
+                      iconSize: 20,
                       padding: const EdgeInsets.symmetric(
                           horizontal: 15, vertical: 15),
                       duration: const Duration(milliseconds: 600),
@@ -107,8 +109,13 @@ class _NavbarLayoutState extends State<NavbarLayout> {
                           text: 'History',
                         ),
                         GButton(
+                          icon: IconlyBold.heart,
+                          iconSize: 25,
+                          text: 'Favorite',
+                        ),
+                        GButton(
                           icon: IconlyBold.profile,
-                          iconSize: 35,
+                          iconSize: 25,
                           text: 'Profile',
                         ),
                       ],

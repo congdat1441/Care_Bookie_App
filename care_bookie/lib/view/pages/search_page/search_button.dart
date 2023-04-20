@@ -1,6 +1,6 @@
+import 'package:care_bookie/view/pages/search_page/search_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
-import 'package:heath_care/view/pages/search_page/search_screen.dart';
 import '../../../res/constants/colors.dart';
 
 class SearchButton extends StatefulWidget {

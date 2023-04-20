@@ -1,7 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
-import 'package:heath_care/view/pages/account_page/account_page.dart';
 
 class AppbarCustom extends StatefulWidget {
   const AppbarCustom({Key? key}) : super(key: key);

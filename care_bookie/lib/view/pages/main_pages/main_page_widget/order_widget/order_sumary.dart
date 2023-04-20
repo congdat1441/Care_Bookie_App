@@ -1,11 +1,11 @@
+import 'package:care_bookie/view/pages/main_pages/main_page_widget/order_widget/price_order.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
-import 'package:heath_care/res/constants/colors.dart';
-import 'package:heath_care/view/pages/main_pages/main_page_widget/order_widget/order_success.dart';
-import 'package:heath_care/view/pages/main_pages/main_page_widget/order_widget/price_order.dart';
+import '../../../../../res/constants/colors.dart';
 import 'describe_problem.dart';
 import 'info_order_detail.dart';
+import 'order_success.dart';
 
 class OrderSumary extends StatefulWidget {
   const OrderSumary({Key? key}) : super(key: key);

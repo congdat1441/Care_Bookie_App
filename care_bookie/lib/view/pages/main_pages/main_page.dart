@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:heath_care/view/pages/search_page/search_button.dart';
 import 'package:provider/provider.dart';
 import '../../../../providers/bottom_navbar_provider.dart';
 import '../../../../res/constants/colors.dart';
+import '../search_page/search_button.dart';
 import 'main_page_widget/AppbarCustom.dart';
 import 'clinic/clinic_widget/clinics_nearby.dart';
 import 'doctor/doctor_widget/doctors.dart';
@@ -19,6 +19,8 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
+
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(

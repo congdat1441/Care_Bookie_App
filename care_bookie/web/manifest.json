@@ -1,6 +1,6 @@
 {
-    "name": "heath_care",
-    "short_name": "heath_care",
+    "name": "care_bookie",
+    "short_name": "care_bookie",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

@@ -1,4 +1,4 @@
-package com.example.heath_care
+package com.example.care_bookie
 
 import io.flutter.embedding.android.FlutterActivity
 

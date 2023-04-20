@@ -1,7 +1,8 @@
+import 'package:care_bookie/view/pages/account_page/sliverbox_content.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:heath_care/view/pages/account_page/sliverbox_content.dart';
+
 import '../../../res/constants/colors.dart';
 
 class AccountPage extends StatelessWidget {
@@ -84,8 +85,8 @@ class AccountPage extends StatelessWidget {
                           ),
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(60),
-                            // child: Image.network(FirebaseAuth.instance.currentUser!.photoURL!,
-                            //     width: 60, height: 60, fit: BoxFit.cover),
+                            child: Image.network(FirebaseAuth.instance.currentUser!.photoURL!,
+                                width: 60, height: 60, fit: BoxFit.cover),
                           ),
                         ),
                       ),
@@ -97,24 +98,24 @@ class AccountPage extends StatelessWidget {
               child: Center(
                 child: Column(
                   children:  [
-                    // Text(
-                    //   "${FirebaseAuth.instance.currentUser!.displayName}",
-                    //   style: const TextStyle(
-                    //       height: 1.2,
-                    //       fontWeight: FontWeight.bold,
-                    //       fontFamily: 'Poppins',
-                    //       fontSize: 21,
-                    //       color: Colors.white),
-                    // ),
-                    // Text(
-                    //   "${FirebaseAuth.instance.currentUser!.email}",
-                    //   style: const TextStyle(
-                    //       color: Colors.white,
-                    //       fontWeight: FontWeight.w400,
-                    //       fontFamily: 'Poppins',
-                    //       letterSpacing: 0.1,
-                    //       fontSize: 13),
-                    // )
+                    Text(
+                      "${FirebaseAuth.instance.currentUser!.displayName}",
+                      style: const TextStyle(
+                          height: 1.2,
+                          fontWeight: FontWeight.bold,
+                          fontFamily: 'Poppins',
+                          fontSize: 21,
+                          color: Colors.white),
+                    ),
+                    Text(
+                      "${FirebaseAuth.instance.currentUser!.email}",
+                      style: const TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.w400,
+                          fontFamily: 'Poppins',
+                          letterSpacing: 0.1,
+                          fontSize: 13),
+                    )
                   ],
                 ),
               ),

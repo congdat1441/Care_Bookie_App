@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
-import 'package:heath_care/view/pages/review_page/review_clinic_page/add_review_clinic.dart';
 
 import '../../../../res/constants/colors.dart';
+import 'add_review_clinic.dart';
 
 class ReviewClinic extends StatefulWidget {
   const ReviewClinic({Key? key}) : super(key: key);

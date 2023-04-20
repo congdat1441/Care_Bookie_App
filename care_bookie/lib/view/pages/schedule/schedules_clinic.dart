@@ -1,7 +1,7 @@
+import 'package:care_bookie/view/pages/schedule/schedule_detail_accept.dart';
+import 'package:care_bookie/view/pages/schedule/schedule_detail_finish.dart';
+import 'package:care_bookie/view/pages/schedule/schedule_detail_pending.dart';
 import 'package:flutter/material.dart';
-import 'package:heath_care/view/pages/schedule/schedule_detail_accept.dart';
-import 'package:heath_care/view/pages/schedule/schedule_detail_finish.dart';
-import 'package:heath_care/view/pages/schedule/schedule_detail_pending.dart';
 import '../../../res/constants/colors.dart';
 
 class ScheduleClinics extends StatefulWidget {

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:heath_care/res/constants/colors.dart';
-import 'package:heath_care/view/pages/main_pages/main_page.dart';
 
+import '../../../../../res/constants/colors.dart';
+import '../../main_page.dart';
 import 'info_order_detail.dart';
 import 'price_order.dart';
 

@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:heath_care/view/pages/history_page/history_list_clinics.dart';
-import 'package:heath_care/view/pages/history_page/note_from_doctor.dart';
-import 'package:heath_care/view/pages/main_pages/main_page_widget/AppbarCustom.dart';
 import '../../../../res/constants/colors.dart';
+import '../main_pages/main_page_widget/AppbarCustom.dart';
+import 'history_list_clinics.dart';
 
 class HistoryPage extends StatelessWidget {
   const HistoryPage({Key? key}) : super(key: key);
@@ -51,7 +49,7 @@ class HistoryPage extends StatelessWidget {
               child: RichText(
                 text: const TextSpan(children: [
                   TextSpan(
-                    text: "Your",
+                    text: "Detail",
                     style: TextStyle(
                         height: 1,
                         fontStyle: FontStyle.italic,

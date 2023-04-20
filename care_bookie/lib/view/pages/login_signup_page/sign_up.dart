@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:heath_care/view/pages/login_signup_page/login_signup_widget/password.dart';
 import 'login_signup_widget/account.dart';
 import 'login_signup_widget/email_Id.dart';
+import 'login_signup_widget/password.dart';
 
 
 
@@ -66,11 +66,11 @@ class Signup extends StatelessWidget {
                     //color: Colors.greenAccent,
                     width: 380,
                     height: 660,
-                    padding: EdgeInsets.fromLTRB(20, 0, 0, 0),
+                    padding: const EdgeInsets.fromLTRB(20, 0, 0, 0),
                     child: Column(
                       children: [
                         Padding(
-                          padding: EdgeInsets.only(left: 10),
+                          padding: const EdgeInsets.only(left: 10),
                           child: Row(
                             children: [
                               const Text(
@@ -109,18 +109,18 @@ class Signup extends StatelessWidget {
                             ],
                           ),
                         ),
-                        AddAcount(),
-                        EmailId(),
+                        const AddAccount(),
+                        const EmailId(),
                         //Mobileohone(),
-                        AddPassword(),
+                        const AddPassword(),
                         GestureDetector(
                           onTap: () {},
                           child: Container(
                             width: 330,
-                            padding: EdgeInsets.fromLTRB(0, 20, 30, 0),
+                            padding: const EdgeInsets.fromLTRB(0, 20, 30, 0),
                             child: Column(
                               children: [
-                                Padding(padding: EdgeInsets.only(top: 20)),
+                                const Padding(padding: EdgeInsets.only(top: 20)),
                                 Container(
                                   height: 60,
                                   decoration: BoxDecoration(
