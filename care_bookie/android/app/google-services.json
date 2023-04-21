@@ -22,6 +22,16 @@
           }
         },
         {
+
+          "client_id": "343381081029-vt4ljbf8chkoiuqkrv9c0reotbr92915.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.care_bookie",
+            "certificate_hash": "6456d73f659a6f9cfa8986bf4b5e46730b43563b"
+          }
+        },
+        {
+
           "client_id": "343381081029-vvqrlh8tti1v4jnlenpajf725svkgn5i.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {

@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
+import 'package:provider/provider.dart';
+
+import '../../../../../models/doctor.dart';
+import '../../../../../providers/home_page_provider.dart';
 import '../../../../../res/constants/colors.dart';
 import '../detail_doctor.dart';
 
@@ -13,20 +17,23 @@ class Doctors extends StatefulWidget {
 class _DoctorsState extends State<Doctors> {
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(top: 0.0),
-      child: SizedBox(
-        height: 225,
-        child: ListView(
-          scrollDirection: Axis.horizontal,
-          children: [
-            const SizedBox(
-              width: 35,
-            ),
-            ...[1, 2, 3, 4, 5, 6, 7].map((e) => Container(
-                  margin: const EdgeInsets.fromLTRB(0, 10, 0, 0),
-                  alignment: Alignment.topCenter,
-                  child: Container(
+    final value = Provider.of<HomePageProvider>(context , listen: false);
+    return FutureBuilder<List<Doctor>>(
+      future: value.getAllDoctor(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        } else if (snapshot.hasError) {
+          return Center(
+            child: Text(snapshot.error.toString()),
+          );
+        } else {
+          List<Doctor>? doctors = snapshot.data;
+          return ListView.builder(
+            scrollDirection: Axis.horizontal,
+            itemBuilder: (context, index) =>Container(
                     margin: const EdgeInsets.only(right: 15),
                     height: 200,
                     width: 155,
@@ -73,10 +80,9 @@ class _DoctorsState extends State<Doctors> {
                                   },
                                   child: ClipRRect(
                                     borderRadius: BorderRadius.circular(20),
-                                    child: Image.asset(
-                                      'assets/images/doctor03.jpg',
+                                    child: Image.network(
+                                      doctors![index].image,
                                       fit: BoxFit.fitWidth,
-
                                       //scale: 30,
                                     ),
                                   ),
@@ -84,7 +90,8 @@ class _DoctorsState extends State<Doctors> {
                               ),
                             ),
                             Container(
-                              margin: const EdgeInsets.fromLTRB(105, 10, 0, 0),
+                              margin:
+                                  const EdgeInsets.fromLTRB(105, 10, 0, 0),
                               height: 28,
                               width: 28,
                               child: FloatingActionButton(
@@ -102,27 +109,32 @@ class _DoctorsState extends State<Doctors> {
                           padding: const EdgeInsets.fromLTRB(15, 10, 10, 0),
                           child: Column(
                             children: [
-                              const SizedBox(
+                              SizedBox(
                                   width: 130,
                                   height: 20,
                                   //color: Colors.grey,
-                                  child: Text("Dr. Nguyễn Văn A aaaaaaaaaaa",
+                                  child: Text("Dr. ${doctors[index].fullName}",
                                       overflow: TextOverflow.ellipsis,
-                                      style: TextStyle(
+                                      style: const TextStyle(
                                           fontSize: 14,
                                           //overflow: TextOverflow.ellipsis,
                                           color: Colors.black,
                                           fontWeight: FontWeight.w500,
-                                          fontFamily: 'Merriweather Sans'))),
+                                          fontFamily:
+                                              'Merriweather Sans'))),
                               Row(
-                                children: const [
-                                  Text("Răng hàm mặt",
-                                      style: TextStyle(
-                                          fontSize: 14,
-                                          //overflow: TextOverflow.ellipsis,
-                                          color: ColorConstant.Grey01,
-                                          fontWeight: FontWeight.w400,
-                                          fontFamily: 'Merriweather Sans')),
+                                children: [
+                                  Expanded(
+                                    child: Text(doctors[index].fields,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: const TextStyle(
+                                            fontSize: 14,
+                                            //overflow: TextOverflow.ellipsis,
+                                            color: ColorConstant.Grey01,
+                                            fontWeight: FontWeight.w400,
+                                            fontFamily:
+                                                'Merriweather Sans')),
+                                  ),
                                 ],
                               )
                             ],
@@ -131,10 +143,10 @@ class _DoctorsState extends State<Doctors> {
                       ],
                     ),
                   ),
-                )),
-          ],
-        ),
-      ),
+            itemCount: snapshot.data!.length,
+          );
+        }
+      },
     );
   }
 }

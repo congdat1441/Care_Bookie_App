@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
+
 import '../../../../providers/bottom_navbar_provider.dart';
 import '../../../../res/constants/colors.dart';
 import '../search_page/search_button.dart';
-import 'main_page_widget/AppbarCustom.dart';
 import 'clinic/clinic_widget/clinics_nearby.dart';
 import 'doctor/doctor_widget/doctors.dart';
+import 'main_page_widget/AppbarCustom.dart';
 import 'main_page_widget/favorite_infos.dart';
 
 class MainPage extends StatefulWidget {
@@ -19,42 +20,25 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
-
-
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      top: true,
-      bottom: true,
-      right: true,
-      left: true,
-      child: Consumer<BottomNavBarProvider>(
-        builder: (context, value, child) {
-          return Scaffold(
-            backgroundColor: ColorConstant.BackGroundColor,
-            body: SizedBox(
-              height: MediaQuery.of(context).size.height,
-              width: MediaQuery.of(context).size.width,
-              child: SingleChildScrollView(
-                scrollDirection: Axis.vertical,
-                //controller: value.scrollController,
-                child: Column(
-                  children: [
-                    const AppbarCustom(),
-                    hiPatient(),
-                    const SearchButton(),
-                    const FavoriteInfos(),
-                    // kindNeedings(),
-                    doctorTitle(),
-                    const Doctors(),
-                    clinicsNearbyTitles(),
-                    const ClinicsNearby(),
-                  ],
-                ),
-              ),
-            ),
-          );
-        },
+    return Scaffold(
+      backgroundColor: ColorConstant.BackGroundColor,
+      body: SingleChildScrollView(
+        //controller: value.scrollController,
+        child: Column(
+          children: [
+            const AppbarCustom(),
+            hiPatient(),
+            const SearchButton(),
+            const FavoriteInfos(),
+            // kindNeedings(),
+            doctorTitle(),
+            const SizedBox(height: 300, child: Doctors()),
+            clinicsNearbyTitles(),
+            const ClinicsNearby(),
+          ],
+        ),
       ),
     );
   }

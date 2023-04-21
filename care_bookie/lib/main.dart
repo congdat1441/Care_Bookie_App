@@ -1,7 +1,11 @@
 import 'package:care_bookie/providers/bottom_navbar_provider.dart';
+import 'package:care_bookie/providers/doctor_detail_provider.dart';
+import 'package:care_bookie/providers/home_page_provider.dart';
+import 'package:care_bookie/providers/hospital_detail_page_provider.dart';
 import 'package:care_bookie/view/pages/login_signup_page/login.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+
 import 'package:provider/provider.dart';
 
 void main() async{
@@ -9,18 +13,19 @@ void main() async{
   await Firebase.initializeApp();
   runApp(const MyApp());
 }
-// void main() {
-//   runApp(const MyApp());
-// }
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
+  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (context) => BottomNavBarProvider())
+        ChangeNotifierProvider(create: (context) => BottomNavBarProvider()),
+        ChangeNotifierProvider(create: (context) => HomePageProvider(),),
+        ChangeNotifierProvider(create: (context) => HospitalDetailPageProvider(),),
+        ChangeNotifierProvider(create: (context) => DoctorDetailProvider(),)
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

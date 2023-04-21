@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_expandable_text/flutter_expandable_text.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:provider/provider.dart';
+import '../../../../providers/doctor_detail_provider.dart';
 import '../../../../res/constants/colors.dart';
 import '../../review_page/review_doctor_page/review_doctor.dart';
 import 'order_detail_doctor.dart';
@@ -44,160 +46,163 @@ class _DetailDoctorState extends State<DetailDoctor>
   }
 
   Widget sliverAppBar() {
-    return SliverAppBar(
-      title: const Padding(
-        padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
-        child: Text(
-          "Dr. Nguyễn Văn A",
-          style: TextStyle(
-              overflow: TextOverflow.ellipsis,
-              //letterSpacing: 2,
-              fontSize: 20,
-              fontFamily: 'Poppins',
-              fontWeight: FontWeight.w500),
-        ),
-      ),
-      shape: const ContinuousRectangleBorder(
-          borderRadius: BorderRadius.vertical(bottom: Radius.circular(30))),
-      collapsedHeight: 80,
-      backgroundColor: Colors.transparent,
-      leading: IconButton(
-        onPressed: () {
-          Navigator.pop(context);
-        },
-        icon: const Icon(
-          IconlyLight.arrowLeft,
-          size: 30,
-        ),
-      ),
-      actions: [
-        IconButton(
-          onPressed: () {},
-          icon: const Icon(
-            IconlyLight.heart,
-            size: 30,
-          ),
-        ),
-        IconButton(
-          onPressed: () {},
-          icon: const Icon(
-            IconlyLight.upload,
-            size: 30,
-          ),
-        ),
-      ],
-      expandedHeight: 350,
-      flexibleSpace: FlexibleSpaceBar(
-        background: Stack(
-          fit: StackFit.expand,
-          children: <Widget>[
-            ClipRRect(
-              borderRadius: const BorderRadius.only(
-                  bottomLeft: Radius.circular(34),
-                  bottomRight: Radius.circular(34)),
-              child: Image.asset(
-                "assets/images/doctor03.jpg",
-                width: double.infinity,
-                fit: BoxFit.fill,
-              ),
-            ),
-            Positioned.fill(
-                child: Container(
-              decoration: const BoxDecoration(
-                  gradient: LinearGradient(
-                      begin: Alignment.topCenter,
-                      end: Alignment.center,
-                      colors: [Colors.black87, Colors.transparent])),
-            ))
-          ],
-        ),
 
-      ),
-      bottom: PreferredSize(
-        preferredSize: const Size.fromHeight(30),
-        child: Container(
-            decoration: const BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.only(
-                  topRight: Radius.circular(20),
-                  topLeft: Radius.circular(20),
-                  //bottomRight: Radius.circular(10),
-                  // bottomLeft: Radius.circular(10)
-                )),
-            margin: const EdgeInsets.fromLTRB(15, 0, 15, 0),
-            //padding: const EdgeInsets.only(),
-            width: double.maxFinite,
-            height: 90,
-            child: Padding(
-              padding: const EdgeInsets.all(15),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const SizedBox(
-                    width: 210,
-                    child: Text(
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                      "Dr. Nguyễn Văn A",
-                      style: TextStyle(
-                        fontWeight: FontWeight.w500,
-                        fontSize: 21,
-                        fontFamily: 'Poppins',
-                      ),
-                    ),
-                  ),
-                  Container(
-                    width: 120,
-                    height: 50,
-                    decoration: BoxDecoration(
-                        color: ColorConstant.BLue05,
-                        borderRadius: BorderRadius.circular(30)),
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        primary: ColorConstant.BLue05,
-                        elevation: 1,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(30.0),
+    return Consumer<DoctorDetailProvider>(
+      builder: (context, doctorDetailProvider, child) => SliverAppBar(
+        title: Padding(
+          padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
+          child: Text(
+            "Dr. ${doctorDetailProvider.doctorDetail!.fullName}",
+            style: const TextStyle(
+                overflow: TextOverflow.ellipsis,
+                //letterSpacing: 2,
+                fontSize: 20,
+                fontFamily: 'Poppins',
+                fontWeight: FontWeight.w500),
+          ),
+        ),
+        shape: const ContinuousRectangleBorder(
+            borderRadius: BorderRadius.vertical(bottom: Radius.circular(30))),
+        collapsedHeight: 80,
+        backgroundColor: Colors.transparent,
+        leading: IconButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          icon: const Icon(
+            IconlyLight.arrowLeft,
+            size: 30,
+          ),
+        ),
+        actions: [
+          IconButton(
+            onPressed: () {},
+            icon: const Icon(
+              IconlyLight.heart,
+              size: 30,
+            ),
+          ),
+          IconButton(
+            onPressed: () {},
+            icon: const Icon(
+              IconlyLight.upload,
+              size: 30,
+            ),
+          ),
+        ],
+        expandedHeight: 350,
+        flexibleSpace: FlexibleSpaceBar(
+          background: Stack(
+            fit: StackFit.expand,
+            children: <Widget>[
+              ClipRRect(
+                borderRadius: const BorderRadius.only(
+                    bottomLeft: Radius.circular(34),
+                    bottomRight: Radius.circular(34)),
+                child: Image.network(
+                  doctorDetailProvider.doctorDetail!.image,
+                  width: double.infinity,
+                  fit: BoxFit.fill,
+                ),
+              ),
+              Positioned.fill(
+                  child: Container(
+                    decoration: const BoxDecoration(
+                        gradient: LinearGradient(
+                            begin: Alignment.topCenter,
+                            end: Alignment.center,
+                            colors: [Colors.black87, Colors.transparent])),
+                  ))
+            ],
+          ),
+
+        ),
+        bottom: PreferredSize(
+          preferredSize: const Size.fromHeight(30),
+          child: Container(
+              decoration: const BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.only(
+                    topRight: Radius.circular(20),
+                    topLeft: Radius.circular(20),
+                    //bottomRight: Radius.circular(10),
+                    // bottomLeft: Radius.circular(10)
+                  )),
+              margin: const EdgeInsets.fromLTRB(15, 0, 15, 0),
+              //padding: const EdgeInsets.only(),
+              width: double.maxFinite,
+              height: 90,
+              child: Padding(
+                padding: const EdgeInsets.all(15),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    SizedBox(
+                      width: 210,
+                      child: Text(
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                        "Dr. ${doctorDetailProvider.doctorDetail!.fullName}",
+                        style: const TextStyle(
+                          fontWeight: FontWeight.w500,
+                          fontSize: 21,
+                          fontFamily: 'Poppins',
                         ),
                       ),
-                      onPressed: () {
-                        showModalBottomSheet(
-                          context: context,
-                          isScrollControlled: true,
-                          isDismissible: true,
-                          shape: const RoundedRectangleBorder(
-                            borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(30),
-                              topRight: Radius.circular(30),
-                            ),
-                          ),
-                          builder: (context) {
-                            return const FractionallySizedBox(
-                              heightFactor: 0.93,
-                              child: ClipRRect(
-                                  borderRadius: BorderRadius.only(
-                                    topLeft: Radius.circular(30),
-                                    topRight: Radius.circular(30),
-                                  ),
-                                  child: OrderDetailDoctor()),
-                            );
-                          },
-                        );
-                      },
-                      child: const Text(
-                        "Đặt lịch",
-                        style: TextStyle(
-                            fontFamily: 'Merriweather Sans',
-                            fontSize: 17,
-                            letterSpacing: 1.2,
-                            fontWeight: FontWeight.w600,
-                            color: Colors.white),
-                      ),
                     ),
-                  )
-                ],
-              ),
-            )),
+                    Container(
+                      width: 120,
+                      height: 50,
+                      decoration: BoxDecoration(
+                          color: ColorConstant.BLue05,
+                          borderRadius: BorderRadius.circular(30)),
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          primary: ColorConstant.BLue05,
+                          elevation: 1,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(30.0),
+                          ),
+                        ),
+                        onPressed: () {
+                          showModalBottomSheet(
+                            context: context,
+                            isScrollControlled: true,
+                            isDismissible: true,
+                            shape: const RoundedRectangleBorder(
+                              borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(30),
+                                topRight: Radius.circular(30),
+                              ),
+                            ),
+                            builder: (context) {
+                              return const FractionallySizedBox(
+                                heightFactor: 0.93,
+                                child: ClipRRect(
+                                    borderRadius: BorderRadius.only(
+                                      topLeft: Radius.circular(30),
+                                      topRight: Radius.circular(30),
+                                    ),
+                                    child: OrderDetailDoctor()),
+                              );
+                            },
+                          );
+                        },
+                        child: const Text(
+                          "Đặt lịch",
+                          style: TextStyle(
+                              fontFamily: 'Merriweather Sans',
+                              fontSize: 17,
+                              letterSpacing: 1.2,
+                              fontWeight: FontWeight.w600,
+                              color: Colors.white),
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+              )),
+        ),
       ),
     );
   }
