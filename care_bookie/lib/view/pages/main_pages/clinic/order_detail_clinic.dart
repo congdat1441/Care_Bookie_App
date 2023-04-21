@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import '../../../../res/constants/colors.dart';
+import '../../schedule/schedule_detail_finish.dart';
 import '../main_page_widget/order_widget/order_sumary.dart';
 import '../main_page_widget/order_widget/select_day_order.dart';
+import '../main_page_widget/order_widget/share_history.dart';
 
 class OrderDetailClinic extends StatefulWidget {
   const OrderDetailClinic({Key? key}) : super(key: key);
@@ -260,7 +262,7 @@ class _OrderDetailClinicState extends State<OrderDetailClinic> {
                         decoration: BoxDecoration(
                           color: _selectedTime == index
                               ? ColorConstant.BLue02
-                              : const  Color(0xFFf6f6f6),
+                              : const Color(0xFFf6f6f6),
                           borderRadius: BorderRadius.circular(20.0),
                         ),
                         child: Center(
@@ -357,8 +359,15 @@ class _OrderDetailClinicState extends State<OrderDetailClinic> {
               });
             },
             initiallyExpanded: _isExpanded,
-            children: const [
-              // ShareHistory(),
+            children: [
+              Container(
+                margin: const EdgeInsets.only(left: 10, right: 0),
+                padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(30),
+                    border: Border.all(width: 0.5, color: Colors.transparent)),
+                child: const ShareHistory()
+              ),
             ],
           ),
         ),
@@ -371,12 +380,12 @@ class _OrderDetailClinicState extends State<OrderDetailClinic> {
       height: 80,
       color: Colors.transparent,
       child: Column(
-        children: [tiepTuc()],
+        children: [continuous()],
       ),
     );
   }
 
-  Widget tiepTuc() {
+  Widget continuous() {
     return Padding(
         padding: const EdgeInsets.fromLTRB(5, 0, 5, 0),
         child: Container(

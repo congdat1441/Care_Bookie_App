@@ -494,12 +494,12 @@ class _OrderDetailDoctorState extends State<OrderDetailDoctor> {
       height: 80,
       color: Colors.transparent,
       child: Column(
-        children: [tiepTuc()],
+        children: [continuous()],
       ),
     );
   }
 
-  Widget tiepTuc() {
+  Widget continuous() {
     return Padding(
         padding: const EdgeInsets.fromLTRB(5, 0, 5, 0),
         child: Container(

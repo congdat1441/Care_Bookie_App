@@ -16,13 +16,13 @@ class _HistoryListsClinicsState extends State<HistoryListsClinics> {
       children: [
         ...[1, 2, 3, 4, 5, 6].map((e) => Padding(
           padding: const EdgeInsets.fromLTRB(10, 20, 0, 10),
-          child: containerHistoryFinish(),
+          child: listsHistories(),
         ))
       ],
     );
   }
 
-  Widget containerHistoryFinish() {
+  Widget listsHistories() {
     return Container(
         margin: const EdgeInsets.only(right: 5),
         height: 150,
