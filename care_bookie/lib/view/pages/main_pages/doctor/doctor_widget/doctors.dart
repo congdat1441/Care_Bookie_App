@@ -1,3 +1,4 @@
+import 'package:care_bookie/providers/doctor_detail_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:provider/provider.dart';
@@ -17,9 +18,10 @@ class Doctors extends StatefulWidget {
 class _DoctorsState extends State<Doctors> {
   @override
   Widget build(BuildContext context) {
-    final value = Provider.of<HomePageProvider>(context , listen: false);
+    final homePageProvider = Provider.of<HomePageProvider>(context , listen: false);
+    final doctorDetailProvider = Provider.of<DoctorDetailProvider>(context , listen: false);
     return FutureBuilder<List<Doctor>>(
-      future: value.getAllDoctor(),
+      future: homePageProvider.getAllDoctor(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(
@@ -35,7 +37,7 @@ class _DoctorsState extends State<Doctors> {
             scrollDirection: Axis.horizontal,
             itemBuilder: (context, index) =>Container(
                     margin: const EdgeInsets.only(right: 15),
-                    height: 200,
+                    height: 100,
                     width: 155,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(27),
@@ -54,7 +56,7 @@ class _DoctorsState extends State<Doctors> {
                           children: [
                             Container(
                               padding: const EdgeInsets.only(top: 7),
-                              height: 135,
+                              height: 140,
                               width: 140,
                               decoration: BoxDecoration(
                                 boxShadow: [
@@ -65,24 +67,29 @@ class _DoctorsState extends State<Doctors> {
                                       offset: const Offset(0, 20))
                                 ],
                               ),
-                              child: Ink(
-                                decoration: BoxDecoration(
-                                  color: Colors.blue,
-                                  borderRadius: BorderRadius.circular(10.0),
-                                ),
-                                child: InkWell(
-                                  onTap: () {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                const DetailDoctor()));
-                                  },
+                              child: InkWell(
+                                onTap: () {
+
+                                  doctorDetailProvider.setDoctorDetail(doctors[index]);
+
+                                  doctorDetailProvider.setIsDoctorWithHospital(false);
+
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              const DetailDoctor()));
+                                },
+                                child: Ink(
+                                  decoration: BoxDecoration(
+                                    color: Colors.blue,
+                                    borderRadius: BorderRadius.circular(10.0),
+                                  ),
                                   child: ClipRRect(
                                     borderRadius: BorderRadius.circular(20),
                                     child: Image.network(
                                       doctors![index].image,
-                                      fit: BoxFit.fitWidth,
+                                      fit: BoxFit.fill,
                                       //scale: 30,
                                     ),
                                   ),

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:provider/provider.dart';
+import '../../../../providers/doctor_detail_provider.dart';
 import '../../../../res/constants/colors.dart';
 import '../../review_page/review_doctor_page/review_doctor.dart';
 import '../main_page_widget/order_widget/order_sumary.dart';
@@ -79,7 +81,7 @@ class _OrderDetailDoctorState extends State<OrderDetailDoctor> {
       body: CustomScrollView(
         controller: _scrollController,
         slivers: <Widget>[
-          sliverappbar(),
+          sliverAppbar(),
           infoBasicDoctor(),
           selectDay(),
           selectTime(),
@@ -91,10 +93,14 @@ class _OrderDetailDoctorState extends State<OrderDetailDoctor> {
     );
   }
 
-  Widget sliverappbar() {
+  Widget sliverAppbar() {
+
+    final doctorDetailProvider = Provider.of<DoctorDetailProvider>(context, listen: false);
+
+
     return SliverAppBar(
       title: Text(
-        'Dr. Nguyễn Văn A',
+        'Dr. ${doctorDetailProvider.doctorDetail!.fullName}',
         style: TextStyle(
             color: _isAppBarCollapsed ? Colors.black : Colors.white,
             overflow: TextOverflow.ellipsis,
@@ -131,8 +137,8 @@ class _OrderDetailDoctorState extends State<OrderDetailDoctor> {
               borderRadius: const BorderRadius.only(
                   bottomLeft: Radius.circular(0),
                   bottomRight: Radius.circular(0)),
-              child: Image.asset(
-                "assets/images/doctor03.jpg",
+              child: Image.network(
+                doctorDetailProvider.doctorDetail!.image,
                 width: double.infinity,
                 fit: BoxFit.cover,
               ),
@@ -167,14 +173,14 @@ class _OrderDetailDoctorState extends State<OrderDetailDoctor> {
               padding: const EdgeInsets.all(15),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: const [
+                children: [
                   SizedBox(
                     width: 210,
                     child: Text(
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
-                      "Dr. Nguyễn Văn A",
-                      style: TextStyle(
+                      "Dr. ${doctorDetailProvider.doctorDetail!.fullName}",
+                      style: const TextStyle(
                         fontWeight: FontWeight.w500,
                         fontSize: 21,
                         fontFamily: 'Poppins',
@@ -189,11 +195,14 @@ class _OrderDetailDoctorState extends State<OrderDetailDoctor> {
   }
 
   Widget infoBasicDoctor() {
+
+    final doctorDetailProvider = Provider.of<DoctorDetailProvider>(context, listen: false);
+
     return SliverToBoxAdapter(
       child: Padding(
         padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
         child: Container(
-          height: 140,
+          height: 150,
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: const BorderRadius.only(
@@ -213,21 +222,52 @@ class _OrderDetailDoctorState extends State<OrderDetailDoctor> {
               padding: const EdgeInsets.fromLTRB(5, 0, 0, 0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      const Icon(
-                        IconlyLight.location,
-                        size: 25,
-                        color: Colors.amber,
+                      const Text(
+                          "Chuyên khoa :",
+                          style: TextStyle(
+                              height: 0.9,
+                              fontSize: 16,
+                              color: Colors.black87,
+                              fontWeight: FontWeight.w500,
+                              fontFamily: 'Merriweather Sans')
                       ),
                       Container(
-                        padding: const EdgeInsets.fromLTRB(10, 5, 0, 5),
-                        width: 320,
-                        child: const Text("124, Nguyễn Thái Học, Huế",
+                        padding: const EdgeInsets.fromLTRB(10, 5, 5, 5),
+                        child: Text(doctorDetailProvider.doctorDetail!.fields,
                             maxLines: 2,
                             overflow: TextOverflow.ellipsis,
-                            style: TextStyle(
+                            style: const TextStyle(
+                                overflow: TextOverflow.ellipsis,
+                                height: 0.9,
+                                fontSize: 16,
+                                color: ColorConstant.Grey01,
+                                fontWeight: FontWeight.w400,
+                                fontFamily: 'Merriweather Sans')),
+                      ),
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Padding(
+                        padding: EdgeInsets.fromLTRB(5, 0, 0, 0.0),
+                        child: Icon(
+                          FontAwesomeIcons.stethoscope,
+                          size: 20,
+                          color: Colors.amber,
+                        ),
+                      ),
+                      Container(
+                        padding: const EdgeInsets.fromLTRB(30, 5, 5, 5),
+                        child: Text("${doctorDetailProvider.doctorDetail!.experience} năm kinh nghiệm",
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                            style: const TextStyle(
                                 overflow: TextOverflow.ellipsis,
                                 height: 0.9,
                                 fontSize: 16,
@@ -252,8 +292,8 @@ class _OrderDetailDoctorState extends State<OrderDetailDoctor> {
                         const SizedBox(
                           width: 10,
                         ),
-                        const Text("4.5",
-                            style: TextStyle(
+                        Text("${doctorDetailProvider.doctorDetail!.star}",
+                            style: const TextStyle(
                                 height: 1.5,
                                 fontSize: 20,
                                 color: Colors.black87,
@@ -265,39 +305,13 @@ class _OrderDetailDoctorState extends State<OrderDetailDoctor> {
                           onPressed: () {
                             Navigator.push(context, MaterialPageRoute(builder: (context)=> const ReviewDoctor()));
                           },
-                          child: const Text("xem đánh giá",
+                          child: const Text("Xem đánh giá",
                               style: TextStyle(
                                   height: 1.5,
                                   fontSize: 16,
                                   color: Colors.amber,
                                   fontWeight: FontWeight.w500,
                                   fontFamily: 'Merriweather Sans')))
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      const Padding(
-                        padding: EdgeInsets.fromLTRB(5, 0, 0, 0.0),
-                        child: Icon(
-                          FontAwesomeIcons.stethoscope,
-                          size: 20,
-                          color: Colors.amber,
-                        ),
-                      ),
-                      Container(
-                        padding: const EdgeInsets.fromLTRB(10, 5, 0, 5),
-                        width: 320,
-                        child: const Text("15 năm kinh nghiệm ",
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis,
-                            style: TextStyle(
-                                overflow: TextOverflow.ellipsis,
-                                height: 0.9,
-                                fontSize: 16,
-                                color: ColorConstant.Grey01,
-                                fontWeight: FontWeight.w400,
-                                fontFamily: 'Merriweather Sans')),
-                      ),
                     ],
                   ),
                 ],
@@ -319,9 +333,7 @@ class _OrderDetailDoctorState extends State<OrderDetailDoctor> {
         decoration: const BoxDecoration(
             // color: Colors.amber
             ),
-        child: const SelectDay(
-          title: 'SelectDayForU',
-        ),
+        child: const SelectDay(),
       ),
     ));
   }
@@ -367,7 +379,7 @@ class _OrderDetailDoctorState extends State<OrderDetailDoctor> {
                         decoration: BoxDecoration(
                           color: _selectedTime == index
                               ? ColorConstant.BLue02
-                              : const  Color(0xFFf6f6f6),
+                              : const Color(0xFFf6f6f6),
                           borderRadius: BorderRadius.circular(20.0),
                         ),
                         child: Center(

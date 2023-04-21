@@ -34,7 +34,7 @@ class _MainPageState extends State<MainPage> {
             const FavoriteInfos(),
             // kindNeedings(),
             doctorTitle(),
-            const SizedBox(height: 300, child: Doctors()),
+            const SizedBox(height: 200, child: Doctors()),
             clinicsNearbyTitles(),
             const ClinicsNearby(),
           ],

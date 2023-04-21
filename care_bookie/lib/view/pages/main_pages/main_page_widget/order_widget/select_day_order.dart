@@ -4,9 +4,7 @@ import '../../../../../utils/colors_util.dart';
 import 'package:care_bookie/utils/date_utils.dart' as date_util;
 
 class SelectDay extends StatefulWidget {
-  final String title;
-
-  const SelectDay({Key? key, required this.title}) : super(key: key);
+  const SelectDay({Key? key}) : super(key: key);
 
   @override
   _SelectDayState createState() => _SelectDayState();
@@ -31,7 +29,7 @@ class _SelectDayState extends State<SelectDay> {
     super.initState();
   }
 
-  Widget chonNgayTitle() {
+  Widget selectDayTitle() {
     return Container(
         margin: const EdgeInsets.fromLTRB(10, 10, 20, 0),
         child: const Align(
@@ -148,7 +146,7 @@ class _SelectDayState extends State<SelectDay> {
       child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            chonNgayTitle(),
+            selectDayTitle(),
             titleView(),
             hrizontalCapsuleListView(),
           ]),

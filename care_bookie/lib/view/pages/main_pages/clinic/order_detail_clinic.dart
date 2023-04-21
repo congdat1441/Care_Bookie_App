@@ -212,9 +212,7 @@ class _OrderDetailClinicState extends State<OrderDetailClinic> {
         decoration: const BoxDecoration(
             // color: Colors.amber
             ),
-        child: const SelectDay(
-          title: 'SelectDayForU',
-        ),
+        child: const SelectDay(),
       ),
     ));
   }
@@ -260,7 +258,7 @@ class _OrderDetailClinicState extends State<OrderDetailClinic> {
                         decoration: BoxDecoration(
                           color: _selectedTime == index
                               ? ColorConstant.BLue02
-                              : const  Color(0xFFf6f6f6),
+                              : const Color(0xFFf6f6f6),
                           borderRadius: BorderRadius.circular(20.0),
                         ),
                         child: Center(
