@@ -50,7 +50,7 @@ class _SelectDayState extends State<SelectDay> {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Text(
-        date_util.DateUtils.months[currentDateTime.month - 1] +
+        date_util.DateUtils.months[currentDateTime.month -1] +
             ' ' +
             currentDateTime.year.toString(),
         style: const TextStyle(

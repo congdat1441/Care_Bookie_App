@@ -125,7 +125,6 @@ class _ShareHistoryState extends State<ShareHistory> {
               ],
             ),
           ),
-
         ],
       ),
     );
