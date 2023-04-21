@@ -61,7 +61,7 @@ class _SelectDayState extends State<SelectDay> {
     );
   }
 
-  Widget hrizontalCapsuleListView() {
+  Widget horizontalCapsuleListView() {
     return SizedBox(
       width: width,
       height: 110,
@@ -85,6 +85,8 @@ class _SelectDayState extends State<SelectDay> {
           onTap: () {
             setState(() {
               currentDateTime = currentMonthList[index];
+              print("DATE -----> ${currentMonthList[index]}");
+
             });
           },
           child: Container(
@@ -148,7 +150,7 @@ class _SelectDayState extends State<SelectDay> {
           children: <Widget>[
             selectDayTitle(),
             titleView(),
-            hrizontalCapsuleListView(),
+            horizontalCapsuleListView(),
           ]),
     );
   }

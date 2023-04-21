@@ -7,6 +7,7 @@ import '../../../../res/constants/colors.dart';
 import '../../review_page/review_doctor_page/review_doctor.dart';
 import '../main_page_widget/order_widget/order_sumary.dart';
 import '../main_page_widget/order_widget/select_day_order.dart';
+import '../main_page_widget/order_widget/share_history.dart';
 
 class OrderDetailDoctor extends StatefulWidget {
   const OrderDetailDoctor({Key? key}) : super(key: key);
@@ -94,9 +95,8 @@ class _OrderDetailDoctorState extends State<OrderDetailDoctor> {
   }
 
   Widget sliverAppbar() {
-
-    final doctorDetailProvider = Provider.of<DoctorDetailProvider>(context, listen: false);
-
+    final doctorDetailProvider =
+        Provider.of<DoctorDetailProvider>(context, listen: false);
 
     return SliverAppBar(
       title: Text(
@@ -195,8 +195,8 @@ class _OrderDetailDoctorState extends State<OrderDetailDoctor> {
   }
 
   Widget infoBasicDoctor() {
-
-    final doctorDetailProvider = Provider.of<DoctorDetailProvider>(context, listen: false);
+    final doctorDetailProvider =
+        Provider.of<DoctorDetailProvider>(context, listen: false);
 
     return SliverToBoxAdapter(
       child: Padding(
@@ -227,15 +227,13 @@ class _OrderDetailDoctorState extends State<OrderDetailDoctor> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      const Text(
-                          "Chuyên khoa :",
+                      const Text("Chuyên khoa :",
                           style: TextStyle(
                               height: 0.9,
                               fontSize: 16,
                               color: Colors.black87,
                               fontWeight: FontWeight.w500,
-                              fontFamily: 'Merriweather Sans')
-                      ),
+                              fontFamily: 'Merriweather Sans')),
                       Container(
                         padding: const EdgeInsets.fromLTRB(10, 5, 5, 5),
                         child: Text(doctorDetailProvider.doctorDetail!.fields,
@@ -264,7 +262,8 @@ class _OrderDetailDoctorState extends State<OrderDetailDoctor> {
                       ),
                       Container(
                         padding: const EdgeInsets.fromLTRB(30, 5, 5, 5),
-                        child: Text("${doctorDetailProvider.doctorDetail!.experience} năm kinh nghiệm",
+                        child: Text(
+                            "${doctorDetailProvider.doctorDetail!.experience} năm kinh nghiệm",
                             maxLines: 2,
                             overflow: TextOverflow.ellipsis,
                             style: const TextStyle(
@@ -280,30 +279,35 @@ class _OrderDetailDoctorState extends State<OrderDetailDoctor> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Row(children: [
-                        ...[1].map((e) => Container(
-                          padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
-                          child: const Icon(
-                            IconlyBold.star,
-                            size: 25,
-                            color: Colors.amber,
+                      Row(
+                        children: [
+                          ...[1].map((e) => Container(
+                                padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
+                                child: const Icon(
+                                  IconlyBold.star,
+                                  size: 25,
+                                  color: Colors.amber,
+                                ),
+                              )),
+                          const SizedBox(
+                            width: 10,
                           ),
-                        )),
-                        const SizedBox(
-                          width: 10,
-                        ),
-                        Text("${doctorDetailProvider.doctorDetail!.star}",
-                            style: const TextStyle(
-                                height: 1.5,
-                                fontSize: 20,
-                                color: Colors.black87,
-                                fontWeight: FontWeight.w500,
-                                fontFamily: 'Merriweather Sans')),
-                      ],),
-
+                          Text("${doctorDetailProvider.doctorDetail!.star}",
+                              style: const TextStyle(
+                                  height: 1.5,
+                                  fontSize: 20,
+                                  color: Colors.black87,
+                                  fontWeight: FontWeight.w500,
+                                  fontFamily: 'Merriweather Sans')),
+                        ],
+                      ),
                       TextButton(
                           onPressed: () {
-                            Navigator.push(context, MaterialPageRoute(builder: (context)=> const ReviewDoctor()));
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        const ReviewDoctor()));
                           },
                           child: const Text("Xem đánh giá",
                               style: TextStyle(
@@ -478,22 +482,13 @@ class _OrderDetailDoctorState extends State<OrderDetailDoctor> {
             initiallyExpanded: _isExpanded,
             children: [
               Container(
-                margin: const EdgeInsets.only(left: 10, right: 0),
-                padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
-                decoration: BoxDecoration(
-                    borderRadius: const BorderRadius.only(
-                        topLeft: Radius.circular(30),
-                        topRight: Radius.circular(30)),
-                    border: Border.all(width: 0.5, color: Colors.grey)),
-                child: TextFormField(
-                  controller: _controllerTextWord,
-                  maxLines: 10,
-                  maxLength: 350,
-                  decoration: const InputDecoration(
-                    hintText: 'Triệu chứng của bạn',
-                  ),
-                ),
-              ),
+                  margin: const EdgeInsets.only(left: 10, right: 0),
+                  padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(30),
+                      border:
+                          Border.all(width: 0.5, color: Colors.transparent)),
+                  child: const ShareHistory()),
             ],
           ),
         ),
@@ -506,12 +501,12 @@ class _OrderDetailDoctorState extends State<OrderDetailDoctor> {
       height: 80,
       color: Colors.transparent,
       child: Column(
-        children: [tiepTuc()],
+        children: [continuous()],
       ),
     );
   }
 
-  Widget tiepTuc() {
+  Widget continuous() {
     return Padding(
         padding: const EdgeInsets.fromLTRB(5, 0, 5, 0),
         child: Container(

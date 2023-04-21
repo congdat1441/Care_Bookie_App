@@ -9,8 +9,6 @@ import '../../../../res/constants/colors.dart';
 import '../../review_page/review_doctor_page/review_doctor.dart';
 import 'order_detail_doctor.dart';
 
-
-
 class DetailDoctor extends StatefulWidget {
   const DetailDoctor({Key? key}) : super(key: key);
 
@@ -18,20 +16,21 @@ class DetailDoctor extends StatefulWidget {
   State<DetailDoctor> createState() => _DetailDoctorState();
 }
 
-class _DetailDoctorState extends State<DetailDoctor> {
-
+class _DetailDoctorState extends State<DetailDoctor>
+    with TickerProviderStateMixin {
   bool isLoading = false;
+  bool isExpanded = false;
+  late TabController _tabControl;
 
   @override
   void initState() {
     super.initState();
-    
-    final doctorDetailProvider = Provider.of<DoctorDetailProvider>(context, listen: false);
 
-    if(doctorDetailProvider.isDoctorWithHospital) {
+    final doctorDetailProvider =
+        Provider.of<DoctorDetailProvider>(context, listen: false);
 
-      (()async{
-
+    if (doctorDetailProvider.isDoctorWithHospital) {
+      (() async {
         Doctor doctor = await doctorDetailProvider.getDoctorById();
 
         doctorDetailProvider.setDoctorDetail(doctor);
@@ -39,40 +38,38 @@ class _DetailDoctorState extends State<DetailDoctor> {
         setState(() {
           isLoading = true;
         });
-
       })();
-
     } else {
       setState(() {
         isLoading = true;
       });
     }
 
+    _tabControl = TabController(length: 2, vsync: this);
   }
-
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: isLoading ?
-
-      CustomScrollView(
-        slivers: [
-          sliverAppBar(context),
-          infoBasicDoctor(context),
-          infoDetailDoctor(context),
-          certification(context),
-          orderSchedule(context)
-        ],
-      )
-      : const Center(
-        child: CircularProgressIndicator(),
-      ),
+      body: isLoading
+          ? CustomScrollView(
+              slivers: [
+                sliverAppBar(context),
+                infoBasicDoctor(context),
+                infoDetailDoctor(context),
+                certification(context),
+                orderSchedule(context)
+              ],
+            )
+          : const Center(
+              child: CircularProgressIndicator(),
+            ),
     );
   }
 
   SliverAppBar sliverAppBar(BuildContext context) {
-    final doctorDetailProvider = Provider.of<DoctorDetailProvider>(context, listen: false);
+    final doctorDetailProvider =
+        Provider.of<DoctorDetailProvider>(context, listen: false);
 
     return SliverAppBar(
       title: Padding(
@@ -133,15 +130,14 @@ class _DetailDoctorState extends State<DetailDoctor> {
             ),
             Positioned.fill(
                 child: Container(
-                  decoration: const BoxDecoration(
-                      gradient: LinearGradient(
-                          begin: Alignment.topCenter,
-                          end: Alignment.center,
-                          colors: [Colors.black87, Colors.transparent])),
-                ))
+              decoration: const BoxDecoration(
+                  gradient: LinearGradient(
+                      begin: Alignment.topCenter,
+                      end: Alignment.center,
+                      colors: [Colors.black87, Colors.transparent])),
+            ))
           ],
         ),
-
       ),
       bottom: PreferredSize(
         preferredSize: const Size.fromHeight(30),
@@ -233,8 +229,8 @@ class _DetailDoctorState extends State<DetailDoctor> {
   }
 
   Widget infoBasicDoctor(BuildContext context) {
-
-    final doctorDetailProvider = Provider.of<DoctorDetailProvider>(context, listen: false);
+    final doctorDetailProvider =
+        Provider.of<DoctorDetailProvider>(context, listen: false);
 
     return SliverToBoxAdapter(
       child: Padding(
@@ -265,15 +261,13 @@ class _DetailDoctorState extends State<DetailDoctor> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      const Text(
-                          "Chuyên khoa :",
+                      const Text("Chuyên khoa :",
                           style: TextStyle(
                               height: 0.9,
                               fontSize: 16,
                               color: Colors.black87,
                               fontWeight: FontWeight.w500,
-                              fontFamily: 'Merriweather Sans')
-                      ),
+                              fontFamily: 'Merriweather Sans')),
                       Container(
                         padding: const EdgeInsets.fromLTRB(10, 5, 5, 5),
                         child: Text(doctorDetailProvider.doctorDetail!.fields,
@@ -302,7 +296,8 @@ class _DetailDoctorState extends State<DetailDoctor> {
                       ),
                       Container(
                         padding: const EdgeInsets.fromLTRB(30, 5, 5, 5),
-                        child: Text("${doctorDetailProvider.doctorDetail!.experience} năm kinh nghiệm",
+                        child: Text(
+                            "${doctorDetailProvider.doctorDetail!.experience} năm kinh nghiệm",
                             maxLines: 2,
                             overflow: TextOverflow.ellipsis,
                             style: const TextStyle(
@@ -318,30 +313,35 @@ class _DetailDoctorState extends State<DetailDoctor> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Row(children: [
-                        ...[1].map((e) => Container(
-                          padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
-                          child: const Icon(
-                            IconlyBold.star,
-                            size: 25,
-                            color: Colors.amber,
+                      Row(
+                        children: [
+                          ...[1].map((e) => Container(
+                                padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
+                                child: const Icon(
+                                  IconlyBold.star,
+                                  size: 25,
+                                  color: Colors.amber,
+                                ),
+                              )),
+                          const SizedBox(
+                            width: 10,
                           ),
-                        )),
-                        const SizedBox(
-                          width: 10,
-                        ),
-                        Text("${doctorDetailProvider.doctorDetail!.star}",
-                            style: const TextStyle(
-                                height: 1.5,
-                                fontSize: 20,
-                                color: Colors.black87,
-                                fontWeight: FontWeight.w500,
-                                fontFamily: 'Merriweather Sans')),
-                      ],),
-
+                          Text("${doctorDetailProvider.doctorDetail!.star}",
+                              style: const TextStyle(
+                                  height: 1.5,
+                                  fontSize: 20,
+                                  color: Colors.black87,
+                                  fontWeight: FontWeight.w500,
+                                  fontFamily: 'Merriweather Sans')),
+                        ],
+                      ),
                       TextButton(
                           onPressed: () {
-                            Navigator.push(context, MaterialPageRoute(builder: (context)=> const ReviewDoctor()));
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        const ReviewDoctor()));
                           },
                           child: const Text("Xem đánh giá",
                               style: TextStyle(
@@ -362,8 +362,8 @@ class _DetailDoctorState extends State<DetailDoctor> {
   }
 
   Widget infoDetailDoctor(BuildContext context) {
-
-    final doctorDetailProvider = Provider.of<DoctorDetailProvider>(context, listen: false);
+    final doctorDetailProvider =
+        Provider.of<DoctorDetailProvider>(context, listen: false);
 
     return SliverToBoxAdapter(
       child: Padding(
@@ -407,7 +407,8 @@ class _DetailDoctorState extends State<DetailDoctor> {
                   ),
                   readMoreText: 'Xem thêm',
                   readLessText: 'Thu gọn',
-                  linkTextStyle: const TextStyle(color: Colors.blue, fontSize: 15),
+                  linkTextStyle:
+                      const TextStyle(color: Colors.blue, fontSize: 15),
                 ),
               ],
             ),
@@ -418,8 +419,8 @@ class _DetailDoctorState extends State<DetailDoctor> {
   }
 
   Widget certification(BuildContext context) {
-
-    final doctorDetailProvider = Provider.of<DoctorDetailProvider>(context, listen: false);
+    final doctorDetailProvider =
+        Provider.of<DoctorDetailProvider>(context, listen: false);
 
     return SliverToBoxAdapter(
       child: Padding(
@@ -452,26 +453,26 @@ class _DetailDoctorState extends State<DetailDoctor> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    ...doctorDetailProvider.doctorDetail!.knowledges.map((e) => Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Container(
-                          padding: const EdgeInsets.only(right: 10),
-                          child: Text(
-                            "$e",
-                            maxLines: 2,
-                            style: const TextStyle(
-                                overflow: TextOverflow.fade,
-                                height: 1.4,
-                                fontWeight: FontWeight.w500),
-                          ),
-                        ),
-                        Container(
-                            margin: const EdgeInsets.only(right: 20),
-                            child: const Icon(Icons.ac_unit)
-                        )
-                      ],
-                    ))
+                    ...doctorDetailProvider.doctorDetail!.knowledges
+                        .map((e) => Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Container(
+                                  padding: const EdgeInsets.only(right: 10),
+                                  child: Text(
+                                    "$e",
+                                    maxLines: 2,
+                                    style: const TextStyle(
+                                        overflow: TextOverflow.fade,
+                                        height: 1.4,
+                                        fontWeight: FontWeight.w500),
+                                  ),
+                                ),
+                                Container(
+                                    margin: const EdgeInsets.only(right: 20),
+                                    child: const Icon(Icons.ac_unit))
+                              ],
+                            ))
                   ],
                 ),
               )
@@ -533,6 +534,4 @@ class _DetailDoctorState extends State<DetailDoctor> {
           )),
     );
   }
-
 }
-

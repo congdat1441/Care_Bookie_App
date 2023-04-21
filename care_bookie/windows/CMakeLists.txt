@@ -10,6 +10,7 @@ set(BINARY_NAME "care_bookie")
 # versions of CMake.
 cmake_policy(SET CMP0063 NEW)
 
+
 # Define build configuration option.
 get_property(IS_MULTICONFIG GLOBAL PROPERTY GENERATOR_IS_MULTI_CONFIG)
 if(IS_MULTICONFIG)

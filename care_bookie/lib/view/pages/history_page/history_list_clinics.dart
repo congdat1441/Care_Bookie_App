@@ -1,3 +1,4 @@
+import 'package:care_bookie/view/pages/history_page/history_detail.dart';
 import 'package:flutter/material.dart';
 
 import '../../../res/constants/colors.dart';
@@ -16,13 +17,13 @@ class _HistoryListsClinicsState extends State<HistoryListsClinics> {
       children: [
         ...[1, 2, 3, 4, 5, 6].map((e) => Padding(
           padding: const EdgeInsets.fromLTRB(10, 20, 0, 10),
-          child: containerHistoryFinish(),
+          child: listsHistories(),
         ))
       ],
     );
   }
 
-  Widget containerHistoryFinish() {
+  Widget listsHistories() {
     return Container(
         margin: const EdgeInsets.only(right: 5),
         height: 150,
@@ -49,7 +50,7 @@ class _HistoryListsClinicsState extends State<HistoryListsClinics> {
             Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) => const ScheduleDetailFinish()));
+                    builder: (context) => const HistoryDetail()));
           },
           child: Stack(
             children: [
