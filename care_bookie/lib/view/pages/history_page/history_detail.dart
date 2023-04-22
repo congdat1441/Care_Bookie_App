@@ -7,14 +7,14 @@ import '../main_pages/main_page_widget/order_widget/info_order_detail.dart';
 import '../main_pages/main_page_widget/order_widget/price_order.dart';
 import '../review_page/review_doctor_page/add_review_doctor.dart';
 
-class ScheduleDetailFinish extends StatefulWidget {
-  const ScheduleDetailFinish({Key? key}) : super(key: key);
+class HistoryDetail extends StatefulWidget {
+  const HistoryDetail({Key? key}) : super(key: key);
 
   @override
-  State<ScheduleDetailFinish> createState() => _ScheduleDetailFinishState();
+  State<HistoryDetail> createState() => _HistoryDetailState();
 }
 
-class _ScheduleDetailFinishState extends State<ScheduleDetailFinish> {
+class _HistoryDetailState extends State<HistoryDetail> {
   bool _isExpanded = false;
   @override
   Widget build(BuildContext context) {
@@ -56,9 +56,10 @@ class _ScheduleDetailFinishState extends State<ScheduleDetailFinish> {
             children:  const [
               InfoOrderSchedule(),
               InfoDescribeProblem(),
+
+              NoteFromDoctor(),
               Price(),
               //certification(),
-              NoteFromDoctor(),
               SizedBox(
                 height: 50,
               )

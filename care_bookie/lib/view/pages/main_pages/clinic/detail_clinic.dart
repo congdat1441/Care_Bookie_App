@@ -1,14 +1,12 @@
+import 'package:care_bookie/providers/doctor_detail_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:provider/provider.dart';
 import '../../../../../res/constants/colors.dart';
 import 'package:flutter_expandable_text/flutter_expandable_text.dart';
-
 import '../../../../providers/hospital_detail_page_provider.dart';
 import '../../review_page/review_clinic_page/review_clinic.dart';
 import '../doctor/detail_doctor.dart';
-import '../doctor/doctor_widget/doctors.dart';
-import 'clinic_widget/ward.dart';
 import 'order_detail_clinic.dart';
 
 class DetailClinic extends StatefulWidget {
@@ -20,8 +18,6 @@ class DetailClinic extends StatefulWidget {
 
 class _DetailClinicState extends State<DetailClinic>
     with TickerProviderStateMixin {
-  final String longText =
-      'sit amet saidunt ante. Nullam fringilla, justo nec ultrices euismod, velit ipsum congue arcu, vel gravida eros mauris sit amet lorem. Mauris tincidunt justo sed nunc pretium fermentum. Vivamus vel aliquam enim. Vivamus tincidunt nunc eu orci venenatis, ut bibendum lorem bibendum. Sed feugiat tincidunt ipsum non feugiat. Suspendisse nec bibendum arcu Sed dictum ante eu purus finibus, eu tristique tellus feugiat. Sed faucibus, elit et luctus malesuada, ipsum mauris faucibus odio, eget laoreet ipsum dolor nec nisi. Duis id vestibulum nulla. Nulla at magna vel nulla pharetra fermentum. Sed vitae ante malesuada, malesuada felis vitae, scelerisque arcu. Morbi pellentesque est eu mauris venenatis volutpat. In hac habitasse platea dictumst. Nulla feugiat lectus velit, nec dapibus purus lobortis et. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Donec eu eros ut orci commodo consequat a quis neque. Sed non justo non quam ultrices tempus sit amet non nulla. Nam vel arcu Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla eget convallis tortor. Suspendisse potenti. Sed dictum ante eu purus finibus, eu tristique tellus feugiat. Sed faucibus, elit et luctus malesuada, ipsum mauris faucibus odio, eget laoreet ipsum dolor nec nisi. Duis id vestibulum nulla. Nulla at magna vel nulla pharetra fermentum. Sed vitae ante malesuada, malesuada felis vitae, scelerisque arcu. Morbi pellentesque tellus maximus bibendum .';
   bool isExpanded = false;
   late TabController _tabController;
 
@@ -653,7 +649,14 @@ class _DetailClinicState extends State<DetailClinic>
                                   borderRadius: BorderRadius.circular(10.0),
                                 ),
                                 child: InkWell(
-                                  onTap: () {
+                                  onTap: () async{
+
+                                    final doctorDetailProvider = Provider.of<DoctorDetailProvider>(context,listen: false);
+
+                                    doctorDetailProvider.setIsDoctorWithHospital(true);
+                                    doctorDetailProvider.setIdDoctorWithHospital(e.id);
+
+
                                     Navigator.push(
                                         context,
                                         MaterialPageRoute(
@@ -672,19 +675,19 @@ class _DetailClinicState extends State<DetailClinic>
                                 ),
                               ),
                             ),
-                            Container(
-                              margin: const EdgeInsets.fromLTRB(105, 10, 0, 0),
-                              height: 28,
-                              width: 28,
-                              child: FloatingActionButton(
-                                  backgroundColor: Colors.white,
-                                  child: const Icon(
-                                    IconlyBroken.heart,
-                                    color: Color(0xffee5353),
-                                    size: 20,
-                                  ),
-                                  onPressed: () {}),
-                            ),
+                            // Container(
+                            //   margin: const EdgeInsets.fromLTRB(105, 10, 0, 0),
+                            //   height: 28,
+                            //   width: 28,
+                            //   child: FloatingActionButton(
+                            //       backgroundColor: Colors.white,
+                            //       child: const Icon(
+                            //         IconlyBroken.heart,
+                            //         color: Color(0xffee5353),
+                            //         size: 20,
+                            //       ),
+                            //       onPressed: () {}),
+                            // ),
                           ],
                         ),
                         Padding(

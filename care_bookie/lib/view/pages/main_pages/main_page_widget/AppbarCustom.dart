@@ -121,6 +121,7 @@ class _AppbarCustomState extends State<AppbarCustom> {
                           ],
                         ),
                         child: FloatingActionButton(
+                          heroTag: 'buttonTag01',
                             mini: true,
                             elevation: 0,
                             backgroundColor: Colors.white,

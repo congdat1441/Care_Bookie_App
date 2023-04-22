@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:provider/provider.dart';
-
-import '../../../../../models/doctor.dart';
 import '../../../../../providers/home_page_provider.dart';
 import '../../../../../res/constants/colors.dart';
 import '../detail_doctor.dart';
@@ -20,7 +18,7 @@ class _DoctorsState extends State<Doctors> {
     return Consumer<HomePageProvider>(
       builder: (context, homePageProvider, child) => ListView.builder(
         scrollDirection: Axis.horizontal,
-        itemBuilder: (context, index) =>Container(
+        itemBuilder: (context, index) => Container(
           margin: const EdgeInsets.only(right: 15),
           height: 200,
           width: 155,
@@ -62,8 +60,7 @@ class _DoctorsState extends State<Doctors> {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) =>
-                                  const DetailDoctor()));
+                                  builder: (context) => const DetailDoctor()));
                         },
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(20),
@@ -76,20 +73,20 @@ class _DoctorsState extends State<Doctors> {
                       ),
                     ),
                   ),
-                  Container(
-                    margin:
-                    const EdgeInsets.fromLTRB(105, 10, 0, 0),
-                    height: 28,
-                    width: 28,
-                    child: FloatingActionButton(
-                        backgroundColor: Colors.white,
-                        child: const Icon(
-                          IconlyBroken.heart,
-                          color: Color(0xffee5353),
-                          size: 20,
-                        ),
-                        onPressed: () {}),
-                  ),
+                  // Container(
+                  //   margin: const EdgeInsets.fromLTRB(105, 10, 0, 0),
+                  //   height: 28,
+                  //   width: 28,
+                  //   child: FloatingActionButton(
+                  //       heroTag: 'buttonTag03',
+                  //       backgroundColor: Colors.white,
+                  //       child: const Icon(
+                  //         IconlyBroken.heart,
+                  //         color: Color(0xffee5353),
+                  //         size: 20,
+                  //       ),
+                  //       onPressed: () {}),
+                  // ),
                 ],
               ),
               Padding(
@@ -100,15 +97,15 @@ class _DoctorsState extends State<Doctors> {
                         width: 130,
                         height: 20,
                         //color: Colors.grey,
-                        child: Text("Dr. ${homePageProvider.listDoctor[index].fullName}",
+                        child: Text(
+                            "Dr. ${homePageProvider.listDoctor[index].fullName}",
                             overflow: TextOverflow.ellipsis,
                             style: const TextStyle(
                                 fontSize: 14,
                                 //overflow: TextOverflow.ellipsis,
                                 color: Colors.black,
                                 fontWeight: FontWeight.w500,
-                                fontFamily:
-                                'Merriweather Sans'))),
+                                fontFamily: 'Merriweather Sans'))),
                     Row(
                       children: [
                         Expanded(
@@ -119,8 +116,7 @@ class _DoctorsState extends State<Doctors> {
                                   //overflow: TextOverflow.ellipsis,
                                   color: ColorConstant.Grey01,
                                   fontWeight: FontWeight.w400,
-                                  fontFamily:
-                                  'Merriweather Sans')),
+                                  fontFamily: 'Merriweather Sans')),
                         ),
                       ],
                     )

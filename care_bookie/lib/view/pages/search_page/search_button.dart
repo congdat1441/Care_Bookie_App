@@ -88,6 +88,7 @@ class _SearchButtonState extends State<SearchButton> {
                         ],
                       ),
                       child: FloatingActionButton(
+                          heroTag: 'buttonTag02',
                           mini: true,
                           elevation: 0,
                           backgroundColor: Colors.white,
