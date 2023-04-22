@@ -73,19 +73,20 @@ class _DoctorsState extends State<Doctors> {
                       ),
                     ),
                   ),
-                  Container(
-                    margin: const EdgeInsets.fromLTRB(105, 10, 0, 0),
-                    height: 28,
-                    width: 28,
-                    child: FloatingActionButton(
-                        backgroundColor: Colors.white,
-                        child: const Icon(
-                          IconlyBroken.heart,
-                          color: Color(0xffee5353),
-                          size: 20,
-                        ),
-                        onPressed: () {}),
-                  ),
+                  // Container(
+                  //   margin: const EdgeInsets.fromLTRB(105, 10, 0, 0),
+                  //   height: 28,
+                  //   width: 28,
+                  //   child: FloatingActionButton(
+                  //       heroTag: 'buttonTag03',
+                  //       backgroundColor: Colors.white,
+                  //       child: const Icon(
+                  //         IconlyBroken.heart,
+                  //         color: Color(0xffee5353),
+                  //         size: 20,
+                  //       ),
+                  //       onPressed: () {}),
+                  // ),
                 ],
               ),
               Padding(
