@@ -19,25 +19,6 @@ class _AnotherLoginState extends State<AnotherLogin> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.fromLTRB(0.0, 0.0, 0, 0.0),
-            child: SvgPicture.asset(
-              "assets/images/icons8-facebook.svg",
-              width: 35,
-            ),
-          ),
-          const Padding(
-            padding: EdgeInsets.fromLTRB(5, 0.0, 30, 0.0),
-            child: Text(
-              "Facebook",
-              style: TextStyle(
-                fontSize: 18,
-              ),
-            ),
-          ),
-          const SizedBox(
-            width: 20,
-          ),
           InkWell(
             onTap: () async {
               await FirebaseServices().signInWithGoogle();
@@ -46,7 +27,9 @@ class _AnotherLoginState extends State<AnotherLogin> {
               Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => const NavbarLayout(index: 0,)));
+                      builder: (context) => const NavbarLayout(
+                            index: 0,
+                          )));
             },
             child: Row(
               children: [
