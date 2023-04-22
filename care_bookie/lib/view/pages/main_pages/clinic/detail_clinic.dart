@@ -326,7 +326,7 @@ class _DetailClinicState extends State<DetailClinic>
                       children: [
                         Container(
                           padding: const EdgeInsets.fromLTRB(10, 15, 0, 10),
-                          child: const Text("Giờ làm việc : ",
+                          child: const Text("Giờ làm việc: ",
                               maxLines: 2,
                               overflow: TextOverflow.ellipsis,
                               style: TextStyle(
@@ -345,7 +345,7 @@ class _DetailClinicState extends State<DetailClinic>
                               style: const TextStyle(
                                   overflow: TextOverflow.ellipsis,
                                   height: 1,
-                                  fontSize: 15,
+                                  fontSize: 14,
                                   color: ColorConstant.Grey01,
                                   fontWeight: FontWeight.w500,
                                   fontFamily: 'Merriweather Sans')),

@@ -12,12 +12,12 @@ class _EmailIdState extends State<EmailId> {
   Widget build(BuildContext context) {
     return Container(
       // color: Colors.green,
-      padding: EdgeInsets.fromLTRB(0, 20, 30, 0),
+      padding: const EdgeInsets.fromLTRB(0, 20, 30, 0),
       // color: Colors.orange,
       width: 330,
       child: TextFormField(
-        // textAlign: TextAlign.left,
-          style: TextStyle(color: Colors.black),
+          // textAlign: TextAlign.left,
+          style: const TextStyle(color: Colors.black),
           validator: (value) {
             if (value == null || value.isEmpty) {
               return "";
@@ -29,11 +29,9 @@ class _EmailIdState extends State<EmailId> {
           decoration: const InputDecoration(
             enabledBorder: UnderlineInputBorder(
                 borderRadius: BorderRadius.all(
-                  Radius.circular(0),
-                )),
-            label: Text("Email",
-                style:
-                TextStyle(color: Colors.black)),
+              Radius.circular(0),
+            )),
+            label: Text("Email", style: TextStyle(color: Colors.black)),
             hintText: "Please text your email",
             hintStyle: TextStyle(
               color: Color.fromARGB(255, 94, 92, 88),
