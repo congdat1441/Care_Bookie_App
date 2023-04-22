@@ -529,6 +529,10 @@ class _OrderDetailClinicState extends State<OrderDetailClinic> {
                 ),
               ),
               onPressed: () {
+
+
+                print("TEXT ----> ${_controllerTextWord.text}");
+
                 Navigator.push(
                     context,
                     MaterialPageRoute(
