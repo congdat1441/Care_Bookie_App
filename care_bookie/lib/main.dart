@@ -1,7 +1,9 @@
 import 'package:care_bookie/providers/bottom_navbar_provider.dart';
 import 'package:care_bookie/providers/doctor_detail_provider.dart';
+import 'package:care_bookie/providers/history_page_provider.dart';
 import 'package:care_bookie/providers/home_page_provider.dart';
 import 'package:care_bookie/providers/hospital_detail_page_provider.dart';
+import 'package:care_bookie/providers/user_login_provider.dart';
 import 'package:care_bookie/view/pages/login_signup_page/login.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -25,7 +27,9 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => BottomNavBarProvider()),
         ChangeNotifierProvider(create: (context) => HomePageProvider(),),
         ChangeNotifierProvider(create: (context) => HospitalDetailPageProvider(),),
-        ChangeNotifierProvider(create: (context) => DoctorDetailProvider(),)
+        ChangeNotifierProvider(create: (context) => DoctorDetailProvider(),),
+        ChangeNotifierProvider(create: (context) => HistoryPageProvider(),),
+        ChangeNotifierProvider(create: (context) => UserLoginProvider(),)
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
