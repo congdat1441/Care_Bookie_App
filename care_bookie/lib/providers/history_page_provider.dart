@@ -11,6 +11,12 @@ class HistoryPageProvider extends ChangeNotifier {
 
   }
 
+  List<History> histories = [];
+
+  Future<void> getAllHospital(String userId) async {
+    histories = await getAllHistoryByUserId(userId);
+    notifyListeners();
+  }
 
 
 }

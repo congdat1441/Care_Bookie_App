@@ -25,8 +25,7 @@ class HistoryPage extends StatelessWidget {
               children: [
                 const AppbarCustom(),
                 yourHistory(),
-                const HistoryListsClinics(),
-
+                const HistoryListsClinics()
               ],
             ),
           ),

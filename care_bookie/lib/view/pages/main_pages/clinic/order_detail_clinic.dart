@@ -351,7 +351,6 @@ class _OrderDetailClinicState extends State<OrderDetailClinic> {
   }
 
   Widget shareHistory() {
-
     return SliverToBoxAdapter(
       child: Padding(
         padding: const EdgeInsets.fromLTRB(0, 5, 10, 10),

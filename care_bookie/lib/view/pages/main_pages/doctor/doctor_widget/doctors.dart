@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:provider/provider.dart';
+import '../../../../../providers/doctor_detail_provider.dart';
 import '../../../../../providers/home_page_provider.dart';
 import '../../../../../res/constants/colors.dart';
 import '../detail_doctor.dart';
@@ -15,9 +16,10 @@ class Doctors extends StatefulWidget {
 class _DoctorsState extends State<Doctors> {
   @override
   Widget build(BuildContext context) {
-    return Consumer<HomePageProvider>(
-      builder: (context, homePageProvider, child) => ListView.builder(
+    return Consumer2<HomePageProvider,DoctorDetailProvider>(
+      builder: (context, homePageProvider,doctorDetailProvider, child) => ListView.builder(
         scrollDirection: Axis.horizontal,
+        itemCount: homePageProvider.listDoctor.length,
         itemBuilder: (context, index) => Container(
           margin: const EdgeInsets.only(right: 15),
           height: 200,
@@ -57,6 +59,10 @@ class _DoctorsState extends State<Doctors> {
                       ),
                       child: InkWell(
                         onTap: () {
+
+                          doctorDetailProvider.setIsDoctorWithHospital(false);
+                          doctorDetailProvider.setDoctorDetail(homePageProvider.listDoctor[index]);
+
                           Navigator.push(
                               context,
                               MaterialPageRoute(
@@ -66,27 +72,15 @@ class _DoctorsState extends State<Doctors> {
                           borderRadius: BorderRadius.circular(20),
                           child: Image.network(
                             homePageProvider.listDoctor[index].image,
-                            fit: BoxFit.fitWidth,
+                            fit: BoxFit.fill,
+                            width: 100,
+                            height: 100,
                             //scale: 30,
                           ),
                         ),
                       ),
                     ),
                   ),
-                  // Container(
-                  //   margin: const EdgeInsets.fromLTRB(105, 10, 0, 0),
-                  //   height: 28,
-                  //   width: 28,
-                  //   child: FloatingActionButton(
-                  //       heroTag: 'buttonTag03',
-                  //       backgroundColor: Colors.white,
-                  //       child: const Icon(
-                  //         IconlyBroken.heart,
-                  //         color: Color(0xffee5353),
-                  //         size: 20,
-                  //       ),
-                  //       onPressed: () {}),
-                  // ),
                 ],
               ),
               Padding(
@@ -126,7 +120,6 @@ class _DoctorsState extends State<Doctors> {
             ],
           ),
         ),
-        itemCount: homePageProvider.listDoctor.length,
       ),
     );
   }

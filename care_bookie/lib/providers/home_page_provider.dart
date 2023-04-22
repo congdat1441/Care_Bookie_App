@@ -15,9 +15,8 @@ class HomePageProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<List<Doctor>> getAllDoctor() async {
+  Future<void> getAllDoctor() async {
     listDoctor = await getAllDoctorFirebase();
     notifyListeners();
-    return await getAllDoctorFirebase();
   }
 }
