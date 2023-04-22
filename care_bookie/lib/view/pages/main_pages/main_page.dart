@@ -1,8 +1,8 @@
+import 'package:care_bookie/providers/home_page_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 
-import '../../../../providers/bottom_navbar_provider.dart';
 import '../../../../res/constants/colors.dart';
 import '../search_page/search_button.dart';
 import 'clinic/clinic_widget/clinics_nearby.dart';
@@ -20,6 +20,18 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    var loadHospitalAndDoctor = Provider.of<HomePageProvider>(context, listen: false);
+    if(loadHospitalAndDoctor.listHospital.isEmpty){
+      loadHospitalAndDoctor.getAllHospital();
+    }
+    if(loadHospitalAndDoctor.listDoctor.isEmpty){
+      loadHospitalAndDoctor.getAllDoctor();
+    }
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(

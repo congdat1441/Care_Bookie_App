@@ -46,7 +46,7 @@ class _AnotherLoginState extends State<AnotherLogin> {
               Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => const NavbarLayout()));
+                      builder: (context) => const NavbarLayout(index: 0,)));
             },
             child: Row(
               children: [

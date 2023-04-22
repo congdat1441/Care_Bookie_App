@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../../../../res/constants/colors.dart';
-import '../../../../../utils/colors_util.dart';
-import 'package:care_bookie/utils/date_utils.dart' as date_util;
+import '../../../utils/colors_util.dart';
+import 'package:care_bookie/view/pages/utils/date_utils.dart' as date_util;
 
 class SelectDay extends StatefulWidget {
   const SelectDay({Key? key}) : super(key: key);
@@ -48,7 +48,7 @@ class _SelectDayState extends State<SelectDay> {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Text(
-        date_util.DateUtils.months[currentDateTime.month - 1] +
+        date_util.DateUtils.months[currentDateTime.month -1] +
             ' ' +
             currentDateTime.year.toString(),
         style: const TextStyle(
