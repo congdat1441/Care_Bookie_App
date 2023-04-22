@@ -21,16 +21,6 @@ class _HistoryListsClinicsState extends State<HistoryListsClinics> {
   @override
   void initState() {
     super.initState();
-
-    var loadHistory = Provider.of<HistoryPageProvider>(context, listen: false);
-
-    var userLogin = Provider.of<UserLoginProvider>(context, listen: false);
-
-    if(loadHistory.histories.isEmpty){
-      loadHistory.getAllHospital(userLogin.userLogin.id);
-    }
-
-
   }
   
   @override
