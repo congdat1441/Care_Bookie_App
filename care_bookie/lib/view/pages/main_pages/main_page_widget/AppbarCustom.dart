@@ -2,6 +2,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 
+import '../../layouts_page/navbar_layout.dart';
+
 class AppbarCustom extends StatefulWidget {
   const AppbarCustom({Key? key}) : super(key: key);
 
@@ -69,10 +71,11 @@ class _AppbarCustomState extends State<AppbarCustom> {
                             borderRadius: BorderRadius.circular(60),
                             child: InkWell(
                               onTap: () {
+                                Navigator.push(context, MaterialPageRoute(builder: (context)=> const NavbarLayout(index: 4)));
 
                               },
-                              // child: Image.network(FirebaseAuth.instance.currentUser!.photoURL!,
-                              //     width: 60, height: 60, fit: BoxFit.cover),
+                              child: Image.network('https://media.vogue.co.uk/photos/5d54522184bc2a0008c6484e/2:3/w_1600,c_limit/original',
+                                  width: 60, height: 60, fit: BoxFit.cover),
                             ),
                           ),
                         ),

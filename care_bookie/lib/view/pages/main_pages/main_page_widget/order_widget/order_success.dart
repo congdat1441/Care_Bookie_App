@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../../../res/constants/colors.dart';
+import '../../../layouts_page/navbar_layout.dart';
 import '../../main_page.dart';
 import 'info_order_detail.dart';
 import 'price_order.dart';
@@ -91,7 +92,7 @@ class _OrderSuccessState extends State<OrderSuccess> {
                     ),
                     onPressed: () {
                       Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => const MainPage()));
+                          MaterialPageRoute(builder: (context) => const NavbarLayout(index: 0,)));
                     },
                     child: const Padding(
                       padding: EdgeInsets.only(

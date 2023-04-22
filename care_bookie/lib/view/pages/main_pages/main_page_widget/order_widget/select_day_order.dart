@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../../../../res/constants/colors.dart';
-import '../../../../../utils/colors_util.dart';
-import 'package:care_bookie/utils/date_utils.dart' as date_util;
+import '../../../utils/colors_util.dart';
+import 'package:care_bookie/view/pages/utils/date_utils.dart' as date_util;
 
 class SelectDay extends StatefulWidget {
   final String title;

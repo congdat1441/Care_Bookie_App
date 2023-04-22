@@ -158,7 +158,7 @@ class _LoginState extends State<Login> {
                 Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => const NavbarLayout()));
+                        builder: (context) => const NavbarLayout(index: 0,)));
               },
               child: Container(
                 width: 330,
