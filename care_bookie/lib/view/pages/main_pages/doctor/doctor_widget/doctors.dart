@@ -19,7 +19,6 @@ class _DoctorsState extends State<Doctors> {
   Widget build(BuildContext context) {
     return Consumer<HomePageProvider>(
       builder: (context, homePageProvider, child) => ListView.builder(
-
         scrollDirection: Axis.horizontal,
         itemBuilder: (context, index) =>Container(
           margin: const EdgeInsets.only(right: 15),
