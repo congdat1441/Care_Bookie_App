@@ -524,7 +524,7 @@ class _OrderDetailDoctorState extends State<OrderDetailDoctor> {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => const OrderSumary()));
+                        builder: (context) => const OrderSummary()));
               },
               child: const Padding(
                 padding: EdgeInsets.only(

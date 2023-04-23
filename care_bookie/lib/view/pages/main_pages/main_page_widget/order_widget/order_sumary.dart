@@ -7,14 +7,14 @@ import 'describe_problem.dart';
 import 'info_order_detail.dart';
 import 'order_success.dart';
 
-class OrderSumary extends StatefulWidget {
-  const OrderSumary({Key? key}) : super(key: key);
+class OrderSummary extends StatefulWidget {
+  const OrderSummary({Key? key}) : super(key: key);
 
   @override
-  State<OrderSumary> createState() => _OrderSumaryState();
+  State<OrderSummary> createState() => _OrderSummaryState();
 }
 
-class _OrderSumaryState extends State<OrderSumary> {
+class _OrderSummaryState extends State<OrderSummary> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -52,16 +52,45 @@ class _OrderSumaryState extends State<OrderSumary> {
         body: SingleChildScrollView(
             scrollDirection: Axis.vertical,
             child: Column(
-              children: const [
-                InfoOrderSchedule(),
-                InfoDescribeProblem(),
-                Price()
+              children: [
+                const InfoOrderSchedule(),
+                const InfoDescribeProblem(),
+                medicalExaminationFee()
               ],
             )),
         bottomNavigationBar: bottomNavigatorBar());
   }
 
+  Widget medicalExaminationFee() {
 
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: const [
+        Padding(
+          padding: EdgeInsets.only(left: 8.0),
+          child: Text("Phí dịch vụ khám",
+              style: TextStyle(
+                  fontWeight: FontWeight.w500,
+                  fontSize: 18,
+                  overflow: TextOverflow.visible)),
+        ),
+        SizedBox(
+          width: 200,
+          child: Align(
+            alignment: Alignment.centerRight,
+            child: Text("200,000đ",
+                maxLines: 2,
+                style: TextStyle(
+                    fontWeight: FontWeight.w500,
+                    color: Colors.amber,
+                    fontSize: 17,
+                    overflow: TextOverflow.ellipsis)),
+          ),
+        ),
+      ],
+    );
+
+  }
 
 
   Widget bottomNavigatorBar() {
@@ -70,14 +99,14 @@ class _OrderSumaryState extends State<OrderSumary> {
       color: Colors.white,
       child: Column(
         children: [
-          dieuKhoanVaChinhSach(),
-          xacNhanHoanTat()
+          termsAndPolicies(),
+          confirmation()
         ],
       ),
     );
   }
 
-  Widget dieuKhoanVaChinhSach(){
+  Widget termsAndPolicies(){
     return Padding(
       padding: const EdgeInsets.fromLTRB(10, 0, 20, 10),
       child: Row(
@@ -124,7 +153,7 @@ class _OrderSumaryState extends State<OrderSumary> {
     );
   }
 
-  Widget xacNhanHoanTat(){
+  Widget confirmation(){
     return Padding(
         padding: const EdgeInsets.fromLTRB(5, 0, 5, 0),
         child: Container(

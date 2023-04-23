@@ -78,6 +78,23 @@ class _SelectDayState extends State<SelectDay> {
     );
   }
 
+  bool compareDateTime(String dateString) {
+    // Lấy thời gian hiện tại
+    DateTime now = DateTime.now();
+
+    // Chuyển đổi chuỗi thời gian "2023-04-25" thành đối tượng DateTime
+    DateTime date = DateTime.parse(dateString);
+
+    // So sánh thời gian hiện tại với thời gian trong chuỗi
+    if (now.isBefore(date)) {
+      return true;
+    } else if (now.isAfter(date)) {
+      return false;
+    } else {
+      return true;
+    }
+  }
+
   Widget capsuleView(int index) {
     return Padding(
         padding: const EdgeInsets.fromLTRB(8, 0, 0, 0),
@@ -86,6 +103,8 @@ class _SelectDayState extends State<SelectDay> {
             setState(() {
               currentDateTime = currentMonthList[index];
               print("DATE -----> ${currentMonthList[index]}");
+
+              print("CHECK ${compareDateTime(currentMonthList[index].toString())}");
 
             });
           },
