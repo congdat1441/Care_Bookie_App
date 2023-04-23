@@ -16,7 +16,7 @@ class _ShareHistoryState extends State<ShareHistory> {
   @override
   Widget build(BuildContext context) {
     return Column(
-      children: [listsHistories(), listsHistories(), listsHistories()],
+      children: [listsHistories()],
     );
   }
 
@@ -52,7 +52,68 @@ class _ShareHistoryState extends State<ShareHistory> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              contentHistory(),
+              Center(
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(30),
+                      child: Image.network(
+                          'https://www.stanleywellnesscentre.com/images/blogs/142/FREE_CLINIC_thumbnail_ok.png',
+                          fit: BoxFit.cover,
+                          scale: 4),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(5, 5, 0, 0),
+                      child: Column(
+                        children: const [
+                          SizedBox(
+                              width: 190,
+                              child: Text("Supporting the CIS",
+                                  maxLines: 2,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: TextStyle(
+                                      fontSize: 18,
+                                      color: Color(0xff1c335b),
+                                      fontWeight: FontWeight.w600,
+                                      fontFamily: 'Merriweather Sans '))),
+                          SizedBox(
+                            height: 3,
+                          ),
+                          Expanded(
+                            flex: 1,
+                            child: SizedBox(
+                                width: 190,
+                                child: Text("Restore Medical Clinic CIS",
+                                    maxLines: 2,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: TextStyle(
+                                        height: 1,
+                                        fontSize: 15,
+                                        color: ColorConstant.Grey01,
+                                        fontWeight: FontWeight.w400,
+                                        fontFamily: 'Merriweather Sans'))),
+                          ),
+                          Expanded(
+                            flex: 1,
+                            child: SizedBox(
+                                width: 190,
+                                child: Text("19 Tháng 4 2023 lúc 11:00AM",
+                                    maxLines: 2,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: TextStyle(
+                                        fontSize: 13,
+                                        color: ColorConstant.Grey01,
+                                        fontWeight: FontWeight.w600,
+                                        fontFamily: 'Merriweather Sans '))),
+                          )
+                        ],
+                      ),
+                    ),
+
+                  ],
+                ),
+              ),
               Checkbox(
                 value: _isChecked,
                 onChanged: (bool? newValue) {

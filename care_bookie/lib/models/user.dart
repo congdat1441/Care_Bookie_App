@@ -1,46 +1,45 @@
-// class User {
-//   String uid;
-//   String phoneNumber;
-//   String name;
-//   String email;
-//   String photoUrl;
-//
-//   User({
-//     required this.uid,
-//     required this.phoneNumber,
-//     required this.name,
-//     required this.email,
-//     required this.photoUrl,
-//   });
-//
-//   factory User.fromFirebaseUser(FirebaseUser firebaseUser) {
-//     return User(
-//       uid: firebaseUser.uid,
-//       phoneNumber: firebaseUser.phoneNumber,
-//       name: firebaseUser.displayName,
-//       email: firebaseUser.email,
-//       photoUrl: firebaseUser.photoUrl,
-//     );
-//   }
-//
-//   Map<String, dynamic> toMap() {
-//     return {
-//       'uid': uid,
-//       'phoneNumber': phoneNumber,
-//       'name': name,
-//       'email': email,
-//       'photoUrl': photoUrl,
-//     };
-//   }
-//
-//   factory User.fromMap(Map<String, dynamic> map) {
-//     return User(
-//       uid: map['uid'],
-//       phoneNumber: map['phoneNumber'],
-//       name: map['name'],
-//       email: map['email'],
-//       photoUrl: map['photoUrl'],
-//     );
-//   }
-// }
-//
+
+class User {
+
+  final String id;
+  final String fullName;
+  final String email;
+  final String phone;
+  final bool gender;
+  final String dob;
+  final String image;
+
+  User({
+    required this.id,
+    required this.fullName,
+    required this.email,
+    required this.phone,
+    required this.gender,
+    required this.dob,
+    required this.image
+  });
+
+  factory User.fromJson(Map<String,dynamic> json) {
+    return User(
+        id: json['id'],
+        fullName: json['full_name'],
+        email: json['email'],
+        phone: json['phone'],
+        gender: json['gender'],
+        dob: json['dob'],
+        image: json['image']
+    );
+  }
+
+
+
+  Map<String,dynamic> toJson() => {
+    'id' : id,
+    'full_name' : fullName,
+    'email' : email,
+    'phone' : phone,
+    'gender' : gender,
+    'dob' : dob,
+    'image' : image
+  };
+}

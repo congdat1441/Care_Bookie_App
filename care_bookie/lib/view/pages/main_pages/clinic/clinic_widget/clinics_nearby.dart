@@ -17,25 +17,22 @@ class ClinicsNearby extends StatefulWidget {
 class _ClinicsNearbyState extends State<ClinicsNearby> {
   @override
   Widget build(BuildContext context) {
-    return Consumer2<HomePageProvider,HospitalDetailPageProvider>(
-      builder: (context, homePageProvider,hospitalDetailPageProvider, child) => SizedBox(
+    return Consumer2<HomePageProvider, HospitalDetailPageProvider>(
+      builder: (context, homePageProvider, hospitalDetailPageProvider, child) =>
+          SizedBox(
         width: MediaQuery.of(context).size.width,
         height: 500,
-        child: FutureBuilder<List<Hospital>>(
-          future: homePageProvider.getAllHospital(),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Center(child: CircularProgressIndicator(),);
-            } else if (snapshot.hasError) {
-              return Center(child:  Text(snapshot.error.toString()),);
-            } else {
-              return Expanded(
+        child: homePageProvider.listHospital.isEmpty
+            ? const Center(
+                child: CircularProgressIndicator(),
+              )
+            : Expanded(
                 child: ListView.builder(
-                  itemCount: snapshot.data!.length,
+                  itemCount: homePageProvider.listHospital.length,
                   itemBuilder: (context, index) => Padding(
-                    padding: const EdgeInsets.fromLTRB(30, 15, 10, 0),
+                    padding: const EdgeInsets.fromLTRB(30, 0, 10, 0),
                     child: Container(
-                      margin: const EdgeInsets.only(right: 15),
+                      margin: const EdgeInsets.fromLTRB(5, 5, 5, 10),
                       height: 120,
                       //width: 155,
                       decoration: BoxDecoration(
@@ -56,20 +53,21 @@ class _ClinicsNearbyState extends State<ClinicsNearby> {
                           children: [
                             GestureDetector(
                               onTap: () {
-
-                                hospitalDetailPageProvider.setHospitalDetails(snapshot.data![index]);
+                                hospitalDetailPageProvider.setHospitalDetails(
+                                    homePageProvider.listHospital[index]);
 
                                 Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (context) => const DetailClinic()));
+                                        builder: (context) =>
+                                            const DetailClinic()));
                               },
                               child: ClipRRect(
                                 borderRadius: BorderRadius.circular(30),
                                 child: Image.network(
-                                    snapshot.data![index].image,
-                                    fit: BoxFit.fill,
-                                    width: 100,
+                                  homePageProvider.listHospital[index].image,
+                                  fit: BoxFit.fill,
+                                  width: 100,
                                   height: 100,
                                 ),
                               ),
@@ -84,14 +82,17 @@ class _ClinicsNearbyState extends State<ClinicsNearby> {
                                         width: 190,
                                         //height: 40,
                                         //color: Colors.grey,
-                                        child: Text(snapshot.data![index].hospitalName,
+                                        child: Text(
+                                            homePageProvider.listHospital[index]
+                                                .hospitalName,
                                             maxLines: 2,
                                             overflow: TextOverflow.ellipsis,
                                             style: const TextStyle(
                                                 fontSize: 15,
                                                 color: Color(0xff1c335b),
                                                 fontWeight: FontWeight.w600,
-                                                fontFamily: 'Merriweather Sans '))),
+                                                fontFamily:
+                                                    'Merriweather Sans '))),
                                     const SizedBox(
                                       height: 3,
                                     ),
@@ -99,7 +100,10 @@ class _ClinicsNearbyState extends State<ClinicsNearby> {
                                       flex: 1,
                                       child: Row(
                                         children: [
-                                          Text(snapshot.data![index].workingHours,
+                                          Text(
+                                              homePageProvider
+                                                  .listHospital[index]
+                                                  .workingHours,
                                               maxLines: 2,
                                               overflow: TextOverflow.ellipsis,
                                               style: const TextStyle(
@@ -107,19 +111,21 @@ class _ClinicsNearbyState extends State<ClinicsNearby> {
                                                   fontSize: 13,
                                                   color: ColorConstant.Grey01,
                                                   fontWeight: FontWeight.w400,
-                                                  fontFamily: 'Merriweather Sans')),
+                                                  fontFamily:
+                                                      'Merriweather Sans')),
                                         ],
                                       ),
                                     ),
                                     Expanded(
                                       flex: 1,
                                       child: Container(
-                                        padding:
-                                        const EdgeInsets.symmetric(horizontal: 0),
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 0),
                                         width: 210,
                                         //color: Colors.black,
                                         child: Row(
-                                          mainAxisAlignment: MainAxisAlignment.start,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
                                           //textBaseline: TextBaseline.alphabetic,
                                           children: [
                                             const Icon(
@@ -130,28 +136,35 @@ class _ClinicsNearbyState extends State<ClinicsNearby> {
                                             const SizedBox(
                                               width: 5,
                                             ),
-                                            Text(snapshot.data![index].star.toString(),
+                                            Text(
+                                                homePageProvider
+                                                    .listHospital[index].star
+                                                    .toString(),
                                                 style: const TextStyle(
                                                     height: 0.9,
                                                     fontSize: 15,
                                                     color: ColorConstant.Grey01,
                                                     fontWeight: FontWeight.w500,
-                                                    fontFamily: 'Merriweather Sans')),
+                                                    fontFamily:
+                                                        'Merriweather Sans')),
                                             RichText(
                                                 text: const TextSpan(children: [
-                                                  WidgetSpan(
-                                                      child: Padding(
-                                                        padding: EdgeInsets.only(left: 15),
-                                                        child: Text("1.2 km ",
-                                                            style: TextStyle(
-                                                                letterSpacing: 0.2,
-                                                                fontSize: 15,
-                                                                color: ColorConstant.Grey01,
-                                                                fontWeight: FontWeight.w500,
-                                                                fontFamily:
-                                                                'Merriweather Sans')),
-                                                      )),
-                                                ])),
+                                              WidgetSpan(
+                                                  child: Padding(
+                                                padding:
+                                                    EdgeInsets.only(left: 15),
+                                                child: Text("1.2 km ",
+                                                    style: TextStyle(
+                                                        letterSpacing: 0.2,
+                                                        fontSize: 15,
+                                                        color: ColorConstant
+                                                            .Grey01,
+                                                        fontWeight:
+                                                            FontWeight.w500,
+                                                        fontFamily:
+                                                            'Merriweather Sans')),
+                                              )),
+                                            ])),
                                             const Text("| ",
                                                 style: TextStyle(
                                                     height: 0.8,
@@ -159,14 +172,17 @@ class _ClinicsNearbyState extends State<ClinicsNearby> {
                                                     letterSpacing: 0.1,
                                                     color: ColorConstant.Grey01,
                                                     fontWeight: FontWeight.w500,
-                                                    fontFamily: 'Merriweather Sans')),
+                                                    fontFamily:
+                                                        'Merriweather Sans')),
                                             const Text("See Detail",
                                                 style: TextStyle(
                                                     fontSize: 15,
                                                     letterSpacing: 0.1,
-                                                    color: ColorConstant.BLueText,
+                                                    color:
+                                                        ColorConstant.BLueText,
                                                     fontWeight: FontWeight.w500,
-                                                    fontFamily: 'Merriweather Sans'))
+                                                    fontFamily:
+                                                        'Merriweather Sans'))
                                           ],
                                         ),
                                       ),
@@ -181,10 +197,7 @@ class _ClinicsNearbyState extends State<ClinicsNearby> {
                     ),
                   ),
                 ),
-              );
-            }
-          },
-        ),
+              ),
       ),
     );
   }

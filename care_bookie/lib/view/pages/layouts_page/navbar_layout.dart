@@ -12,7 +12,8 @@ import '../main_pages/main_page.dart';
 import '../schedule/schedule.dart';
 
 class NavbarLayout extends StatefulWidget {
-  const NavbarLayout({Key? key}) : super(key: key);
+  final int index;
+  const NavbarLayout({Key? key, required this.index}) : super(key: key);
 
   @override
   State<NavbarLayout> createState() => _NavbarLayoutState();
@@ -38,6 +39,7 @@ class _NavbarLayoutState extends State<NavbarLayout> {
   void initState() {
     super.initState();
     _bottomNavBarProvider = context.read<BottomNavBarProvider>();
+    _currentIndex = widget.index;
   }
 
   @override

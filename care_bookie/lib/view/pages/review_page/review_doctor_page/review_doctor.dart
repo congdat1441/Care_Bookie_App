@@ -1,5 +1,7 @@
+import 'package:care_bookie/providers/doctor_detail_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
+import 'package:provider/provider.dart';
 
 import '../../../../res/constants/colors.dart';
 
@@ -55,13 +57,17 @@ class _ReviewDoctorState extends State<ReviewDoctor> {
       child: Padding(
         padding: const EdgeInsets.fromLTRB(20, 20, 10, 0),
         child: Column(
-          children: [starAndVoted(), commentsDoctor()],
+          children: [starAndVoted(context), commentsDoctor(context)],
         ),
       ),
     );
   }
 
-  Widget starAndVoted() {
+  Widget starAndVoted(BuildContext context) {
+
+    final doctorDetailProvider = Provider.of<DoctorDetailProvider>(context,listen: false);
+
+
     return Column(
       children: [
         IntrinsicHeight(
@@ -70,9 +76,9 @@ class _ReviewDoctorState extends State<ReviewDoctor> {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text(
-                    "4.5",
-                    style: TextStyle(
+                  Text(
+                    "${doctorDetailProvider.doctorDetail!.star}",
+                    style: const TextStyle(
                         fontSize: 45,
                         height: 1.2,
                         fontWeight: FontWeight.w600,
@@ -81,11 +87,22 @@ class _ReviewDoctorState extends State<ReviewDoctor> {
                   ),
                   Row(
                     children: [
-                      ...[1, 2, 3, 4, 5].map((e) => const Icon(
+                      ...[1, 2, 3, 4, 5].map((e) {
+                        if(e <= doctorDetailProvider.doctorDetail!.star) {
+                          return const Icon(
                             IconlyBold.star,
                             size: 30,
                             color: Colors.amber,
-                          )),
+                          );
+                        }
+
+                        return const Icon(
+                          IconlyBold.star,
+                          size: 30,
+                          color: Colors.black12,
+                        );
+
+                      }),
                     ],
                   )
                 ],
@@ -101,16 +118,16 @@ class _ReviewDoctorState extends State<ReviewDoctor> {
               ),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: const [
+                children: [
                   Text(
-                    "2K",
-                    style: TextStyle(
+                    "${doctorDetailProvider.doctorDetail!.reviews.length}",
+                    style: const TextStyle(
                         fontSize: 38,
                         fontWeight: FontWeight.w500,
                         fontFamily: 'Poppins',
                         color: ColorConstant.BLue03),
                   ),
-                  Text(
+                  const Text(
                     "VOTED",
                     style: TextStyle(
                         fontSize: 28,
@@ -157,7 +174,7 @@ class _ReviewDoctorState extends State<ReviewDoctor> {
                         ),
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(60),
-                          child: Image.asset('assets/images/doctor03.jpg',
+                          child: Image.network(doctorDetailProvider.doctorDetail!.image,
                               width: 60, height: 60, fit: BoxFit.cover),
                         ),
                       ),
@@ -179,10 +196,13 @@ class _ReviewDoctorState extends State<ReviewDoctor> {
     );
   }
 
-  Widget commentsDoctor() {
+  Widget commentsDoctor(BuildContext context) {
+
+    final doctorDetailProvider = Provider.of<DoctorDetailProvider>(context,listen: false);
+
     return Column(
       children: [
-        ...[1, 2, 3, 4, 5, 6].map((e) => Container(
+        ...doctorDetailProvider.doctorDetail!.reviews.map((e) => Container(
               margin: const EdgeInsets.fromLTRB(0, 15, 5, 10),
               decoration: BoxDecoration(
                   color: Colors.white, borderRadius: BorderRadius.circular(20)),
@@ -229,8 +249,8 @@ class _ReviewDoctorState extends State<ReviewDoctor> {
                                     ),
                                     child: ClipRRect(
                                       borderRadius: BorderRadius.circular(60),
-                                      child: Image.asset(
-                                          'assets/images/ava.PNG',
+                                      child: Image.network(
+                                          e.user.image,
                                           width: 60,
                                           height: 60,
                                           fit: BoxFit.cover),
@@ -245,26 +265,32 @@ class _ReviewDoctorState extends State<ReviewDoctor> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                const Text(
-                                  "Jonh Wick",
-                                  style: TextStyle(
-                                      fontSize: 22,
+                                Text(
+                                  e.user.fullName,
+                                  style: const TextStyle(
+                                      fontSize: 13,
                                       height: 0.8,
                                       fontFamily: 'Poppins',
                                       fontWeight: FontWeight.w500),
                                 ),
                                 Row(
                                   children: [
-                                    ...[1, 2, 3, 4].map((e) => const Icon(
+                                    ...[1, 2, 3, 4, 5].map((value) {
+                                      if(value <= e.star) {
+                                        return const Icon(
                                           IconlyBold.star,
-                                          size: 25,
+                                          size: 20,
                                           color: Colors.amber,
-                                        )),
-                                    const Icon(
-                                      IconlyBold.star,
-                                      size: 25,
-                                      color: ColorConstant.Grey00,
-                                    )
+                                        );
+                                      }
+
+                                      return const Icon(
+                                        IconlyBold.star,
+                                        size: 20,
+                                        color: Colors.black12,
+                                      );
+
+                                    }),
                                   ],
                                 )
                               ],
@@ -272,12 +298,12 @@ class _ReviewDoctorState extends State<ReviewDoctor> {
                           ),
                         ],
                       ),
-                      const Text(
-                        "15 Apr, 2023",
-                        style: TextStyle(
+                      Text(
+                        e.reviewDay,
+                        style: const TextStyle(
                             color: ColorConstant.Grey01,
                             fontWeight: FontWeight.w500,
-                            fontSize: 15,
+                            fontSize: 13,
                             fontFamily: 'Poppins'),
                       )
                     ],
@@ -285,9 +311,9 @@ class _ReviewDoctorState extends State<ReviewDoctor> {
                   Container(
                     margin: const EdgeInsets.only(left: 70, top: 20),
                     width: 280,
-                    child: const Text(
-                      "sit amet saidunt ante. Nullam fringilla, justo nec ultrices euismod, velit ipsum congue arcu, vel gravida eros mauris sit amet lorem. Mauris tincidunt justo sed nunc pretium fermentum. Vivamus vel aliquam enim. Vivamus tincidunt nunc eu orci venenatis,",
-                      style: TextStyle(
+                    child: Text(
+                      e.content,
+                      style: const TextStyle(
                         fontFamily: "Poppins",
                         fontWeight: FontWeight.w500,
                         color: Colors.black,

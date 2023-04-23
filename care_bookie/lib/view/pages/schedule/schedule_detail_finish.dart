@@ -15,6 +15,7 @@ class ScheduleDetailFinish extends StatefulWidget {
 }
 
 class _ScheduleDetailFinishState extends State<ScheduleDetailFinish> {
+  bool _isExpanded = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -52,10 +53,11 @@ class _ScheduleDetailFinishState extends State<ScheduleDetailFinish> {
       body: SingleChildScrollView(
           scrollDirection: Axis.vertical,
           child: Column(
-            children: const [
+            children:  const [
               InfoOrderSchedule(),
               InfoDescribeProblem(),
               Price(),
+              //certification(),
               NoteFromDoctor(),
               SizedBox(
                 height: 50,
@@ -72,6 +74,49 @@ class _ScheduleDetailFinishState extends State<ScheduleDetailFinish> {
       color: Colors.white,
       child: Column(
         children: [notifyReview(), addReview()],
+      ),
+    );
+  }
+
+  Widget certification() {
+    return SliverToBoxAdapter(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+        child: Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(30.0),
+            color: Colors.white,
+            boxShadow: [
+              BoxShadow(
+                  color: Colors.grey.withOpacity(0.2),
+                  spreadRadius: 5,
+                  blurRadius: 7,
+                  offset: const Offset(0, 10))
+            ],
+          ),
+          child: ExpansionTile(
+            tilePadding: const EdgeInsets.symmetric(horizontal: 20.0),
+            title: const Text(
+              'Chứng nhận/ Bằng cấp',
+              style: TextStyle(
+                fontWeight: FontWeight.w600,
+                fontSize: 20.0,
+              ),
+            ),
+            trailing: const Icon(Icons.keyboard_arrow_down),
+            children: [
+              Padding(
+                padding: const EdgeInsets.fromLTRB(20, 0, 0, 10),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: const [
+
+                  ],
+                ),
+              )
+            ],
+          ),
+        ),
       ),
     );
   }

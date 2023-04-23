@@ -1,9 +1,11 @@
+import 'package:care_bookie/providers/home_page_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 
-import '../../../../providers/bottom_navbar_provider.dart';
 import '../../../../res/constants/colors.dart';
+import '../../../providers/history_page_provider.dart';
+import '../../../providers/user_login_provider.dart';
 import '../search_page/search_button.dart';
 import 'clinic/clinic_widget/clinics_nearby.dart';
 import 'doctor/doctor_widget/doctors.dart';
@@ -21,6 +23,26 @@ class MainPage extends StatefulWidget {
 
 class _MainPageState extends State<MainPage> {
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    var loadHospitalAndDoctor = Provider.of<HomePageProvider>(context, listen: false);
+    if(loadHospitalAndDoctor.listHospital.isEmpty){
+      loadHospitalAndDoctor.getAllHospital();
+    }
+    if(loadHospitalAndDoctor.listDoctor.isEmpty){
+      loadHospitalAndDoctor.getAllDoctor();
+    }
+
+    var loadHistory = Provider.of<HistoryPageProvider>(context, listen: false);
+
+    var userLogin = Provider.of<UserLoginProvider>(context, listen: false);
+
+    if(loadHistory.histories.isEmpty){
+      loadHistory.getAllHospital(userLogin.userLogin.id);
+    }
+  }
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: ColorConstant.BackGroundColor,
@@ -34,7 +56,7 @@ class _MainPageState extends State<MainPage> {
             const FavoriteInfos(),
             // kindNeedings(),
             doctorTitle(),
-            const SizedBox(height: 300, child: Doctors()),
+            const SizedBox(height: 200, child: Doctors()),
             clinicsNearbyTitles(),
             const ClinicsNearby(),
           ],
