@@ -1,10 +1,15 @@
-import 'package:care_bookie/view/pages/main_pages/main_page_widget/order_widget/price_order.dart';
+
+
+import 'package:care_bookie/providers/hospital_detail_page_provider.dart';
+import 'package:care_bookie/providers/schedule_data_provider.dart';
+import 'package:care_bookie/providers/user_login_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:provider/provider.dart';
 import '../../../../../res/constants/colors.dart';
-import 'describe_problem.dart';
-import 'info_order_detail.dart';
 import 'order_success.dart';
 
 class OrderSummary extends StatefulWidget {
@@ -15,6 +20,10 @@ class OrderSummary extends StatefulWidget {
 }
 
 class _OrderSummaryState extends State<OrderSummary> {
+
+
+  bool check = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -53,37 +62,275 @@ class _OrderSummaryState extends State<OrderSummary> {
             scrollDirection: Axis.vertical,
             child: Column(
               children: [
-                const InfoOrderSchedule(),
-                const InfoDescribeProblem(),
+                infoOrderSchedule(context),
+                infoDescribeProblem(context),
                 medicalExaminationFee()
               ],
             )),
         bottomNavigationBar: bottomNavigatorBar());
   }
 
+  Widget infoDescribeProblem(BuildContext context) {
+
+    var scheduleDataProvider = Provider.of<ScheduleDataProvider>(context,listen: false);
+
+    return Column(
+      children: [
+        Row(
+          children: const [
+            Padding(
+              padding: EdgeInsets.only(left: 8.0),
+              child: Text("Mô tả triệu chứng",
+                  style: TextStyle(
+                      fontWeight: FontWeight.w500,
+                      fontSize: 15,
+                      overflow: TextOverflow.visible)),
+            ),
+          ],
+        ),
+        Container(
+          margin: const EdgeInsets.symmetric(horizontal: 5, vertical: 10),
+          width: double.maxFinite,
+          decoration: BoxDecoration(
+            //color: Colors.white,
+              borderRadius: BorderRadius.circular(25),
+              border:
+              Border.all(color: CupertinoColors.systemGrey3, width: 0.5)),
+          child: Align(
+            alignment: Alignment.centerLeft,
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
+                  scheduleDataProvider.symptom!,
+                  style: const TextStyle(
+                    fontWeight: FontWeight.w500,
+                    color: Colors.black54,
+                    height: 1.4,
+                    fontSize: 15,
+                  )),
+            ),
+          ),
+        ),
+        const Divider(
+          height: 30,
+          color: Colors.grey,
+          thickness: 0.25,
+        ),
+      ],
+    );
+
+  }
+  Widget infoOrderSchedule(BuildContext context) {
+
+    var hospitalDetailPageProvider = Provider.of<HospitalDetailPageProvider>(context,listen: false);
+
+    var scheduleDataProvider = Provider.of<ScheduleDataProvider>(context,listen: false);
+
+    var userLoginProvider = Provider.of<UserLoginProvider>(context,listen: false);
+
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Column(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              const Text("Trung tâm khám bệnh",
+                  style: TextStyle(
+                      fontWeight: FontWeight.w500,
+                      fontSize: 15,
+                      overflow: TextOverflow.visible)),
+              SizedBox(
+                width: 150,
+                child: Align(
+                  alignment: Alignment.centerRight,
+                  child: Text(hospitalDetailPageProvider.hospitalDetails!.hospitalName,
+                      maxLines: 2,
+                      style: const TextStyle(
+                          fontWeight: FontWeight.w500,
+                          color: Colors.black54,
+                          fontSize: 15,
+                          overflow: TextOverflow.ellipsis)),
+                ),
+              ),
+            ],
+          ),
+          const Divider(
+            height: 30,
+            color: Colors.grey,
+            thickness: 0.25,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              const Text("Bác sỹ điều trị",
+                  style: TextStyle(
+                      fontWeight: FontWeight.w500,
+                      fontSize: 15,
+                      overflow: TextOverflow.visible)),
+              SizedBox(
+                width: 200,
+                child: Align(
+                  alignment: Alignment.centerRight,
+                  child: Text(scheduleDataProvider.scheduleDoctor!.fullName,
+                      maxLines: 2,
+                      style: const TextStyle(
+                          fontWeight: FontWeight.w500,
+                          color: Colors.black54,
+                          fontSize: 15,
+                          overflow: TextOverflow.ellipsis)),
+                ),
+              ),
+            ],
+          ),
+          const Divider(
+            height: 30,
+            color: Colors.grey,
+            thickness: 0.25,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              const Text("Thời gian",
+                  style: TextStyle(
+                      fontWeight: FontWeight.w500,
+                      fontSize: 15,
+                      overflow: TextOverflow.visible)),
+              SizedBox(
+                width: 140,
+                child: Align(
+                  alignment: Alignment.centerRight,
+                  child: Text('${scheduleDataProvider.scheduleTime} ${scheduleDataProvider.scheduleDay}',
+                      maxLines: 2,
+                      style: const TextStyle(
+                          fontWeight: FontWeight.w500,
+                          color: Colors.black54,
+                          fontSize: 15,
+                          overflow: TextOverflow.ellipsis)),
+                ),
+              ),
+            ],
+          ),
+          const Divider(
+            height: 30,
+            color: Colors.grey,
+            thickness: 0.25,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              const Text("Bệnh nhân điều trị",
+                  style: TextStyle(
+                      fontWeight: FontWeight.w500,
+                      fontSize: 15,
+                      overflow: TextOverflow.visible)),
+              SizedBox(
+                width: 200,
+                child: Align(
+                  alignment: Alignment.centerRight,
+                  child: Text(userLoginProvider.userLogin.fullName,
+                      maxLines: 2,
+                      style: const TextStyle(
+                          fontWeight: FontWeight.w500,
+                          color: Colors.black54,
+                          fontSize: 15,
+                          overflow: TextOverflow.ellipsis)),
+                ),
+              ),
+            ],
+          ),
+          const Divider(
+            height: 30,
+            color: Colors.grey,
+            thickness: 0.25,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              const Text("Chuyên khoa bác sĩ",
+                  style: TextStyle(
+                      fontWeight: FontWeight.w500,
+                      fontSize: 15,
+                      overflow: TextOverflow.visible)),
+              SizedBox(
+                width: 200,
+                child: Align(
+                  alignment: Alignment.centerRight,
+                  child: Text(scheduleDataProvider.scheduleDoctor!.fields,
+                      maxLines: 2,
+                      style: const TextStyle(
+                          fontWeight: FontWeight.w500,
+                          color: Colors.black54,
+                          fontSize: 15,
+                          overflow: TextOverflow.ellipsis)),
+                ),
+              ),
+            ],
+          ),
+          const Divider(
+            height: 30,
+            color: Colors.grey,
+            thickness: 0.25,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              const Text("Chia sẻ lịch sử",
+                  style: TextStyle(
+                      fontWeight: FontWeight.w500,
+                      fontSize: 15,
+                      overflow: TextOverflow.visible)),
+              SizedBox(
+                width: 200,
+                child: Align(
+                  alignment: Alignment.centerRight,
+                  child: Text(scheduleDataProvider.shareHistory.isEmpty ? "Không" : "Có",
+                      maxLines: 2,
+                      style: const TextStyle(
+                          fontWeight: FontWeight.w500,
+                          color: Colors.black54,
+                          fontSize: 15,
+                          overflow: TextOverflow.ellipsis)),
+                ),
+              ),
+            ],
+          ),
+          const Divider(
+            height: 30,
+            color: Colors.grey,
+            thickness: 0.25,
+          ),
+        ],
+      ),
+    );
+
+  }
+
   Widget medicalExaminationFee() {
+
+    var hospitalDetailPageProvider = Provider.of<HospitalDetailPageProvider>(context,listen: false);
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: const [
-        Padding(
+      children: [
+        const Padding(
           padding: EdgeInsets.only(left: 8.0),
           child: Text("Phí dịch vụ khám",
               style: TextStyle(
                   fontWeight: FontWeight.w500,
-                  fontSize: 18,
+                  fontSize: 15,
                   overflow: TextOverflow.visible)),
         ),
         SizedBox(
           width: 200,
           child: Align(
             alignment: Alignment.centerRight,
-            child: Text("200,000đ",
+            child: Text(hospitalDetailPageProvider.hospitalDetails!.fee,
                 maxLines: 2,
-                style: TextStyle(
+                style: const TextStyle(
                     fontWeight: FontWeight.w500,
                     color: Colors.amber,
-                    fontSize: 17,
+                    fontSize: 15,
                     overflow: TextOverflow.ellipsis)),
           ),
         ),
@@ -107,15 +354,23 @@ class _OrderSummaryState extends State<OrderSummary> {
   }
 
   Widget termsAndPolicies(){
+
     return Padding(
       padding: const EdgeInsets.fromLTRB(10, 0, 20, 10),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          const Icon(
-            IconlyBroken.tickSquare,
-            size: 35,
-            color: Colors.grey,
+          GestureDetector(
+            onTap: () {
+              setState(() {
+                check = !check;
+              });
+            },
+            child: Icon(
+              check ?  IconlyBold.tickSquare : FontAwesomeIcons.square,
+              size:  35,
+              color: check ? Colors.lightBlueAccent : Colors.grey,
+            ),
           ),
           Padding(
             padding: const EdgeInsets.fromLTRB(0, 20, 0, 0),
@@ -154,6 +409,9 @@ class _OrderSummaryState extends State<OrderSummary> {
   }
 
   Widget confirmation(){
+
+    var scheduleDataProvider = Provider.of<ScheduleDataProvider>(context,listen: false);
+
     return Padding(
         padding: const EdgeInsets.fromLTRB(5, 0, 5, 0),
         child: Container(
@@ -172,10 +430,32 @@ class _OrderSummaryState extends State<OrderSummary> {
                 ),
               ),
               onPressed: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const OrderSuccess()));
+
+                if(check) {
+
+                  (()async{
+
+                    await scheduleDataProvider.createSchedule();
+
+                  })();
+
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const OrderSuccess()));
+
+                } else {
+                  Fluttertoast.showToast(
+                      msg: "Vui Lòng Đồng Ý Với Các Điều Khoản Và Chính Sách",
+                      toastLength: Toast.LENGTH_SHORT,
+                      gravity: ToastGravity.TOP,
+                      timeInSecForIosWeb: 1,
+                      backgroundColor: Colors.red,
+                      textColor: Colors.white,
+                      fontSize: 16.0
+                  );
+                }
+
               },
               child: const Padding(
                 padding: EdgeInsets.only(

@@ -1,14 +1,17 @@
+
+import 'package:care_bookie/models/hospital.dart';
 import 'package:care_bookie/providers/hospital_detail_page_provider.dart';
+import 'package:care_bookie/providers/schedule_data_provider.dart';
+import 'package:care_bookie/providers/user_login_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 import '../../../../models/history_checkbox.dart';
 import '../../../../providers/history_page_provider.dart';
 import '../../../../res/constants/colors.dart';
-import '../../schedule/schedule_detail_finish.dart';
 import '../main_page_widget/order_widget/order_sumary.dart';
 import '../main_page_widget/order_widget/select_day_order.dart';
-import '../main_page_widget/order_widget/share_history.dart';
 
 class OrderDetailClinic extends StatefulWidget {
   const OrderDetailClinic({Key? key}) : super(key: key);
@@ -38,7 +41,7 @@ class _OrderDetailClinicState extends State<OrderDetailClinic> {
 
 
 
-  late List<String> _options;
+  late List<DoctorHospital> _options;
 
   bool isChecked = false;
 
@@ -77,6 +80,20 @@ class _OrderDetailClinicState extends State<OrderDetailClinic> {
   void dispose() {
     _scrollController.dispose();
     super.dispose();
+  }
+
+  void showToastMessage(String message) {
+
+    Fluttertoast.showToast(
+        msg: message,
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.CENTER,
+        timeInSecForIosWeb: 1,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+        fontSize: 16.0
+    );
+
   }
 
   @override
@@ -183,7 +200,12 @@ class _OrderDetailClinicState extends State<OrderDetailClinic> {
 
     var hospitalDetailPageProvider = Provider.of<HospitalDetailPageProvider>(context, listen: false);
 
-    _options = hospitalDetailPageProvider.hospitalDetails!.doctors.map((e) => e.fullName).toList();
+    _options = hospitalDetailPageProvider.hospitalDetails!.doctors;
+
+    var scheduleDataProvider = Provider.of<ScheduleDataProvider>(context,listen: false);
+
+
+
 
     return SliverList(
       delegate: SliverChildBuilderDelegate(
@@ -194,7 +216,7 @@ class _OrderDetailClinicState extends State<OrderDetailClinic> {
               RadioListTile<int>(
                 activeColor: ColorConstant.BLue02,
                 title: Text(
-                   "Dr. $option",
+                   "Dr. ${option.fullName}",
                   style: TextStyle(
                     fontWeight: FontWeight.w500,
                     color: _selectedIndex == index
@@ -209,7 +231,8 @@ class _OrderDetailClinicState extends State<OrderDetailClinic> {
                   setState(() {
                     _selectedIndex = value!;
 
-                    print("DOCTOR -----------> $option - $index");
+                    scheduleDataProvider.setScheduleDoctor(option);
+
 
                   });
                 },
@@ -238,6 +261,9 @@ class _OrderDetailClinicState extends State<OrderDetailClinic> {
   }
 
   Widget selectTime() {
+
+    var scheduleDataProvider = Provider.of<ScheduleDataProvider>(context,listen: false);
+
     return SliverPadding(
       padding: const EdgeInsets.symmetric(horizontal: 5.0),
       sliver: SliverToBoxAdapter(
@@ -272,9 +298,7 @@ class _OrderDetailClinicState extends State<OrderDetailClinic> {
 
                           _selectedTime = index;
 
-                          print("TIME -----------> ${_timeList[index]}");
-
-                          print("TIME NOW ---------> ${DateTime.now()}");
+                          scheduleDataProvider.setScheduleTime(_timeList[index]);
 
                         });
                       },
@@ -313,6 +337,7 @@ class _OrderDetailClinicState extends State<OrderDetailClinic> {
   }
 
   Widget describeProblem() {
+
     return SliverToBoxAdapter(
       child: Padding(
         padding: const EdgeInsets.fromLTRB(0, 5, 10, 10),
@@ -360,6 +385,9 @@ class _OrderDetailClinicState extends State<OrderDetailClinic> {
   }
 
   Widget shareHistory() {
+
+    var scheduleDataProvider = Provider.of<ScheduleDataProvider>(context,listen: false);
+
     return SliverToBoxAdapter(
       child: Padding(
         padding: const EdgeInsets.fromLTRB(0, 5, 10, 10),
@@ -414,7 +442,7 @@ class _OrderDetailClinicState extends State<OrderDetailClinic> {
                               ),
                             ),
                             onPressed: () {
-
+                              
                             },
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -488,6 +516,15 @@ class _OrderDetailClinicState extends State<OrderDetailClinic> {
                                   onChanged: (newValue) {
                                     setState(() {
                                       e.checked = newValue!;
+
+                                      scheduleDataProvider.shareHistory = [];
+
+                                      for(int i = 0; i < listHistoryCheckBox.length ; i++) {
+                                        if(listHistoryCheckBox[i].checked) {
+                                          scheduleDataProvider.shareHistory.add(listHistoryCheckBox[i].historyCheck);
+                                        }
+                                      }
+
                                     });
                                   },
                                 )
@@ -515,6 +552,13 @@ class _OrderDetailClinicState extends State<OrderDetailClinic> {
   }
 
   Widget continuous() {
+
+    var scheduleDataProvider = Provider.of<ScheduleDataProvider>(context,listen: false);
+
+    var hospitalDetailPageProvider = Provider.of<HospitalDetailPageProvider>(context,listen: false);
+
+    var userLoginProvider = Provider.of<UserLoginProvider>(context,listen: false);
+
     return Padding(
         padding: const EdgeInsets.fromLTRB(5, 0, 5, 0),
         child: Container(
@@ -530,13 +574,51 @@ class _OrderDetailClinicState extends State<OrderDetailClinic> {
               ),
               onPressed: () {
 
+                bool success = true;
 
-                print("TEXT ----> ${_controllerTextWord.text}");
+                scheduleDataProvider.setSymptom(_controllerTextWord.text);
 
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const OrderSummary()));
+                scheduleDataProvider.setHospital(hospitalDetailPageProvider.hospitalDetails!);
+
+                scheduleDataProvider.setUser(userLoginProvider.userLogin);
+
+
+                if(scheduleDataProvider.symptom!.isEmpty ||
+                    scheduleDataProvider.scheduleDoctor == null ||
+                    scheduleDataProvider.scheduleTime == null) {
+                  Fluttertoast.showToast(
+                      msg: "Vui Lòng Cung Cấp Đầy Đủ Thông Tin",
+                      toastLength: Toast.LENGTH_SHORT,
+                      gravity: ToastGravity.TOP,
+                      timeInSecForIosWeb: 1,
+                      backgroundColor: Colors.red,
+                      textColor: Colors.white,
+                      fontSize: 16.0
+                  );
+
+                  success = false;
+
+                } else if(scheduleDataProvider.scheduleDay == null) {
+                  Fluttertoast.showToast(
+                      msg: "Vui Lòng Đặt Lịch Sau Ngày Hôm Nay Để Phòng Khám Có Thể Phục Vụ",
+                      toastLength: Toast.LENGTH_SHORT,
+                      gravity: ToastGravity.TOP,
+                      timeInSecForIosWeb: 1,
+                      backgroundColor: Colors.red,
+                      textColor: Colors.white,
+                      fontSize: 16.0
+                  );
+
+                  success = false;
+                }
+
+                if(success) {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const OrderSummary()));
+                }
+
               },
               child: const Padding(
                 padding: EdgeInsets.only(

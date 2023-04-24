@@ -1,4 +1,5 @@
 import 'package:care_bookie/providers/home_page_provider.dart';
+import 'package:care_bookie/providers/schedule_page_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
@@ -38,9 +39,19 @@ class _MainPageState extends State<MainPage> {
 
     var userLogin = Provider.of<UserLoginProvider>(context, listen: false);
 
+    var loadSchedule = Provider.of<SchedulePageProvider>(context,listen: false);
+
+
+
     if(loadHistory.histories.isEmpty){
       loadHistory.getAllHospital(userLogin.userLogin.id);
     }
+
+    if(loadSchedule.schedules.isEmpty) {
+      loadSchedule.getAllScheduleByUserId(userLogin.userLogin.id);
+    }
+
+
   }
   @override
   Widget build(BuildContext context) {

@@ -105,6 +105,17 @@ class DoctorHospital {
 
   }
 
+  Map<String,dynamic> toJson() {
+
+    return {
+      'id' : id,
+      'full_name' : fullName,
+      'image' : image,
+      'fields' : fields
+    };
+
+  }
+
 }
 
 class Review {
