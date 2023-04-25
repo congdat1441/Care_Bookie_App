@@ -7,7 +7,7 @@ class Hospital {
   final String fee;
   final String address;
   final String phone;
-  final int star;
+  final num star;
   final List services;
   final String workingHours;
   final String information;

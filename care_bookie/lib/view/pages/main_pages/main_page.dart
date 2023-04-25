@@ -30,11 +30,12 @@ class _MainPageState extends State<MainPage> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    var loadHospitalAndDoctor = Provider.of<HomePageProvider>(context, listen: false);
-    if(loadHospitalAndDoctor.listHospital.isEmpty){
+    var loadHospitalAndDoctor =
+        Provider.of<HomePageProvider>(context, listen: false);
+    if (loadHospitalAndDoctor.listHospital.isEmpty) {
       loadHospitalAndDoctor.getAllHospital();
     }
-    if(loadHospitalAndDoctor.listDoctor.isEmpty){
+    if (loadHospitalAndDoctor.listDoctor.isEmpty) {
       loadHospitalAndDoctor.getAllDoctor();
     }
 
@@ -42,20 +43,18 @@ class _MainPageState extends State<MainPage> {
 
     var userLogin = Provider.of<UserLoginProvider>(context, listen: false);
 
-    var loadSchedule = Provider.of<SchedulePageProvider>(context,listen: false);
+    var loadSchedule =
+        Provider.of<SchedulePageProvider>(context, listen: false);
 
-
-
-    if(loadHistory.histories.isEmpty){
+    if (loadHistory.histories.isEmpty) {
       loadHistory.getAllHospital(userLogin.userLogin.id);
     }
 
-    if(loadSchedule.schedules.isEmpty) {
+    if (loadSchedule.schedules.isEmpty) {
       loadSchedule.getAllScheduleByUserId(userLogin.userLogin.id);
     }
-
-
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -74,6 +73,9 @@ class _MainPageState extends State<MainPage> {
             const SizedBox(height: 200, child: Doctors()),
             clinicsNearbyTitles(),
             const ClinicsNearby(),
+            const SizedBox(
+              height: 20,
+            )
           ],
         ),
       ),
@@ -93,10 +95,8 @@ class _MainPageState extends State<MainPage> {
         onPressed: () async {
           await AuthServices().signOut();
           // ignore: use_build_context_synchronously
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => const LoginForm()));
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => const LoginForm()));
         },
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,

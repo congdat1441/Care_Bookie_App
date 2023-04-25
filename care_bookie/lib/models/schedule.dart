@@ -129,7 +129,7 @@ class HospitalSchedule {
   final String image;
   final String id;
   final String fee;
-  final int star;
+  final num star;
   final String address;
 
   HospitalSchedule({
