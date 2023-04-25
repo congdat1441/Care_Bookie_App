@@ -4,10 +4,11 @@ import 'package:care_bookie/providers/history_page_provider.dart';
 import 'package:care_bookie/providers/home_page_provider.dart';
 import 'package:care_bookie/providers/hospital_detail_page_provider.dart';
 import 'package:care_bookie/providers/user_login_provider.dart';
-import 'package:care_bookie/view/pages/login_signup_page/login.dart';
+import 'package:care_bookie/view/pages/layouts_page/navbar_layout.dart';
+import 'package:care_bookie/view/pages/login_signup_page/login_page.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-
 import 'package:provider/provider.dart';
 
 void main() async{
@@ -29,7 +30,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => HospitalDetailPageProvider(),),
         ChangeNotifierProvider(create: (context) => DoctorDetailProvider(),),
         ChangeNotifierProvider(create: (context) => HistoryPageProvider(),),
-        ChangeNotifierProvider(create: (context) => UserLoginProvider(),)
+        ChangeNotifierProvider(create: (context) => UserLoginProvider(),),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -37,7 +38,16 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           fontFamily: 'Golos' 'Arimo' 'Poppins',
         ),
-        home: const Login(),
+          home: StreamBuilder(
+            stream: FirebaseAuth.instance.authStateChanges(),
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                return const NavbarLayout(index: 0);
+              } else {
+                return const LoginForm();
+              }
+            },
+          )
       ),
     );
   }

@@ -1,4 +1,5 @@
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 
@@ -62,7 +63,6 @@ class _PersonalInfomationState extends State<PersonalInfomation> {
           numberPhone(),
           gender(),
           dateOfBirth(),
-          job(),
           changePassword(),
           deleteAccount(),
 
@@ -109,8 +109,8 @@ class _PersonalInfomationState extends State<PersonalInfomation> {
                   ),
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(60),
-                    // child: Image.network(FirebaseAuth.instance.currentUser!.photoURL!,
-                    //     width: 60, height: 60, fit: BoxFit.cover),
+                    child: Image.network(FirebaseAuth.instance.currentUser!.photoURL!,
+                        width: 60, height: 60, fit: BoxFit.cover),
                   ),
                 ),
               ),
@@ -128,8 +128,8 @@ class _PersonalInfomationState extends State<PersonalInfomation> {
           children: [
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              children:  const [
-                Text(
+              children:   [
+                const Text(
                   "Tên",
                   style: TextStyle(
                       fontFamily: 'Poppins',
@@ -137,14 +137,14 @@ class _PersonalInfomationState extends State<PersonalInfomation> {
                       fontWeight: FontWeight.w500,
                       color: ColorConstant.Grey01),
                 ),
-                // Text(
-                //   "${FirebaseAuth.instance.currentUser!.displayName}",
-                //   style: const TextStyle(
-                //       fontFamily: 'Poppins',
-                //       fontSize: 16,
-                //       fontWeight: FontWeight.w400,
-                //       color: Colors.black),
-                // ),
+                Text(
+                  "${FirebaseAuth.instance.currentUser!.displayName}",
+                  style: const TextStyle(
+                      fontFamily: 'Poppins',
+                      fontSize: 16,
+                      fontWeight: FontWeight.w400,
+                      color: Colors.black),
+                ),
               ],
             ),
             IconButton(
@@ -173,8 +173,8 @@ class _PersonalInfomationState extends State<PersonalInfomation> {
           children: [
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              children:  const [
-                Text(
+              children:  [
+                const Text(
                   "Số điện thoại",
                   style: TextStyle(
                       fontFamily: 'Poppins',
@@ -182,14 +182,14 @@ class _PersonalInfomationState extends State<PersonalInfomation> {
                       fontWeight: FontWeight.w500,
                       color: ColorConstant.Grey01),
                 ),
-                // Text(
-                //   "${FirebaseAuth.instance.currentUser!.phoneNumber}",
-                //   style: const TextStyle(
-                //       fontFamily: 'Poppins',
-                //       fontSize: 16,
-                //       fontWeight: FontWeight.w400,
-                //       color: Colors.black),
-                // ),
+                Text(
+                  "${FirebaseAuth.instance.currentUser!.phoneNumber}",
+                  style: const TextStyle(
+                      fontFamily: 'Poppins',
+                      fontSize: 16,
+                      fontWeight: FontWeight.w400,
+                      color: Colors.black),
+                ),
               ],
             ),
             IconButton(
@@ -218,8 +218,8 @@ class _PersonalInfomationState extends State<PersonalInfomation> {
           children: [
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              children:  const [
-                Text(
+              children:   [
+                const Text(
                   "Địa chỉ Email",
                   style: TextStyle(
                       fontFamily: 'Poppins',
@@ -227,23 +227,17 @@ class _PersonalInfomationState extends State<PersonalInfomation> {
                       fontWeight: FontWeight.w500,
                       color: ColorConstant.Grey01),
                 ),
-                // Text(
-                //   "${FirebaseAuth.instance.currentUser!.email}",
-                //   style: const TextStyle(
-                //       fontFamily: 'Poppins',
-                //       fontSize: 16,
-                //       fontWeight: FontWeight.w400,
-                //       color: Colors.black),
-                // ),
+                Text(
+                  "${FirebaseAuth.instance.currentUser!.email}",
+                  style: const TextStyle(
+                      fontFamily: 'Poppins',
+                      fontSize: 16,
+                      fontWeight: FontWeight.w400,
+                      color: Colors.black),
+                ),
               ],
             ),
-            IconButton(
-                onPressed: () {},
-                icon: const Icon(
-                  IconlyBold.edit,
-                  size: 30,
-                  color: ColorConstant.Grey01,
-                ))
+
           ],
         ),
         const Divider(
@@ -345,50 +339,50 @@ class _PersonalInfomationState extends State<PersonalInfomation> {
     );
   }
 
-  Widget job() {
-    return Column(
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: const [
-                Text(
-                  "Nghề nghiệp",
-                  style: TextStyle(
-                      fontFamily: 'Poppins',
-                      fontSize: 15,
-                      fontWeight: FontWeight.w500,
-                      color: ColorConstant.Grey01),
-                ),
-                Text(
-                  "-Chọn-",
-                  style: TextStyle(
-                      fontFamily: 'Poppins',
-                      fontSize: 16,
-                      fontWeight: FontWeight.w400,
-                      color: Colors.black),
-                ),
-              ],
-            ),
-            IconButton(
-                onPressed: () {},
-                icon: const Icon(
-                  IconlyBold.edit,
-                  size: 30,
-                  color: ColorConstant.Grey01,
-                ))
-          ],
-        ),
-        const Divider(
-          height: 30,
-          color: Color(0xFFF3EFEF),
-          thickness: 1.5,
-        ),
-      ],
-    );
-  }
+  // Widget job() {
+  //   return Column(
+  //     children: [
+  //       Row(
+  //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //         children: [
+  //           Column(
+  //             crossAxisAlignment: CrossAxisAlignment.start,
+  //             children: const [
+  //               Text(
+  //                 "Nghề nghiệp",
+  //                 style: TextStyle(
+  //                     fontFamily: 'Poppins',
+  //                     fontSize: 15,
+  //                     fontWeight: FontWeight.w500,
+  //                     color: ColorConstant.Grey01),
+  //               ),
+  //               Text(
+  //                 "-Chọn-",
+  //                 style: TextStyle(
+  //                     fontFamily: 'Poppins',
+  //                     fontSize: 16,
+  //                     fontWeight: FontWeight.w400,
+  //                     color: Colors.black),
+  //               ),
+  //             ],
+  //           ),
+  //           IconButton(
+  //               onPressed: () {},
+  //               icon: const Icon(
+  //                 IconlyBold.edit,
+  //                 size: 30,
+  //                 color: ColorConstant.Grey01,
+  //               ))
+  //         ],
+  //       ),
+  //       const Divider(
+  //         height: 30,
+  //         color: Color(0xFFF3EFEF),
+  //         thickness: 1.5,
+  //       ),
+  //     ],
+  //   );
+  // }
 
   Widget changePassword() {
     return Container(

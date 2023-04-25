@@ -1,3 +1,4 @@
+import 'package:care_bookie/view/pages/login_signup_page/login_signup_widget/email_Id.dart';
 import 'package:care_bookie/view/pages/login_signup_page/reset_password.dart';
 import 'package:care_bookie/view/pages/login_signup_page/sign_up.dart';
 import 'package:flutter/material.dart';
@@ -131,14 +132,14 @@ class _LoginState extends State<Login> {
                 ],
               ),
             ),
-            const AddAccount(),
+            const EmailId(),
             const AddPassword(),
             Container(
               alignment: Alignment.centerRight,
               padding: const EdgeInsets.fromLTRB(0, 0, 50, 0),
               child: TextButton(
                 child: const Text(
-                  "Fotgot password",
+                  "Forgot password",
                   style: TextStyle(
                       fontFamily: 'Poppins',
                       color: Color(0xFF168AD8)),

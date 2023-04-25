@@ -26,7 +26,9 @@ class _ClinicsNearbyState extends State<ClinicsNearby> {
             ? const Center(
                 child: CircularProgressIndicator(),
               )
-            : Expanded(
+            : Flex(
+              direction: Axis.vertical,
+              children: [Expanded(
                 child: ListView.builder(
                   itemCount: homePageProvider.listHospital.length,
                   itemBuilder: (context, index) => Padding(
@@ -60,7 +62,7 @@ class _ClinicsNearbyState extends State<ClinicsNearby> {
                                     context,
                                     MaterialPageRoute(
                                         builder: (context) =>
-                                            const DetailClinic()));
+                                        const DetailClinic()));
                               },
                               child: ClipRRect(
                                 borderRadius: BorderRadius.circular(30),
@@ -92,7 +94,7 @@ class _ClinicsNearbyState extends State<ClinicsNearby> {
                                                 color: Color(0xff1c335b),
                                                 fontWeight: FontWeight.w600,
                                                 fontFamily:
-                                                    'Merriweather Sans '))),
+                                                'Merriweather Sans '))),
                                     const SizedBox(
                                       height: 3,
                                     ),
@@ -112,7 +114,7 @@ class _ClinicsNearbyState extends State<ClinicsNearby> {
                                                   color: ColorConstant.Grey01,
                                                   fontWeight: FontWeight.w400,
                                                   fontFamily:
-                                                      'Merriweather Sans')),
+                                                  'Merriweather Sans')),
                                         ],
                                       ),
                                     ),
@@ -125,7 +127,7 @@ class _ClinicsNearbyState extends State<ClinicsNearby> {
                                         //color: Colors.black,
                                         child: Row(
                                           mainAxisAlignment:
-                                              MainAxisAlignment.start,
+                                          MainAxisAlignment.start,
                                           //textBaseline: TextBaseline.alphabetic,
                                           children: [
                                             const Icon(
@@ -146,25 +148,25 @@ class _ClinicsNearbyState extends State<ClinicsNearby> {
                                                     color: ColorConstant.Grey01,
                                                     fontWeight: FontWeight.w500,
                                                     fontFamily:
-                                                        'Merriweather Sans')),
+                                                    'Merriweather Sans')),
                                             RichText(
                                                 text: const TextSpan(children: [
-                                              WidgetSpan(
-                                                  child: Padding(
-                                                padding:
-                                                    EdgeInsets.only(left: 15),
-                                                child: Text("1.2 km ",
-                                                    style: TextStyle(
-                                                        letterSpacing: 0.2,
-                                                        fontSize: 15,
-                                                        color: ColorConstant
-                                                            .Grey01,
-                                                        fontWeight:
-                                                            FontWeight.w500,
-                                                        fontFamily:
-                                                            'Merriweather Sans')),
-                                              )),
-                                            ])),
+                                                  WidgetSpan(
+                                                      child: Padding(
+                                                        padding:
+                                                        EdgeInsets.only(left: 15),
+                                                        child: Text("1.2 km ",
+                                                            style: TextStyle(
+                                                                letterSpacing: 0.2,
+                                                                fontSize: 15,
+                                                                color: ColorConstant
+                                                                    .Grey01,
+                                                                fontWeight:
+                                                                FontWeight.w500,
+                                                                fontFamily:
+                                                                'Merriweather Sans')),
+                                                      )),
+                                                ])),
                                             const Text("| ",
                                                 style: TextStyle(
                                                     height: 0.8,
@@ -173,16 +175,16 @@ class _ClinicsNearbyState extends State<ClinicsNearby> {
                                                     color: ColorConstant.Grey01,
                                                     fontWeight: FontWeight.w500,
                                                     fontFamily:
-                                                        'Merriweather Sans')),
+                                                    'Merriweather Sans')),
                                             const Text("See Detail",
                                                 style: TextStyle(
                                                     fontSize: 15,
                                                     letterSpacing: 0.1,
                                                     color:
-                                                        ColorConstant.BLueText,
+                                                    ColorConstant.BLueText,
                                                     fontWeight: FontWeight.w500,
                                                     fontFamily:
-                                                        'Merriweather Sans'))
+                                                    'Merriweather Sans'))
                                           ],
                                         ),
                                       ),
@@ -197,7 +199,8 @@ class _ClinicsNearbyState extends State<ClinicsNearby> {
                     ),
                   ),
                 ),
-              ),
+              )],
+            ),
       ),
     );
   }

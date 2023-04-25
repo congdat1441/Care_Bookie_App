@@ -1,6 +1,7 @@
+import 'package:care_bookie/view/pages/login_signup_page/login_signup_widget/email_Id.dart';
 import 'package:flutter/material.dart';
 
-import 'enter_4code.dart';
+import 'enter_code_otp.dart';
 import 'login_signup_widget/mobilephone.dart';
 
 class ResetPassword extends StatelessWidget {
@@ -83,12 +84,12 @@ class ResetPassword extends StatelessWidget {
                         ),
                       ),
                       Container(
-                        padding: EdgeInsets.fromLTRB(12, 10, 20, 0),
+                        padding: const EdgeInsets.fromLTRB(12, 10, 20, 0),
                         child: const Text(
                             "Please enter your registered phone number and we will send you a verification code."
                                 "We'll send a verification code in a text message. This helps us eliminate spam - we won't give out your number to any third parties"),
                       ),
-                      const Mobileohone(),
+                      const EmailId(),
                       GestureDetector(
                         onTap: () {
                           Navigator.push(

@@ -40,7 +40,7 @@ class AccountPage extends StatelessWidget {
           borderRadius: BorderRadius.only(
               bottomLeft: Radius.circular(0), bottomRight: Radius.circular(0))),
       backgroundColor: ColorConstant.BLue05,
-      expandedHeight: 285,
+      expandedHeight: 290,
       //collapsedHeight: 70,
       pinned: true,
       automaticallyImplyLeading: false,
@@ -49,7 +49,7 @@ class AccountPage extends StatelessWidget {
           fit: StackFit.expand,
           children: <Widget>[
             Padding(
-                padding: const EdgeInsets.fromLTRB(0, 40, 0, 0),
+                padding: const EdgeInsets.fromLTRB(0, 20, 0, 0),
                 child: Center(
                   child: Stack(
                     children: [
@@ -83,18 +83,21 @@ class AccountPage extends StatelessWidget {
                                   offset: const Offset(0, 5))
                             ],
                           ),
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(60),
-                            child: Image.network(FirebaseAuth.instance.currentUser!.photoURL!,
-                                width: 60, height: 60, fit: BoxFit.cover),
-                          ),
+                          // child: ClipRRect(
+                          //   borderRadius: BorderRadius.circular(60),
+                          //   child: Image.network(
+                          //       FirebaseAuth.instance.currentUser!.photoURL!,
+                          //       width: 60,
+                          //       height: 60,
+                          //       fit: BoxFit.cover),
+                          // ),
                         ),
                       ),
                     ],
                   ),
                 )),
             Padding(
-              padding: const EdgeInsets.fromLTRB(100, 270, 100, 0),
+              padding: const EdgeInsets.fromLTRB(100, 250, 100, 10),
               child: Center(
                 child: Column(
                   children:  [
@@ -104,7 +107,7 @@ class AccountPage extends StatelessWidget {
                           height: 1.2,
                           fontWeight: FontWeight.bold,
                           fontFamily: 'Poppins',
-                          fontSize: 21,
+                          fontSize: 20,
                           color: Colors.white),
                     ),
                     Text(

@@ -1,8 +1,9 @@
+import 'package:care_bookie/firebases/firebase_auth_function.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
-import '../../../../api_services/firebase_services.dart';
+import '../../../../firebases/firebase_auth_services.dart';
 import '../../layouts_page/navbar_layout.dart';
 
 class AnotherLogin extends StatefulWidget {
@@ -21,7 +22,7 @@ class _AnotherLoginState extends State<AnotherLogin> {
         children: <Widget>[
           InkWell(
             onTap: () async {
-              await FirebaseServices().signInWithGoogle();
+              await AuthServices().signInWithGoogle();
               print('>>done');
               // ignore: use_build_context_synchronously
               Navigator.pushReplacement(

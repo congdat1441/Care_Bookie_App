@@ -1,9 +1,13 @@
 import 'package:care_bookie/providers/home_page_provider.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../res/constants/colors.dart';
+import '../../../firebases/firebase_auth_function.dart';
+import '../login_signup_page/login_page.dart';
 import '../search_page/search_button.dart';
 import 'clinic/clinic_widget/clinics_nearby.dart';
 import 'doctor/doctor_widget/doctors.dart';
@@ -37,14 +41,15 @@ class _MainPageState extends State<MainPage> {
     return Scaffold(
       backgroundColor: ColorConstant.BackGroundColor,
       body: SingleChildScrollView(
+        scrollDirection: Axis.vertical,
         //controller: value.scrollController,
         child: Column(
           children: [
             const AppbarCustom(),
+            //logout(),
             hiPatient(),
             const SearchButton(),
             const FavoriteInfos(),
-            // kindNeedings(),
             doctorTitle(),
             const SizedBox(height: 200, child: Doctors()),
             clinicsNearbyTitles(),
@@ -53,6 +58,56 @@ class _MainPageState extends State<MainPage> {
         ),
       ),
     );
+  }
+
+  Widget logout() {
+    return Column(children: [
+      TextButton(
+        style: ButtonStyle(
+          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+            RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20.0),
+            ),
+          ),
+        ),
+        onPressed: () async {
+          await AuthServices().signOut();
+          // ignore: use_build_context_synchronously
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => const LoginForm()));
+        },
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: const [
+                Icon(
+                  IconlyLight.logout,
+                  size: 30,
+                  color: CupertinoColors.systemGrey3,
+                ),
+                Text(
+                  "Đăng xuất",
+                  style: TextStyle(
+                      fontSize: 17,
+                      letterSpacing: 1.3,
+                      fontFamily: 'Poppins',
+                      color: Colors.black),
+                )
+              ],
+            ),
+          ],
+        ),
+      ),
+      const Divider(
+        height: 30,
+        color: Color(0xFFF3EFEF),
+        thickness: 2.3,
+      ),
+    ]);
   }
 
   Widget hiPatient() {

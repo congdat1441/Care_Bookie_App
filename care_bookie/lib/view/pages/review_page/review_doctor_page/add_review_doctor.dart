@@ -106,6 +106,7 @@ class _AddReviewDoctorState extends State<AddReviewDoctor> {
               child: TextFormField(
                 controller: _controllerTextWord,
                 maxLines: 100,
+                //inputFormatters: [WhitelistingTextInputFormatter(RegExp("[a-zA-ZÀ-ỹ ]"))],
                 //maxLength: 350,
                 decoration: InputDecoration(
                     hintText: 'Thêm nhận xét của bạn...',

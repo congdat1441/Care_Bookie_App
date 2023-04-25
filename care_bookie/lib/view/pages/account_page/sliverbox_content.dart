@@ -1,9 +1,11 @@
+import 'package:care_bookie/firebases/firebase_auth_function.dart';
 import 'package:care_bookie/view/pages/account_page/personal_informarion.dart';
+import 'package:care_bookie/view/pages/login_signup_page/login_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 
-import '../../../api_services/firebase_services.dart';
+import '../../../firebases/firebase_auth_services.dart';
 import '../login_signup_page/login.dart';
 
 class SliverToBoxAdapterContent extends StatefulWidget {
@@ -181,12 +183,12 @@ class _SliverToBoxAdapterContentState extends State<SliverToBoxAdapterContent> {
           ),
         ),
         onPressed: () async {
-          await FirebaseServices().signOut();
+          await AuthServices().signOut();
           // ignore: use_build_context_synchronously
           Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (context) => const Login()));
+                  builder: (context) => const LoginForm()));
         },
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
