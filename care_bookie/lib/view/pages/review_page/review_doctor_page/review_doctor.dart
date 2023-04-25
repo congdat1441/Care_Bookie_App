@@ -1,4 +1,4 @@
-import 'package:care_bookie/providers/doctor_detail_provider.dart';
+import 'package:care_bookie/providers/doctor_detail_page_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:provider/provider.dart';
@@ -65,7 +65,7 @@ class _ReviewDoctorState extends State<ReviewDoctor> {
 
   Widget starAndVoted(BuildContext context) {
 
-    final doctorDetailProvider = Provider.of<DoctorDetailProvider>(context,listen: false);
+    final doctorDetailProvider = Provider.of<DoctorDetailPageProvider>(context,listen: false);
 
 
     return Column(
@@ -198,7 +198,7 @@ class _ReviewDoctorState extends State<ReviewDoctor> {
 
   Widget commentsDoctor(BuildContext context) {
 
-    final doctorDetailProvider = Provider.of<DoctorDetailProvider>(context,listen: false);
+    final doctorDetailProvider = Provider.of<DoctorDetailPageProvider>(context,listen: false);
 
     return Column(
       children: [

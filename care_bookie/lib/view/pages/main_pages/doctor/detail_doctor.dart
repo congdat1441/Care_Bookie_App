@@ -1,12 +1,20 @@
 import 'package:care_bookie/models/doctor.dart';
+import 'package:care_bookie/models/hospital.dart';
+import 'package:care_bookie/providers/hospital_detail_page_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_expandable_text/flutter_expandable_text.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
-import '../../../../providers/doctor_detail_provider.dart';
+import '../../../../providers/doctor_detail_page_provider.dart';
+import '../../../../providers/doctor_detail_page_provider.dart';
+import '../../../../providers/schedule_data_provider.dart';
+import '../../../../providers/schedule_detail_page_provider.dart';
 import '../../../../res/constants/colors.dart';
 import '../../review_page/review_doctor_page/review_doctor.dart';
+import '../../schedule/schedule_detail_accept.dart';
+import '../../schedule/schedule_detail_pending.dart';
 import 'order_detail_doctor.dart';
 
 class DetailDoctor extends StatefulWidget {
@@ -27,7 +35,11 @@ class _DetailDoctorState extends State<DetailDoctor>
     super.initState();
 
     final doctorDetailProvider =
-        Provider.of<DoctorDetailProvider>(context, listen: false);
+        Provider.of<DoctorDetailPageProvider>(context, listen: false);
+
+    var scheduleDataProvider = Provider.of<ScheduleDataProvider>(context,listen: false);
+
+    var hospitalDetailPageProvider = Provider.of<HospitalDetailPageProvider>(context,listen: false);
 
     if (doctorDetailProvider.isDoctorWithHospital) {
       (() async {
@@ -35,14 +47,30 @@ class _DetailDoctorState extends State<DetailDoctor>
 
         doctorDetailProvider.setDoctorDetail(doctor);
 
+        scheduleDataProvider.setHospital(hospitalDetailPageProvider.hospitalDetails!);
+
         setState(() {
           isLoading = true;
         });
       })();
     } else {
-      setState(() {
-        isLoading = true;
-      });
+
+      var doctorDetailProvider = Provider.of<DoctorDetailPageProvider>(context,listen: false);
+
+      var scheduleDataProvider = Provider.of<ScheduleDataProvider>(context,listen: false);
+
+      (() async {
+
+        String hospitalId = doctorDetailProvider.doctorDetail!.hospitalId;
+
+        Hospital hospital = await doctorDetailProvider.getHospitalById(hospitalId);
+
+        scheduleDataProvider.setHospital(hospital);
+
+        setState(() {
+          isLoading = true;
+        });
+      })();
     }
 
     _tabControl = TabController(length: 2, vsync: this);
@@ -69,7 +97,10 @@ class _DetailDoctorState extends State<DetailDoctor>
 
   SliverAppBar sliverAppBar(BuildContext context) {
     final doctorDetailProvider =
-        Provider.of<DoctorDetailProvider>(context, listen: false);
+        Provider.of<DoctorDetailPageProvider>(context, listen: false);
+
+    var scheduleDataProvider = Provider.of<ScheduleDataProvider>(context,listen: false);
+
 
     return SliverAppBar(
       title: Padding(
@@ -90,6 +121,10 @@ class _DetailDoctorState extends State<DetailDoctor>
       backgroundColor: Colors.transparent,
       leading: IconButton(
         onPressed: () {
+          doctorDetailProvider.scheduleWithDoctor = null;
+          doctorDetailProvider.scheduleWithHospital = null;
+          scheduleDataProvider.resetData();
+
           Navigator.pop(context);
         },
         icon: const Icon(
@@ -172,7 +207,7 @@ class _DetailDoctorState extends State<DetailDoctor>
                       ),
                     ),
                   ),
-                  Container(
+                  doctorDetailProvider.scheduleWithDoctor == null ? Container(
                     width: 120,
                     height: 50,
                     decoration: BoxDecoration(
@@ -187,28 +222,44 @@ class _DetailDoctorState extends State<DetailDoctor>
                         ),
                       ),
                       onPressed: () {
-                        showModalBottomSheet(
-                          context: context,
-                          isScrollControlled: true,
-                          isDismissible: true,
-                          shape: const RoundedRectangleBorder(
-                            borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(30),
-                              topRight: Radius.circular(30),
+                        if(doctorDetailProvider.scheduleWithHospital != null) {
+
+                          Fluttertoast.showToast(
+                              msg: "Bạn Đã Đặt Lịch Khám Ở Phòng Khám Nà",
+                              toastLength: Toast.LENGTH_SHORT,
+                              gravity: ToastGravity.TOP,
+                              timeInSecForIosWeb: 1,
+                              backgroundColor: Colors.red,
+                              textColor: Colors.white,
+                              fontSize: 16.0
+                          );
+
+                        } else {
+
+                          showModalBottomSheet(
+                            context: context,
+                            isScrollControlled: true,
+                            isDismissible: true,
+                            shape: const RoundedRectangleBorder(
+                              borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(30),
+                                topRight: Radius.circular(30),
+                              ),
                             ),
-                          ),
-                          builder: (context) {
-                            return const FractionallySizedBox(
-                              heightFactor: 0.93,
-                              child: ClipRRect(
-                                  borderRadius: BorderRadius.only(
-                                    topLeft: Radius.circular(30),
-                                    topRight: Radius.circular(30),
-                                  ),
-                                  child: OrderDetailDoctor()),
-                            );
-                          },
-                        );
+                            builder: (context) {
+                              return const FractionallySizedBox(
+                                heightFactor: 0.93,
+                                child: ClipRRect(
+                                    borderRadius: BorderRadius.only(
+                                      topLeft: Radius.circular(30),
+                                      topRight: Radius.circular(30),
+                                    ),
+                                    child: OrderDetailDoctor()),
+                              );
+                            },
+                          );
+
+                        }
                       },
                       child: const Text(
                         "Đặt lịch",
@@ -221,6 +272,7 @@ class _DetailDoctorState extends State<DetailDoctor>
                       ),
                     ),
                   )
+                      : Container()
                 ],
               ),
             )),
@@ -230,7 +282,7 @@ class _DetailDoctorState extends State<DetailDoctor>
 
   Widget infoBasicDoctor(BuildContext context) {
     final doctorDetailProvider =
-        Provider.of<DoctorDetailProvider>(context, listen: false);
+        Provider.of<DoctorDetailPageProvider>(context, listen: false);
 
     return SliverToBoxAdapter(
       child: Padding(
@@ -280,6 +332,33 @@ class _DetailDoctorState extends State<DetailDoctor>
                                 color: ColorConstant.Grey01,
                                 fontWeight: FontWeight.w400,
                                 fontFamily: 'Merriweather Sans')),
+                      ),
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Text("Bệnh viện :",
+                          style: TextStyle(
+                              height: 0.9,
+                              fontSize: 16,
+                              color: Colors.black87,
+                              fontWeight: FontWeight.w500,
+                              fontFamily: 'Merriweather Sans')),
+                      Expanded(
+                        child: Container(
+                          padding: const EdgeInsets.fromLTRB(10, 5, 5, 5),
+                          child: Text(doctorDetailProvider.doctorDetail!.hospitalName,
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                              style: const TextStyle(
+                                  overflow: TextOverflow.ellipsis,
+                                  height: 0.9,
+                                  fontSize: 16,
+                                  color: ColorConstant.Grey01,
+                                  fontWeight: FontWeight.w400,
+                                  fontFamily: 'Merriweather Sans')),
+                        ),
                       ),
                     ],
                   ),
@@ -363,7 +442,7 @@ class _DetailDoctorState extends State<DetailDoctor>
 
   Widget infoDetailDoctor(BuildContext context) {
     final doctorDetailProvider =
-        Provider.of<DoctorDetailProvider>(context, listen: false);
+        Provider.of<DoctorDetailPageProvider>(context, listen: false);
 
     return SliverToBoxAdapter(
       child: Padding(
@@ -420,7 +499,7 @@ class _DetailDoctorState extends State<DetailDoctor>
 
   Widget certification(BuildContext context) {
     final doctorDetailProvider =
-        Provider.of<DoctorDetailProvider>(context, listen: false);
+        Provider.of<DoctorDetailPageProvider>(context, listen: false);
 
     return SliverToBoxAdapter(
       child: Padding(
@@ -484,8 +563,13 @@ class _DetailDoctorState extends State<DetailDoctor>
   }
 
   Widget orderSchedule(BuildContext context) {
+
+    var doctorDetailPageProvider = Provider.of<DoctorDetailPageProvider>(context,listen: false);
+
+    var scheduleDetailPageProvider = Provider.of<ScheduleDetailPageProvider>(context,listen: false);
+
     return SliverToBoxAdapter(
-      child: Padding(
+      child: doctorDetailPageProvider.scheduleWithDoctor == null ?  Padding(
           padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
           child: Container(
             height: 70,
@@ -498,28 +582,46 @@ class _DetailDoctorState extends State<DetailDoctor>
                   ),
                 ),
                 onPressed: () {
-                  showModalBottomSheet(
-                    context: context,
-                    isScrollControlled: true,
-                    isDismissible: true,
-                    shape: const RoundedRectangleBorder(
-                      borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(30),
-                        topRight: Radius.circular(30),
+
+                  if(doctorDetailPageProvider.scheduleWithHospital != null) {
+
+                    Fluttertoast.showToast(
+                        msg: "Bạn Đã Đặt Lịch Khám Ở Phòng Khám Nà",
+                        toastLength: Toast.LENGTH_SHORT,
+                        gravity: ToastGravity.TOP,
+                        timeInSecForIosWeb: 1,
+                        backgroundColor: Colors.red,
+                        textColor: Colors.white,
+                        fontSize: 16.0
+                    );
+
+                  } else {
+
+                    showModalBottomSheet(
+                      context: context,
+                      isScrollControlled: true,
+                      isDismissible: true,
+                      shape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(30),
+                          topRight: Radius.circular(30),
+                        ),
                       ),
-                    ),
-                    builder: (context) {
-                      return const FractionallySizedBox(
-                        heightFactor: 0.93,
-                        child: ClipRRect(
-                            borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(30),
-                              topRight: Radius.circular(30),
-                            ),
-                            child: OrderDetailDoctor()),
-                      );
-                    },
-                  );
+                      builder: (context) {
+                        return const FractionallySizedBox(
+                          heightFactor: 0.93,
+                          child: ClipRRect(
+                              borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(30),
+                                topRight: Radius.circular(30),
+                              ),
+                              child: OrderDetailDoctor()),
+                        );
+                      },
+                    );
+
+                  }
+
                 },
                 child: const Padding(
                   padding: EdgeInsets.only(
@@ -528,6 +630,49 @@ class _DetailDoctorState extends State<DetailDoctor>
                   ),
                   child: Text(
                     "Đặt lịch khám",
+                    style: TextStyle(fontSize: 21, fontWeight: FontWeight.w600),
+                  ),
+                )),
+          )) :
+      Padding(
+          padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+          child: Container(
+            height: 70,
+            decoration: BoxDecoration(borderRadius: BorderRadius.circular(20)),
+            child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  elevation: 5,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30.0),
+                  ),
+                ),
+                onPressed: () {
+
+                  scheduleDetailPageProvider.setScheduleDetail(doctorDetailPageProvider.scheduleWithDoctor!);
+
+                  if(doctorDetailPageProvider.scheduleWithDoctor!.accept) {
+
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const ScheduleDetailAccept()));
+
+                  } else {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const ScheduleDetailPending()));
+                  }
+
+
+                },
+                child: const Padding(
+                  padding: EdgeInsets.only(
+                    top: 10,
+                    bottom: 10,
+                  ),
+                  child: Text(
+                    "Xem Lịch Khám",
                     style: TextStyle(fontSize: 21, fontWeight: FontWeight.w600),
                   ),
                 )),

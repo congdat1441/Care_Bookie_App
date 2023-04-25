@@ -1,12 +1,17 @@
+
+import 'package:care_bookie/models/hospital.dart';
 import 'package:care_bookie/providers/hospital_detail_page_provider.dart';
+import 'package:care_bookie/providers/schedule_data_provider.dart';
+import 'package:care_bookie/providers/user_login_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
+import '../../../../models/history_checkbox.dart';
+import '../../../../providers/history_page_provider.dart';
 import '../../../../res/constants/colors.dart';
-import '../../schedule/schedule_detail_finish.dart';
 import '../main_page_widget/order_widget/order_sumary.dart';
 import '../main_page_widget/order_widget/select_day_order.dart';
-import '../main_page_widget/order_widget/share_history.dart';
 
 class OrderDetailClinic extends StatefulWidget {
   const OrderDetailClinic({Key? key}) : super(key: key);
@@ -23,31 +28,27 @@ class _OrderDetailClinicState extends State<OrderDetailClinic> {
   late ScrollController _scrollController;
   final TextEditingController _controllerTextWord = TextEditingController();
   final List<String> _timeList = [
-    "8:00 AM",
-    "8:30 AM",
-    "9:00 AM",
-    "9:30 AM",
+    "08:00 AM",
+    "09:00 AM",
     "10:00 AM",
-    "10:30 AM",
     "11:00 AM",
-    "11:30 AM",
-    "12:00 PM",
     "1:30 PM",
     "2:00 PM",
-    "2:30 PM",
     "3:00 PM",
-    "3:30 PM",
     "4:00 PM",
-    "4:30 PM",
-    "5:00 PM",
-    "5:30 PM"
+    "5:00 PM"
   ];
 
 
 
-  late List<String> _options;
+  late List<DoctorHospital> _options;
 
   bool isChecked = false;
+
+
+  List<HistoryCheckBox> listHistoryCheckBox = [];
+
+
 
   @override
   void initState() {
@@ -65,12 +66,34 @@ class _OrderDetailClinicState extends State<OrderDetailClinic> {
         });
       }
     });
+
+    var loadHistory = Provider.of<HistoryPageProvider>(context, listen: false);
+
+
+    if(loadHistory.histories.isNotEmpty){
+      listHistoryCheckBox = loadHistory.histories.map((e) => HistoryCheckBox(historyCheck: e)).toList();
+    }
+
   }
 
   @override
   void dispose() {
     _scrollController.dispose();
     super.dispose();
+  }
+
+  void showToastMessage(String message) {
+
+    Fluttertoast.showToast(
+        msg: message,
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.CENTER,
+        timeInSecForIosWeb: 1,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+        fontSize: 16.0
+    );
+
   }
 
   @override
@@ -94,9 +117,14 @@ class _OrderDetailClinicState extends State<OrderDetailClinic> {
   }
 
   Widget sliverAppbar() {
+
+    var hospitalDetailPageProvider = Provider.of<HospitalDetailPageProvider>(context, listen: false);
+
+    var scheduleDataProvider = Provider.of<ScheduleDataProvider>(context,listen: false);
+
     return SliverAppBar(
       title: Text(
-        'The CIS Free Clinic',
+        hospitalDetailPageProvider.hospitalDetails!.hospitalName,
         style: TextStyle(
             color: _isAppBarCollapsed ? Colors.black : Colors.white,
             overflow: TextOverflow.ellipsis,
@@ -117,6 +145,9 @@ class _OrderDetailClinicState extends State<OrderDetailClinic> {
               )
             : const Icon(IconlyLight.arrowLeft, size: 30, color: Colors.white),
         onPressed: () {
+
+          scheduleDataProvider.shareHistory = [];
+
           Navigator.pop(context);
         },
       ),
@@ -132,8 +163,8 @@ class _OrderDetailClinicState extends State<OrderDetailClinic> {
               borderRadius: const BorderRadius.only(
                   bottomLeft: Radius.circular(0),
                   bottomRight: Radius.circular(0)),
-              child: Image.asset(
-                "assets/images/cisdemo.png",
+              child: Image.network(
+                hospitalDetailPageProvider.hospitalDetails!.image,
                 width: double.infinity,
                 fit: BoxFit.cover,
               ),
@@ -174,7 +205,12 @@ class _OrderDetailClinicState extends State<OrderDetailClinic> {
 
     var hospitalDetailPageProvider = Provider.of<HospitalDetailPageProvider>(context, listen: false);
 
-    _options = hospitalDetailPageProvider.hospitalDetails!.doctors.map((e) => e.fullName).toList();
+    _options = hospitalDetailPageProvider.hospitalDetails!.doctors;
+
+    var scheduleDataProvider = Provider.of<ScheduleDataProvider>(context,listen: false);
+
+
+
 
     return SliverList(
       delegate: SliverChildBuilderDelegate(
@@ -185,7 +221,7 @@ class _OrderDetailClinicState extends State<OrderDetailClinic> {
               RadioListTile<int>(
                 activeColor: ColorConstant.BLue02,
                 title: Text(
-                   "Dr. $option",
+                   "Dr. ${option.fullName}",
                   style: TextStyle(
                     fontWeight: FontWeight.w500,
                     color: _selectedIndex == index
@@ -200,7 +236,8 @@ class _OrderDetailClinicState extends State<OrderDetailClinic> {
                   setState(() {
                     _selectedIndex = value!;
 
-                    print("DOCTOR -----------> $option - $index");
+                    scheduleDataProvider.setScheduleDoctor(option);
+
 
                   });
                 },
@@ -229,15 +266,18 @@ class _OrderDetailClinicState extends State<OrderDetailClinic> {
   }
 
   Widget selectTime() {
+
+    var scheduleDataProvider = Provider.of<ScheduleDataProvider>(context,listen: false);
+
     return SliverPadding(
       padding: const EdgeInsets.symmetric(horizontal: 5.0),
       sliver: SliverToBoxAdapter(
-        child: SizedBox(
-          height: 380,
+        child: Container(
+          margin: const EdgeInsets.only(top: 20,bottom: 20),
           child: Column(
             children: [
               Container(
-                  margin: const EdgeInsets.fromLTRB(10, 10, 20, 0),
+                  margin: const EdgeInsets.fromLTRB(10, 10, 20, 20),
                   child: const Align(
                     alignment: Alignment.topLeft,
                     child: Text(
@@ -263,9 +303,7 @@ class _OrderDetailClinicState extends State<OrderDetailClinic> {
 
                           _selectedTime = index;
 
-                          print("TIME -----------> ${_timeList[index]}");
-
-                          print("TIME NOW ---------> ${DateTime.now()}");
+                          scheduleDataProvider.setScheduleTime(_timeList[index]);
 
                         });
                       },
@@ -304,6 +342,7 @@ class _OrderDetailClinicState extends State<OrderDetailClinic> {
   }
 
   Widget describeProblem() {
+
     return SliverToBoxAdapter(
       child: Padding(
         padding: const EdgeInsets.fromLTRB(0, 5, 10, 10),
@@ -352,6 +391,8 @@ class _OrderDetailClinicState extends State<OrderDetailClinic> {
 
   Widget shareHistory() {
 
+    var scheduleDataProvider = Provider.of<ScheduleDataProvider>(context,listen: false);
+
     return SliverToBoxAdapter(
       child: Padding(
         padding: const EdgeInsets.fromLTRB(0, 5, 10, 10),
@@ -374,117 +415,130 @@ class _OrderDetailClinicState extends State<OrderDetailClinic> {
             },
             initiallyExpanded: _isExpanded,
             children: [
-              Container(
-                margin: const EdgeInsets.only(left: 10, right: 0),
-                padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(30),
-                    border: Border.all(width: 0.5, color: Colors.transparent)),
-                child: Container(
-                    margin: const EdgeInsets.only(right: 0, top: 20, bottom: 10),
-                    height: 110,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(27),
-                      color: Colors.white,
-                      boxShadow: [
-                        BoxShadow(
-                            color: Colors.grey.withOpacity(0.2),
-                            spreadRadius: 0,
-                            blurRadius: 7,
-                            offset: const Offset(0, 10))
-                      ],
-                    ),
-                    child: TextButton(
-                      style: ButtonStyle(
-                        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                          RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20.0),
+
+              listHistoryCheckBox.isNotEmpty ? Column(
+                children: [
+                  ...listHistoryCheckBox.map((e) => Container(
+                      margin: const EdgeInsets.only(left: 10, right: 0),
+                      padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(30),
+                          border: Border.all(width: 0.5, color: Colors.transparent)),
+                      child: Container(
+                          margin: const EdgeInsets.only(right: 0, top: 20, bottom: 10),
+                          height: 110,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(27),
+                            color: Colors.white,
+                            boxShadow: [
+                              BoxShadow(
+                                  color: Colors.grey.withOpacity(0.2),
+                                  spreadRadius: 0,
+                                  blurRadius: 7,
+                                  offset: const Offset(0, 10))
+                            ],
                           ),
-                        ),
-                      ),
-                      onPressed: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const ScheduleDetailFinish()));
-                      },
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Center(
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.end,
-                              children: [
-                                ClipRRect(
-                                  borderRadius: BorderRadius.circular(30),
-                                  child: Image.network(
-                                      'https://www.stanleywellnesscentre.com/images/blogs/142/FREE_CLINIC_thumbnail_ok.png',
-                                      fit: BoxFit.cover,
-                                      scale: 4),
+                          child: TextButton(
+                            style: ButtonStyle(
+                              shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(20.0),
                                 ),
-                                Padding(
-                                  padding: const EdgeInsets.fromLTRB(5, 5, 0, 0),
-                                  child: Column(
-                                    children: const [
-                                      SizedBox(
-                                          width: 190,
-                                          child: Text("Supporting the CIS",
-                                              maxLines: 2,
-                                              overflow: TextOverflow.ellipsis,
-                                              style: TextStyle(
-                                                  fontSize: 18,
-                                                  color: Color(0xff1c335b),
-                                                  fontWeight: FontWeight.w600,
-                                                  fontFamily: 'Merriweather Sans '))),
-                                      SizedBox(
-                                        height: 3,
+                              ),
+                            ),
+                            onPressed: () {
+                              
+                            },
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Center(
+                                  child: Row(
+                                    crossAxisAlignment: CrossAxisAlignment.end,
+                                    children: [
+                                      ClipRRect(
+                                        borderRadius: BorderRadius.circular(30),
+                                        child: Image.network(
+                                          e.historyCheck.hospital.image,
+                                          fit: BoxFit.fill,
+                                          width: 100,
+                                          height: 100,
+                                        ),
                                       ),
-                                      Expanded(
-                                        flex: 1,
-                                        child: SizedBox(
-                                            width: 190,
-                                            child: Text("Restore Medical Clinic CIS",
-                                                maxLines: 2,
-                                                overflow: TextOverflow.ellipsis,
-                                                style: TextStyle(
-                                                    height: 1,
-                                                    fontSize: 15,
-                                                    color: ColorConstant.Grey01,
-                                                    fontWeight: FontWeight.w400,
-                                                    fontFamily: 'Merriweather Sans'))),
+                                      Padding(
+                                        padding: const EdgeInsets.fromLTRB(5, 5, 0, 0),
+                                        child: Column(
+                                          children: [
+                                            SizedBox(
+                                                width: 190,
+                                                child: Text(e.historyCheck.hospital.hospitalName,
+                                                    maxLines: 2,
+                                                    overflow: TextOverflow.ellipsis,
+                                                    style: const TextStyle(
+                                                        fontSize: 15,
+                                                        color: Color(0xff1c335b),
+                                                        fontWeight: FontWeight.w600,
+                                                        fontFamily: 'Merriweather Sans '))),
+                                            const SizedBox(
+                                              height: 3,
+                                            ),
+                                            Expanded(
+                                              flex: 1,
+                                              child: SizedBox(
+                                                  width: 190,
+                                                  child: Text(e.historyCheck.diagnosis,
+                                                      maxLines: 2,
+                                                      overflow: TextOverflow.ellipsis,
+                                                      style: const TextStyle(
+                                                          height: 1,
+                                                          fontSize: 15,
+                                                          color: Colors.black,
+                                                          fontWeight: FontWeight.w600,
+                                                          fontFamily: 'Merriweather Sans'))),
+                                            ),
+                                            Expanded(
+                                              flex: 1,
+                                              child: SizedBox(
+                                                  width: 190,
+                                                  child: Text(e.historyCheck.appointment,
+                                                      maxLines: 2,
+                                                      overflow: TextOverflow.ellipsis,
+                                                      style: const TextStyle(
+                                                          fontSize: 13,
+                                                          color: Colors.black,
+                                                          fontWeight: FontWeight.w600,
+                                                          fontFamily: 'Merriweather Sans '))),
+                                            )
+                                          ],
+                                        ),
                                       ),
-                                      Expanded(
-                                        flex: 1,
-                                        child: SizedBox(
-                                            width: 190,
-                                            child: Text("19 Tháng 4 2023 lúc 11:00AM",
-                                                maxLines: 2,
-                                                overflow: TextOverflow.ellipsis,
-                                                style: TextStyle(
-                                                    fontSize: 13,
-                                                    color: ColorConstant.Grey01,
-                                                    fontWeight: FontWeight.w600,
-                                                    fontFamily: 'Merriweather Sans '))),
-                                      )
+
                                     ],
                                   ),
                                 ),
+                                Checkbox(
+                                  value: e.checked,
+                                  onChanged: (newValue) {
+                                    setState(() {
+                                      e.checked = newValue!;
 
+                                      scheduleDataProvider.shareHistory = [];
+
+                                      for(int i = 0; i < listHistoryCheckBox.length ; i++) {
+                                        if(listHistoryCheckBox[i].checked) {
+                                          scheduleDataProvider.shareHistory.add(listHistoryCheckBox[i].historyCheck);
+                                        }
+                                      }
+
+                                    });
+                                  },
+                                )
                               ],
                             ),
-                          ),
-                          Checkbox(
-                            value: isChecked,
-                            onChanged: (bool? newValue) {
-                              setState(() {
-                                isChecked = newValue!;
-                              });
-                            },
-                          )
-                        ],
-                      ),
-                    ))
-              ),
+                          ))
+                  ))
+                ],
+              ) : const Text("Không có lịch sử")
             ],
           ),
         ),
@@ -503,6 +557,13 @@ class _OrderDetailClinicState extends State<OrderDetailClinic> {
   }
 
   Widget continuous() {
+
+    var scheduleDataProvider = Provider.of<ScheduleDataProvider>(context,listen: false);
+
+    var hospitalDetailPageProvider = Provider.of<HospitalDetailPageProvider>(context,listen: false);
+
+    var userLoginProvider = Provider.of<UserLoginProvider>(context,listen: false);
+
     return Padding(
         padding: const EdgeInsets.fromLTRB(5, 0, 5, 0),
         child: Container(
@@ -517,10 +578,52 @@ class _OrderDetailClinicState extends State<OrderDetailClinic> {
                 ),
               ),
               onPressed: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const OrderSumary()));
+
+                bool success = true;
+
+                scheduleDataProvider.setSymptom(_controllerTextWord.text);
+
+                scheduleDataProvider.setHospital(hospitalDetailPageProvider.hospitalDetails!);
+
+                scheduleDataProvider.setUser(userLoginProvider.userLogin);
+
+
+                if(scheduleDataProvider.symptom!.isEmpty ||
+                    scheduleDataProvider.scheduleDoctor == null ||
+                    scheduleDataProvider.scheduleTime == null) {
+                  Fluttertoast.showToast(
+                      msg: "Vui Lòng Cung Cấp Đầy Đủ Thông Tin",
+                      toastLength: Toast.LENGTH_SHORT,
+                      gravity: ToastGravity.TOP,
+                      timeInSecForIosWeb: 1,
+                      backgroundColor: Colors.red,
+                      textColor: Colors.white,
+                      fontSize: 16.0
+                  );
+
+                  success = false;
+
+                } else if(scheduleDataProvider.scheduleDay == null) {
+                  Fluttertoast.showToast(
+                      msg: "Vui Lòng Đặt Lịch Sau Ngày Hôm Nay Để Phòng Khám Có Thể Phục Vụ",
+                      toastLength: Toast.LENGTH_SHORT,
+                      gravity: ToastGravity.TOP,
+                      timeInSecForIosWeb: 1,
+                      backgroundColor: Colors.red,
+                      textColor: Colors.white,
+                      fontSize: 16.0
+                  );
+
+                  success = false;
+                }
+
+                if(success) {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const OrderSummary()));
+                }
+
               },
               child: const Padding(
                 padding: EdgeInsets.only(

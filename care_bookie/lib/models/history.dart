@@ -76,12 +76,14 @@ class History {
 class UserHistory {
 
   final String id;
+  final String fullName;
   final String email;
   final String image;
   final String phone;
 
   UserHistory({
     required this.id,
+    required this.fullName,
     required this.email,
     required this.image,
     required this.phone
@@ -91,6 +93,7 @@ class UserHistory {
 
     return UserHistory(
         id: json['id'],
+        fullName : json['full_name'],
         email: json['email'],
         image: json['image'],
         phone: json['phone']
@@ -101,6 +104,7 @@ class UserHistory {
 
   Map<String,dynamic> toJson() => {
     'id' : id,
+    'full_name' : fullName,
     'email' : email,
     'image' : image,
     'phone' : phone
@@ -149,11 +153,13 @@ class HospitalHistory {
 class DoctorHistory {
 
   final String id;
+  final String fields;
   final String fullName;
   final String image;
 
   DoctorHistory({
     required this.id,
+    required this.fields,
     required this.fullName,
     required this.image
   });
@@ -162,6 +168,7 @@ class DoctorHistory {
 
     return DoctorHistory(
         id: json['id'],
+        fields : json['fields'],
         fullName: json['full_name'],
         image: json['image']
     );
@@ -170,6 +177,7 @@ class DoctorHistory {
 
   Map<String,dynamic> toJson() => {
     'id' : id,
+    'fields' : fields,
     'full_name' : fullName,
     'image' : image
   };

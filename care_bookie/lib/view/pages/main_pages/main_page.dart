@@ -1,13 +1,15 @@
 import 'package:care_bookie/providers/home_page_provider.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:care_bookie/providers/schedule_page_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
-
 import '../../../../res/constants/colors.dart';
 import '../../../firebases/firebase_auth_function.dart';
 import '../login_signup_page/login_page.dart';
+import '../../../providers/history_page_provider.dart';
+import '../../../providers/user_login_provider.dart';
 import '../search_page/search_button.dart';
 import 'clinic/clinic_widget/clinics_nearby.dart';
 import 'doctor/doctor_widget/doctors.dart';
@@ -35,6 +37,24 @@ class _MainPageState extends State<MainPage> {
     if(loadHospitalAndDoctor.listDoctor.isEmpty){
       loadHospitalAndDoctor.getAllDoctor();
     }
+
+    var loadHistory = Provider.of<HistoryPageProvider>(context, listen: false);
+
+    var userLogin = Provider.of<UserLoginProvider>(context, listen: false);
+
+    var loadSchedule = Provider.of<SchedulePageProvider>(context,listen: false);
+
+
+
+    if(loadHistory.histories.isEmpty){
+      loadHistory.getAllHospital(userLogin.userLogin.id);
+    }
+
+    if(loadSchedule.schedules.isEmpty) {
+      loadSchedule.getAllScheduleByUserId(userLogin.userLogin.id);
+    }
+
+
   }
   @override
   Widget build(BuildContext context) {

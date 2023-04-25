@@ -1,7 +1,11 @@
+import 'package:care_bookie/providers/schedule_data_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import '../../../../../res/constants/colors.dart';
 import '../../../utils/colors_util.dart';
 import 'package:care_bookie/view/pages/utils/date_utils.dart' as date_util;
+
+import '../../../utils/compare_date_time.dart';
 
 class SelectDay extends StatefulWidget {
   const SelectDay({Key? key}) : super(key: key);
@@ -79,13 +83,36 @@ class _SelectDayState extends State<SelectDay> {
   }
 
   Widget capsuleView(int index) {
+    
+    var scheduleDataProvider = Provider.of<ScheduleDataProvider>(context,listen: false);
+    
     return Padding(
         padding: const EdgeInsets.fromLTRB(8, 0, 0, 0),
         child: GestureDetector(
           onTap: () {
             setState(() {
               currentDateTime = currentMonthList[index];
-              print("DATE -----> ${currentMonthList[index]}");
+
+              String day;
+
+              String moth;
+
+
+              if(compareDateTime(currentMonthList[index].toString())) {
+                if(currentMonthList[index].day < 10) {
+                  day = '0${currentMonthList[index].day}/';
+                } else {
+                  day = '${currentMonthList[index].day}/';
+                }
+                if(currentMonthList[index].month < 10) {
+                  moth = '0${currentMonthList[index].month}/';
+                } else {
+                  moth = '${currentMonthList[index].day}/';
+                }
+
+                scheduleDataProvider.setScheduleDay('$day$moth${currentMonthList[index].year}');
+
+              }
 
             });
           },
