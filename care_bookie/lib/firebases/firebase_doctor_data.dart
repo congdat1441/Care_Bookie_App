@@ -12,7 +12,7 @@ Future<List<Doctor>> getAllDoctorFirebase() async {
 
   List<String> listDoctorId = [];
 
-  await fireStore.collection("doctors").where("fields", isEqualTo: "Chuyên Khoa Mắt").where("full_name", isEqualTo: "Trần Đắc Phu").get()
+  await fireStore.collection("doctors").where("fields", isEqualTo: "Chuyên Khoa Mắt").get()
       .then((value){
     for (var element in value.docs) {
       doctors.add(Doctor.fromJson(element.data()));

@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import '../../../../../models/hospital.dart';
 import '../../../../../providers/home_page_provider.dart';
 import '../../../../../providers/hospital_detail_page_provider.dart';
+import '../../../../../providers/schedule_page_provider.dart';
 import '../../../../../res/constants/colors.dart';
 import '../detail_clinic.dart';
 
@@ -17,8 +18,8 @@ class ClinicsNearby extends StatefulWidget {
 class _ClinicsNearbyState extends State<ClinicsNearby> {
   @override
   Widget build(BuildContext context) {
-    return Consumer2<HomePageProvider, HospitalDetailPageProvider>(
-      builder: (context, homePageProvider, hospitalDetailPageProvider, child) =>
+    return Consumer3<HomePageProvider, HospitalDetailPageProvider,SchedulePageProvider>(
+      builder: (context, homePageProvider, hospitalDetailPageProvider,schedulePageProvider, child) =>
           SizedBox(
         width: MediaQuery.of(context).size.width,
         height: 500,
@@ -55,6 +56,13 @@ class _ClinicsNearbyState extends State<ClinicsNearby> {
                               onTap: () {
                                 hospitalDetailPageProvider.setHospitalDetails(
                                     homePageProvider.listHospital[index]);
+
+                                for (var element in schedulePageProvider.schedules) {
+                                  if(element.hospital.id == homePageProvider.listHospital[index].id) {
+                                    hospitalDetailPageProvider.setScheduleWithHospital(element);
+                                  }
+                                }
+
 
                                 Navigator.push(
                                     context,

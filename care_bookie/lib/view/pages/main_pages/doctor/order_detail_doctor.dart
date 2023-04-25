@@ -1,13 +1,18 @@
+import 'package:care_bookie/models/hospital.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
-import '../../../../providers/doctor_detail_provider.dart';
+import '../../../../models/history_checkbox.dart';
+import '../../../../providers/doctor_detail_page_provider.dart';
+import '../../../../providers/history_page_provider.dart';
+import '../../../../providers/schedule_data_provider.dart';
+import '../../../../providers/user_login_provider.dart';
 import '../../../../res/constants/colors.dart';
 import '../../review_page/review_doctor_page/review_doctor.dart';
 import '../main_page_widget/order_widget/order_sumary.dart';
 import '../main_page_widget/order_widget/select_day_order.dart';
-import '../main_page_widget/order_widget/share_history.dart';
 
 class OrderDetailDoctor extends StatefulWidget {
   const OrderDetailDoctor({Key? key}) : super(key: key);
@@ -24,31 +29,15 @@ class _OrderDetailDoctorState extends State<OrderDetailDoctor> {
   late ScrollController _scrollController;
   final TextEditingController _controllerTextWord = TextEditingController();
   final List<String> _timeList = [
-    "8:00 AM",
-    "8:30 AM",
-    "9:00 AM",
-    "9:30 AM",
+    "08:00 AM",
+    "09:00 AM",
     "10:00 AM",
-    "10:30 AM",
     "11:00 AM",
-    "11:30 AM",
-    "12:00 PM",
     "1:30 PM",
     "2:00 PM",
-    "2:30 PM",
     "3:00 PM",
-    "3:30 PM",
     "4:00 PM",
-    "4:30 PM",
-    "5:00 PM",
-    "5:30 PM"
-  ];
-
-  final List<String> _options = [
-    'Option 1',
-    'Option 2',
-    'Option 3',
-    'Option 4',
+    "5:00 PM"
   ];
 
   @override
@@ -67,6 +56,12 @@ class _OrderDetailDoctorState extends State<OrderDetailDoctor> {
         });
       }
     });
+    var loadHistory = Provider.of<HistoryPageProvider>(context, listen: false);
+
+
+    if(loadHistory.histories.isNotEmpty){
+      listHistoryCheckBox = loadHistory.histories.map((e) => HistoryCheckBox(historyCheck: e)).toList();
+    }
   }
 
   @override
@@ -74,6 +69,8 @@ class _OrderDetailDoctorState extends State<OrderDetailDoctor> {
     _scrollController.dispose();
     super.dispose();
   }
+
+  List<HistoryCheckBox> listHistoryCheckBox = [];
 
   @override
   Widget build(BuildContext context) {
@@ -96,7 +93,9 @@ class _OrderDetailDoctorState extends State<OrderDetailDoctor> {
 
   Widget sliverAppbar() {
     final doctorDetailProvider =
-        Provider.of<DoctorDetailProvider>(context, listen: false);
+        Provider.of<DoctorDetailPageProvider>(context, listen: false);
+
+    var scheduleDataProvider = Provider.of<ScheduleDataProvider>(context,listen: false);
 
     return SliverAppBar(
       title: Text(
@@ -121,6 +120,9 @@ class _OrderDetailDoctorState extends State<OrderDetailDoctor> {
               )
             : const Icon(IconlyLight.arrowLeft, size: 30, color: Colors.white),
         onPressed: () {
+
+          scheduleDataProvider.resetData();
+
           Navigator.pop(context);
         },
       ),
@@ -196,7 +198,7 @@ class _OrderDetailDoctorState extends State<OrderDetailDoctor> {
 
   Widget infoBasicDoctor() {
     final doctorDetailProvider =
-        Provider.of<DoctorDetailProvider>(context, listen: false);
+        Provider.of<DoctorDetailPageProvider>(context, listen: false);
 
     return SliverToBoxAdapter(
       child: Padding(
@@ -246,6 +248,32 @@ class _OrderDetailDoctorState extends State<OrderDetailDoctor> {
                                 color: ColorConstant.Grey01,
                                 fontWeight: FontWeight.w400,
                                 fontFamily: 'Merriweather Sans')),
+                      ),
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Text("Bệnh viện :",
+                          style: TextStyle(
+                              height: 0.9,
+                              fontSize: 16,
+                              color: Colors.black87,
+                              fontWeight: FontWeight.w500,
+                              fontFamily: 'Merriweather Sans')),
+                      Expanded(
+                        child: Container(
+                          padding: const EdgeInsets.fromLTRB(10, 5, 5, 5),
+                          child: Text(doctorDetailProvider.doctorDetail!.hospitalName,
+                              overflow: TextOverflow.ellipsis,
+                              style: const TextStyle(
+                                  overflow: TextOverflow.ellipsis,
+                                  height: 0.9,
+                                  fontSize: 16,
+                                  color: ColorConstant.Grey01,
+                                  fontWeight: FontWeight.w400,
+                                  fontFamily: 'Merriweather Sans')),
+                        ),
                       ),
                     ],
                   ),
@@ -343,6 +371,10 @@ class _OrderDetailDoctorState extends State<OrderDetailDoctor> {
   }
 
   Widget selectTime() {
+
+    var scheduleDataProvider = Provider.of<ScheduleDataProvider>(context,listen: false);
+
+
     return SliverPadding(
       padding: const EdgeInsets.symmetric(horizontal: 5.0),
       sliver: SliverToBoxAdapter(
@@ -375,6 +407,7 @@ class _OrderDetailDoctorState extends State<OrderDetailDoctor> {
                       onTap: () {
                         setState(() {
                           _selectedTime = index;
+                          scheduleDataProvider.setScheduleTime(_timeList[index]);
                         });
                       },
                       child: Container(
@@ -459,6 +492,9 @@ class _OrderDetailDoctorState extends State<OrderDetailDoctor> {
   }
 
   Widget shareHistory() {
+
+    var scheduleDataProvider = Provider.of<ScheduleDataProvider>(context,listen: false);
+
     return SliverToBoxAdapter(
       child: Padding(
         padding: const EdgeInsets.fromLTRB(0, 5, 10, 10),
@@ -481,14 +517,130 @@ class _OrderDetailDoctorState extends State<OrderDetailDoctor> {
             },
             initiallyExpanded: _isExpanded,
             children: [
-              Container(
-                  margin: const EdgeInsets.only(left: 10, right: 0),
-                  padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(30),
-                      border:
-                          Border.all(width: 0.5, color: Colors.transparent)),
-                  child: const ShareHistory()),
+
+              listHistoryCheckBox.isNotEmpty ? Column(
+                children: [
+                  ...listHistoryCheckBox.map((e) => Container(
+                      margin: const EdgeInsets.only(left: 10, right: 0),
+                      padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(30),
+                          border: Border.all(width: 0.5, color: Colors.transparent)),
+                      child: Container(
+                          margin: const EdgeInsets.only(right: 0, top: 20, bottom: 10),
+                          height: 110,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(27),
+                            color: Colors.white,
+                            boxShadow: [
+                              BoxShadow(
+                                  color: Colors.grey.withOpacity(0.2),
+                                  spreadRadius: 0,
+                                  blurRadius: 7,
+                                  offset: const Offset(0, 10))
+                            ],
+                          ),
+                          child: TextButton(
+                            style: ButtonStyle(
+                              shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(20.0),
+                                ),
+                              ),
+                            ),
+                            onPressed: () {
+
+                            },
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Center(
+                                  child: Row(
+                                    crossAxisAlignment: CrossAxisAlignment.end,
+                                    children: [
+                                      ClipRRect(
+                                        borderRadius: BorderRadius.circular(30),
+                                        child: Image.network(
+                                          e.historyCheck.hospital.image,
+                                          fit: BoxFit.fill,
+                                          width: 100,
+                                          height: 100,
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.fromLTRB(5, 5, 0, 0),
+                                        child: Column(
+                                          children: [
+                                            SizedBox(
+                                                width: 190,
+                                                child: Text(e.historyCheck.hospital.hospitalName,
+                                                    maxLines: 2,
+                                                    overflow: TextOverflow.ellipsis,
+                                                    style: const TextStyle(
+                                                        fontSize: 15,
+                                                        color: Color(0xff1c335b),
+                                                        fontWeight: FontWeight.w600,
+                                                        fontFamily: 'Merriweather Sans '))),
+                                            const SizedBox(
+                                              height: 3,
+                                            ),
+                                            Expanded(
+                                              flex: 1,
+                                              child: SizedBox(
+                                                  width: 190,
+                                                  child: Text(e.historyCheck.diagnosis,
+                                                      maxLines: 2,
+                                                      overflow: TextOverflow.ellipsis,
+                                                      style: const TextStyle(
+                                                          height: 1,
+                                                          fontSize: 15,
+                                                          color: Colors.black,
+                                                          fontWeight: FontWeight.w600,
+                                                          fontFamily: 'Merriweather Sans'))),
+                                            ),
+                                            Expanded(
+                                              flex: 1,
+                                              child: SizedBox(
+                                                  width: 190,
+                                                  child: Text(e.historyCheck.appointment,
+                                                      maxLines: 2,
+                                                      overflow: TextOverflow.ellipsis,
+                                                      style: const TextStyle(
+                                                          fontSize: 13,
+                                                          color: Colors.black,
+                                                          fontWeight: FontWeight.w600,
+                                                          fontFamily: 'Merriweather Sans '))),
+                                            )
+                                          ],
+                                        ),
+                                      ),
+
+                                    ],
+                                  ),
+                                ),
+                                Checkbox(
+                                  value: e.checked,
+                                  onChanged: (newValue) {
+                                    setState(() {
+                                      e.checked = newValue!;
+
+                                      scheduleDataProvider.shareHistory = [];
+
+                                      for(int i = 0; i < listHistoryCheckBox.length ; i++) {
+                                        if(listHistoryCheckBox[i].checked) {
+                                          scheduleDataProvider.shareHistory.add(listHistoryCheckBox[i].historyCheck);
+                                        }
+                                      }
+
+                                    });
+                                  },
+                                )
+                              ],
+                            ),
+                          ))
+                  ))
+                ],
+              ) : const Text("Không có lịch sử")
             ],
           ),
         ),
@@ -507,6 +659,13 @@ class _OrderDetailDoctorState extends State<OrderDetailDoctor> {
   }
 
   Widget continuous() {
+
+    var scheduleDataProvider = Provider.of<ScheduleDataProvider>(context,listen: false);
+
+    var userLoginProvider = Provider.of<UserLoginProvider>(context,listen: false);
+
+    var doctorDetailPageProvider = Provider.of<DoctorDetailPageProvider>(context,listen: false);
+
     return Padding(
         padding: const EdgeInsets.fromLTRB(5, 0, 5, 0),
         child: Container(
@@ -521,10 +680,57 @@ class _OrderDetailDoctorState extends State<OrderDetailDoctor> {
                 ),
               ),
               onPressed: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const OrderSummary()));
+                bool success = true;
+
+                DoctorHospital doctor = DoctorHospital(
+                    id: doctorDetailPageProvider.doctorDetail!.id,
+                    fullName: doctorDetailPageProvider.doctorDetail!.fullName,
+                    image: doctorDetailPageProvider.doctorDetail!.image,
+                    fields: doctorDetailPageProvider.doctorDetail!.fields
+                );
+
+                scheduleDataProvider.setSymptom(_controllerTextWord.text);
+
+                scheduleDataProvider.setUser(userLoginProvider.userLogin);
+
+                scheduleDataProvider.setScheduleDoctor(doctor);
+
+
+                if(scheduleDataProvider.symptom!.isEmpty ||
+                    scheduleDataProvider.scheduleDoctor == null ||
+                    scheduleDataProvider.scheduleTime == null) {
+                  Fluttertoast.showToast(
+                      msg: "Vui Lòng Cung Cấp Đầy Đủ Thông Tin",
+                      toastLength: Toast.LENGTH_SHORT,
+                      gravity: ToastGravity.TOP,
+                      timeInSecForIosWeb: 1,
+                      backgroundColor: Colors.red,
+                      textColor: Colors.white,
+                      fontSize: 16.0
+                  );
+
+                  success = false;
+
+                } else if(scheduleDataProvider.scheduleDay == null) {
+                  Fluttertoast.showToast(
+                      msg: "Vui Lòng Đặt Lịch Sau Ngày Hôm Nay Để Phòng Khám Có Thể Phục Vụ",
+                      toastLength: Toast.LENGTH_SHORT,
+                      gravity: ToastGravity.TOP,
+                      timeInSecForIosWeb: 1,
+                      backgroundColor: Colors.red,
+                      textColor: Colors.white,
+                      fontSize: 16.0
+                  );
+
+                  success = false;
+                }
+
+                if(success) {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const OrderSummary()));
+                }
               },
               child: const Padding(
                 padding: EdgeInsets.only(

@@ -1,9 +1,15 @@
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:care_bookie/providers/schedule_detail_page_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
+import '../../../providers/doctor_detail_page_provider.dart';
+import '../../../providers/hospital_detail_page_provider.dart';
+import '../../../providers/schedule_page_provider.dart';
 import '../../../res/constants/colors.dart';
+import '../layouts_page/navbar_layout.dart';
 import '../main_pages/main_page_widget/order_widget/describe_problem.dart';
 import '../main_pages/main_page_widget/order_widget/info_order_detail.dart';
 import '../main_pages/main_page_widget/order_widget/price_order.dart';
@@ -56,14 +62,14 @@ class _ScheduleDetailPendingState extends State<ScheduleDetailPending> {
               children: [
                 infoScheduleDetailPending(context),
                 infoDescribeProblemPending(context),
-                medicalExaminationFee(context),
+                medicalExaminationFeePending(context),
                 deleteOrder(),
               ],
             )),
         bottomNavigationBar: bottomNavigatorBar());
   }
 
-  Widget medicalExaminationFee(BuildContext context) {
+  Widget medicalExaminationFeePending(BuildContext context) {
 
     var scheduleDetailPageProvider = Provider.of<ScheduleDetailPageProvider>(context,listen: false);
 
@@ -327,6 +333,73 @@ class _ScheduleDetailPendingState extends State<ScheduleDetailPending> {
     );
   }
 
+  void showDialog() {
+
+    var scheduleDetailPageProvider = Provider.of<ScheduleDetailPageProvider>(context,listen: false);
+
+    var schedulePageProvider = Provider.of<SchedulePageProvider>(context,listen: false);
+
+    var hospitalDetailPageProvider = Provider.of<HospitalDetailPageProvider>(context,listen: false);
+
+    var doctorDetailPageProvider = Provider.of<DoctorDetailPageProvider>(context,listen: false);
+
+    AwesomeDialog(
+      context: context,
+      dialogType: DialogType.warning,
+      animType: AnimType.SCALE,
+      title: 'Hủy Lịch Khám Bệnh',
+      desc: 'Bạn Có Chắc Chắn Muốn Hủy Lịch Khám Không?',
+      btnOkOnPress: () async{
+
+
+
+          String scheduleId = scheduleDetailPageProvider.scheduleDetail!.id;
+
+          bool isSuccess = await scheduleDetailPageProvider.deleteScheduleById(scheduleId);
+
+          if(isSuccess) {
+
+            schedulePageProvider.schedules = [];
+
+            hospitalDetailPageProvider.scheduleWithHospital = null;
+
+            doctorDetailPageProvider.scheduleWithDoctor = null;
+
+            doctorDetailPageProvider.scheduleWithHospital = null;
+
+            Fluttertoast.showToast(
+                msg: "Hủy Lịch Thành Công",
+                toastLength: Toast.LENGTH_SHORT,
+                gravity: ToastGravity.TOP,
+                timeInSecForIosWeb: 1,
+                backgroundColor: Colors.green,
+                textColor: Colors.white,
+                fontSize: 16.0
+            );
+
+            // ignore: use_build_context_synchronously
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => const NavbarLayout(index: 0,)));
+          } else {
+            Fluttertoast.showToast(
+                msg: "Hủy Lịch Không Thành Công",
+                toastLength: Toast.LENGTH_SHORT,
+                gravity: ToastGravity.TOP,
+                timeInSecForIosWeb: 1,
+                backgroundColor: Colors.red,
+                textColor: Colors.white,
+                fontSize: 16.0
+            );
+          }
+
+
+      },
+      btnCancelOnPress: () {
+        print("CANCEL");
+      } ,
+    ).show();
+  }
+
   Widget deleteOrder() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.end,
@@ -339,7 +412,9 @@ class _ScheduleDetailPendingState extends State<ScheduleDetailPending> {
               borderRadius: BorderRadius.circular(10),
               border: Border.all(width: 1, color: Colors.grey)),
           child: TextButton(
-            onPressed: () {},
+            onPressed: () {
+              showDialog();
+            },
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: const [

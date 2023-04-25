@@ -120,6 +120,8 @@ class _OrderDetailClinicState extends State<OrderDetailClinic> {
 
     var hospitalDetailPageProvider = Provider.of<HospitalDetailPageProvider>(context, listen: false);
 
+    var scheduleDataProvider = Provider.of<ScheduleDataProvider>(context,listen: false);
+
     return SliverAppBar(
       title: Text(
         hospitalDetailPageProvider.hospitalDetails!.hospitalName,
@@ -143,6 +145,9 @@ class _OrderDetailClinicState extends State<OrderDetailClinic> {
               )
             : const Icon(IconlyLight.arrowLeft, size: 30, color: Colors.white),
         onPressed: () {
+
+          scheduleDataProvider.shareHistory = [];
+
           Navigator.pop(context);
         },
       ),

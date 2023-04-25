@@ -3,6 +3,7 @@ import 'package:care_bookie/providers/user_login_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../../../../providers/schedule_page_provider.dart';
 import '../../../../../res/constants/colors.dart';
 import '../../../layouts_page/navbar_layout.dart';
 import '../../main_page.dart';
@@ -291,6 +292,11 @@ class _OrderSuccessState extends State<OrderSuccess> {
   }
 
   Widget bottomNavigatorBar() {
+
+    var schedulePageProvider = Provider.of<SchedulePageProvider>(context,listen: false);
+
+    var scheduleDataProvider = Provider.of<ScheduleDataProvider>(context,listen: false);
+
     return Container(
       height: 80,
       color: Colors.white,
@@ -311,6 +317,13 @@ class _OrderSuccessState extends State<OrderSuccess> {
                       ),
                     ),
                     onPressed: () {
+
+                      schedulePageProvider.schedules = [];
+
+                      scheduleDataProvider.resetData();
+
+                      scheduleDataProvider.hospital = null;
+
                       Navigator.push(context,
                           MaterialPageRoute(builder: (context) => const NavbarLayout(index: 0,)));
                     },

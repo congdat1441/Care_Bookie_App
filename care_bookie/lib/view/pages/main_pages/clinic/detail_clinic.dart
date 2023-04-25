@@ -1,11 +1,15 @@
-import 'package:care_bookie/providers/doctor_detail_provider.dart';
+import 'package:care_bookie/providers/doctor_detail_page_provider.dart';
+import 'package:care_bookie/providers/schedule_data_provider.dart';
+import 'package:care_bookie/view/pages/schedule/schedule_detail_pending.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:provider/provider.dart';
 import '../../../../../res/constants/colors.dart';
 import 'package:flutter_expandable_text/flutter_expandable_text.dart';
 import '../../../../providers/hospital_detail_page_provider.dart';
+import '../../../../providers/schedule_detail_page_provider.dart';
 import '../../review_page/review_clinic_page/review_clinic.dart';
+import '../../schedule/schedule_detail_accept.dart';
 import '../doctor/detail_doctor.dart';
 import 'order_detail_clinic.dart';
 
@@ -47,8 +51,8 @@ class _DetailClinicState extends State<DetailClinic>
 
 
   Widget sliverAppBar() {
-    return Consumer<HospitalDetailPageProvider>(
-      builder: (context, hospitalDetailPageProvider, child) => SliverAppBar(
+    return Consumer2<HospitalDetailPageProvider,ScheduleDataProvider>(
+      builder: (context, hospitalDetailPageProvider,scheduleDataProvider, child) => SliverAppBar(
         title: Padding(
           padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
           child: Text(
@@ -66,6 +70,8 @@ class _DetailClinicState extends State<DetailClinic>
         backgroundColor: Colors.transparent,
         leading: IconButton(
           onPressed: () {
+            hospitalDetailPageProvider.scheduleWithHospital = null;
+            scheduleDataProvider.resetData();
             Navigator.pop(context);
           },
           icon: const Icon(
@@ -544,8 +550,13 @@ class _DetailClinicState extends State<DetailClinic>
   }
 
   Widget orderSchedule(BuildContext context) {
+
+    var hospitalDetailPageProvider = Provider.of<HospitalDetailPageProvider>(context,listen: false);
+
+    var scheduleDetailPageProvider = Provider.of<ScheduleDetailPageProvider>(context,listen: false);
+
     return SliverToBoxAdapter(
-      child: Padding(
+      child: hospitalDetailPageProvider.scheduleWithHospital == null ?  Padding(
           padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
           child: Container(
             height: 70,
@@ -588,6 +599,49 @@ class _DetailClinicState extends State<DetailClinic>
                   ),
                   child: Text(
                     "Đặt lịch khám",
+                    style: TextStyle(fontSize: 21, fontWeight: FontWeight.w600),
+                  ),
+                )),
+          )) :
+      Padding(
+          padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+          child: Container(
+            height: 70,
+            decoration: BoxDecoration(borderRadius: BorderRadius.circular(20)),
+            child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  elevation: 5,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30.0),
+                  ),
+                ),
+                onPressed: () {
+
+                  scheduleDetailPageProvider.setScheduleDetail(hospitalDetailPageProvider.scheduleWithHospital!);
+
+                  if(hospitalDetailPageProvider.scheduleWithHospital!.accept) {
+
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const ScheduleDetailAccept()));
+
+                  } else {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const ScheduleDetailPending()));
+                  }
+
+
+                },
+                child: const Padding(
+                  padding: EdgeInsets.only(
+                    top: 10,
+                    bottom: 10,
+                  ),
+                  child: Text(
+                    "Xem Lịch Khám",
                     style: TextStyle(fontSize: 21, fontWeight: FontWeight.w600),
                   ),
                 )),
@@ -649,13 +703,22 @@ class _DetailClinicState extends State<DetailClinic>
                                   borderRadius: BorderRadius.circular(10.0),
                                 ),
                                 child: InkWell(
-                                  onTap: () async{
+                                  onTap: () {
 
-                                    final doctorDetailProvider = Provider.of<DoctorDetailProvider>(context,listen: false);
+                                    final doctorDetailProvider = Provider.of<DoctorDetailPageProvider>(context,listen: false);
 
                                     doctorDetailProvider.setIsDoctorWithHospital(true);
                                     doctorDetailProvider.setIdDoctorWithHospital(e.id);
 
+                                    if(hospitalDetailPageProvider.scheduleWithHospital != null) {
+
+                                      doctorDetailProvider.setScheduleWithHospital(hospitalDetailPageProvider.scheduleWithHospital!);
+
+                                      if(hospitalDetailPageProvider.scheduleWithHospital!.doctor.id == e.id) {
+                                        doctorDetailProvider.setScheduleWithDoctor(hospitalDetailPageProvider.scheduleWithHospital!);
+                                      }
+
+                                    }
 
                                     Navigator.push(
                                         context,

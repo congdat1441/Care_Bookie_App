@@ -49,7 +49,17 @@ class ScheduleDataProvider extends ChangeNotifier{
     this.user = user;
   }
 
-  Future<void> createSchedule() async{
+  void resetData() {
+    scheduleDoctor = null;
+    scheduleDay = null;
+    scheduleTime = null;
+    symptom = null;
+    shareHistory = [];
+    hospital = null;
+    user = null;
+  }
+
+  Future<bool> createSchedule() async{
 
     List<HistorySchedule> historySchedule = [];
 
@@ -85,7 +95,7 @@ class ScheduleDataProvider extends ChangeNotifier{
         user: user!,
     );
 
-    await createScheduleFirebase(schedule);
+    return await createScheduleFirebase(schedule);
   }
 
 }

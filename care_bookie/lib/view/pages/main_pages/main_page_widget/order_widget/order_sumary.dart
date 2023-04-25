@@ -144,7 +144,7 @@ class _OrderSummaryState extends State<OrderSummary> {
                 width: 150,
                 child: Align(
                   alignment: Alignment.centerRight,
-                  child: Text(hospitalDetailPageProvider.hospitalDetails!.hospitalName,
+                  child: Text(hospitalDetailPageProvider.hospitalDetails != null ? hospitalDetailPageProvider.hospitalDetails!.hospitalName : scheduleDataProvider.hospital!.hospitalName,
                       maxLines: 2,
                       style: const TextStyle(
                           fontWeight: FontWeight.w500,
@@ -310,6 +310,8 @@ class _OrderSummaryState extends State<OrderSummary> {
 
     var hospitalDetailPageProvider = Provider.of<HospitalDetailPageProvider>(context,listen: false);
 
+    var scheduleDataProvider = Provider.of<ScheduleDataProvider>(context,listen: false);
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -325,7 +327,7 @@ class _OrderSummaryState extends State<OrderSummary> {
           width: 200,
           child: Align(
             alignment: Alignment.centerRight,
-            child: Text(hospitalDetailPageProvider.hospitalDetails!.fee,
+            child: Text(hospitalDetailPageProvider.hospitalDetails != null ?  hospitalDetailPageProvider.hospitalDetails!.fee : scheduleDataProvider.hospital!.fee,
                 maxLines: 2,
                 style: const TextStyle(
                     fontWeight: FontWeight.w500,
@@ -429,20 +431,44 @@ class _OrderSummaryState extends State<OrderSummary> {
                   borderRadius: BorderRadius.circular(30.0),
                 ),
               ),
-              onPressed: () {
+              onPressed: () async{
 
                 if(check) {
 
-                  (()async{
+                    bool isSuccess = await scheduleDataProvider.createSchedule();
 
-                    await scheduleDataProvider.createSchedule();
+                    if(isSuccess) {
 
-                  })();
+                      Fluttertoast.showToast(
+                          msg: "Tạo Lịch Thành Công",
+                          toastLength: Toast.LENGTH_SHORT,
+                          gravity: ToastGravity.TOP,
+                          timeInSecForIosWeb: 1,
+                          backgroundColor: Colors.green,
+                          textColor: Colors.white,
+                          fontSize: 16.0
+                      );
 
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const OrderSuccess()));
+                      // ignore: use_build_context_synchronously
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const OrderSuccess()));
+                    } else {
+
+                      Fluttertoast.showToast(
+                          msg: "Tạo Lịch Không Thành Công",
+                          toastLength: Toast.LENGTH_SHORT,
+                          gravity: ToastGravity.TOP,
+                          timeInSecForIosWeb: 1,
+                          backgroundColor: Colors.red,
+                          textColor: Colors.white,
+                          fontSize: 16.0
+                      );
+
+                    }
+
+
 
                 } else {
                   Fluttertoast.showToast(

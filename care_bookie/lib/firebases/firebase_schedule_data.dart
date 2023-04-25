@@ -2,13 +2,19 @@
 import 'package:care_bookie/models/schedule.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-Future<void> createScheduleFirebase(Schedule schedule) async{
+Future<bool> createScheduleFirebase(Schedule schedule) async{
 
   FirebaseFirestore fireStore = FirebaseFirestore.instance;
 
-  await fireStore.collection("schedules").doc(schedule.id).set(
+  final response = await fireStore.collection("schedules").doc(schedule.id).set(
     schedule.toJson()
-  );
+  ).then((value) {
+    return true;
+  }).catchError((e){
+    return false;
+  });
+
+  return response;
 }
 
 Future<List<Schedule>> getAllScheduleByUserIdFirebase(String userId) async{
@@ -25,4 +31,19 @@ Future<List<Schedule>> getAllScheduleByUserIdFirebase(String userId) async{
   });
 
   return schedules;
+}
+
+Future<bool> deleteScheduleByIdFirebase(String scheduleId) async{
+
+  FirebaseFirestore fireStore = FirebaseFirestore.instance;
+
+  final response = await fireStore.collection("schedules").doc(scheduleId).delete()
+  .then((value) {
+    return true;
+  }).catchError((e) {
+    return false;
+  });
+
+  return response;
+
 }

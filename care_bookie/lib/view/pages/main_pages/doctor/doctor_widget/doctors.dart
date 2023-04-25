@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:provider/provider.dart';
-import '../../../../../providers/doctor_detail_provider.dart';
+import '../../../../../providers/doctor_detail_page_provider.dart';
 import '../../../../../providers/home_page_provider.dart';
+import '../../../../../providers/schedule_page_provider.dart';
 import '../../../../../res/constants/colors.dart';
 import '../detail_doctor.dart';
 
@@ -16,8 +17,8 @@ class Doctors extends StatefulWidget {
 class _DoctorsState extends State<Doctors> {
   @override
   Widget build(BuildContext context) {
-    return Consumer2<HomePageProvider,DoctorDetailProvider>(
-      builder: (context, homePageProvider,doctorDetailProvider, child) => ListView.builder(
+    return Consumer3<HomePageProvider,DoctorDetailPageProvider,SchedulePageProvider>(
+      builder: (context, homePageProvider,doctorDetailProvider,schedulePageProvider, child) => ListView.builder(
         scrollDirection: Axis.horizontal,
         itemCount: homePageProvider.listDoctor.length,
         itemBuilder: (context, index) => Container(
@@ -62,6 +63,15 @@ class _DoctorsState extends State<Doctors> {
 
                           doctorDetailProvider.setIsDoctorWithHospital(false);
                           doctorDetailProvider.setDoctorDetail(homePageProvider.listDoctor[index]);
+
+                          for (var element in schedulePageProvider.schedules) {
+                            if(element.doctor.id == homePageProvider.listDoctor[index].id) {
+                              doctorDetailProvider.setScheduleWithDoctor(element);
+                            }
+                            if(element.hospital.id == homePageProvider.listDoctor[index].hospitalId){
+                              doctorDetailProvider.setScheduleWithHospital(element);
+                            }
+                          }
 
                           Navigator.push(
                               context,

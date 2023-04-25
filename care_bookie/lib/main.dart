@@ -1,5 +1,5 @@
 import 'package:care_bookie/providers/bottom_navbar_provider.dart';
-import 'package:care_bookie/providers/doctor_detail_provider.dart';
+import 'package:care_bookie/providers/doctor_detail_page_provider.dart';
 import 'package:care_bookie/providers/history_detail_page_provider.dart';
 import 'package:care_bookie/providers/history_page_provider.dart';
 import 'package:care_bookie/providers/home_page_provider.dart';
@@ -31,7 +31,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => BottomNavBarProvider()),
         ChangeNotifierProvider(create: (context) => HomePageProvider(),),
         ChangeNotifierProvider(create: (context) => HospitalDetailPageProvider(),),
-        ChangeNotifierProvider(create: (context) => DoctorDetailProvider(),),
+        ChangeNotifierProvider(create: (context) => DoctorDetailPageProvider(),),
         ChangeNotifierProvider(create: (context) => HistoryPageProvider(),),
         ChangeNotifierProvider(create: (context) => UserLoginProvider(),),
         ChangeNotifierProvider(create: (context) => HistoryDetailPageProvider(),),

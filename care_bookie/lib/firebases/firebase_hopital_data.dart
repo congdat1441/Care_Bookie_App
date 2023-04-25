@@ -63,3 +63,19 @@ Future<List<Hospital>> getAllHospitalFirebase() async {
   return hospitals;
 
 }
+
+Future<Hospital> getHospitalByIdFirebase(String hospitalId) async {
+
+  late Hospital hospital;
+
+  FirebaseFirestore fireStore = FirebaseFirestore.instance;
+
+  await fireStore.collection("hospitals").doc(hospitalId).get().then((value) {
+
+    hospital = Hospital.fromJson(value.data()!);
+
+  });
+
+  return hospital;
+
+}
