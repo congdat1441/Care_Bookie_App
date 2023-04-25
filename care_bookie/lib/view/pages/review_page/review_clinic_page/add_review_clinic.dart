@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
-
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import '../../../../res/constants/colors.dart';
+
+
 
 class AddReviewClinic extends StatefulWidget {
   const AddReviewClinic({Key? key}) : super(key: key);
@@ -71,15 +73,20 @@ class _AddReviewClinicState extends State<AddReviewClinic> {
             Center(
               child: Padding(
                 padding: const EdgeInsets.only(top: 20),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    ...[1, 2, 3, 4, 5].map((e) => const Icon(
-                          IconlyBold.star,
-                          size: 50,
-                          color: Colors.amber,
-                        )),
-                  ],
+                child: RatingBar.builder(
+                  initialRating: 3.8,
+                  minRating: 1,
+                  direction: Axis.horizontal,
+                  allowHalfRating: false,
+                  itemCount: 5,
+                  itemPadding: const EdgeInsets.symmetric(horizontal: 4.0),
+                  itemBuilder: (context, _) => const Icon(
+                    Icons.star,
+                    color: Colors.amber,
+                  ),
+                  onRatingUpdate: (rating) {
+                    print(rating);
+                  },
                 ),
               ),
             ),
@@ -149,7 +156,12 @@ class _AddReviewClinicState extends State<AddReviewClinic> {
                   borderRadius: BorderRadius.circular(10.0),
                 ),
               ),
-              onPressed: () {},
+              onPressed: () {
+
+                print("Time ------------------> ${DateTime.now().day}/${DateTime.now().month}/${DateTime.now().year}");
+
+
+              },
               child: const Padding(
                 padding: EdgeInsets.only(
                   top: 10,
