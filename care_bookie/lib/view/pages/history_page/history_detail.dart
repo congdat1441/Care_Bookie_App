@@ -32,7 +32,7 @@ class _HistoryDetailState extends State<HistoryDetail> {
         backgroundColor: Colors.grey,
         title: const Center(
           child: Text(
-            "Thông tin đặt lịch",
+            "Lịch sử khám bệnh",
             style: TextStyle(
               color: Colors.white,
               fontWeight: FontWeight.w600,
