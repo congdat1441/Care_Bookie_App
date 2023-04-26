@@ -122,7 +122,7 @@ class Review {
 
   final String content;
   final String reviewDay;
-  final int star;
+  final num star;
   final UserReview user;
   final String userId;
 
@@ -155,7 +155,8 @@ class Review {
       'content' : content,
       'review_day' : reviewDay,
       'user' : user.toJson(),
-      'user_id' : userId
+      'user_id' : userId,
+      'star' : star
     };
 
   }

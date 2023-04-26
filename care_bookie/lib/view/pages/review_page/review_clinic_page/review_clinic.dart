@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../providers/hospital_detail_page_provider.dart';
@@ -85,22 +86,16 @@ class _ReviewClinicState extends State<ReviewClinic> {
                     ),
                     Row(
                       children: [
-                        ...[1, 2, 3, 4, 5].map((e) {
-                          if(e <= hospitalDetailPageProvider.hospitalDetails!.star) {
-                            return const Icon(
-                              IconlyBold.star,
-                              size: 30,
-                              color: Colors.amber,
-                            );
-                          }
-
-                          return const Icon(
-                            IconlyBold.star,
-                            size: 30,
-                            color: Colors.black12,
-                          );
-
-                        }),
+                        RatingBarIndicator(
+                          rating: hospitalDetailPageProvider.hospitalDetails!.star.toDouble(),
+                          itemBuilder: (context, index) => const Icon(
+                            Icons.star,
+                            color: Colors.amber,
+                          ),
+                          itemCount: 5,
+                          itemSize: 20.0,
+                          direction: Axis.horizontal,
+                        )
                       ],
                     )
                   ],
@@ -273,22 +268,17 @@ class _ReviewClinicState extends State<ReviewClinic> {
                               ),
                               Row(
                                 children: [
-                                  ...[1, 2, 3, 4, 5].map((e) {
-                                    if(e <= hospitalDetailPageProvider.hospitalDetails!.star) {
-                                      return const Icon(
-                                        IconlyBold.star,
-                                        size: 25,
-                                        color: Colors.amber,
-                                      );
-                                    }
 
-                                    return const Icon(
-                                      IconlyBold.star,
-                                      size: 25,
-                                      color: Colors.black12,
-                                    );
-
-                                  })
+                                  RatingBarIndicator(
+                                    rating: e.star.toDouble(),
+                                    itemBuilder: (context, index) => const Icon(
+                                      Icons.star,
+                                      color: Colors.amber,
+                                    ),
+                                    itemCount: 5,
+                                    itemSize: 20.0,
+                                    direction: Axis.horizontal,
+                                  )
 
                                 ],
                               )

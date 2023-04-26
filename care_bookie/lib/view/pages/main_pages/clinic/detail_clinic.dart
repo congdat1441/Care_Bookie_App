@@ -3,6 +3,7 @@ import 'package:care_bookie/providers/schedule_data_provider.dart';
 import 'package:care_bookie/view/pages/schedule/schedule_detail_pending.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:provider/provider.dart';
 import '../../../../../res/constants/colors.dart';
 import 'package:flutter_expandable_text/flutter_expandable_text.dart';
@@ -233,21 +234,16 @@ class _DetailClinicState extends State<DetailClinic>
                         children: [
                           Row(
                             children: [
-                              ...[1, 2, 3, 4, 5].map((e) {
-                                if(e <= hospitalDetailPageProvider.hospitalDetails!.star) {
-                                  return const Icon(
-                                    IconlyBold.star,
-                                    size: 25,
-                                    color: Colors.amber,
-                                  );
-                                }
-
-                                return const Icon(
-                                  IconlyBold.star,
-                                  size: 25,
-                                  color: Colors.black12,
-                                );
-                              }),
+                              RatingBarIndicator(
+                                rating: hospitalDetailPageProvider.hospitalDetails!.star.toDouble(),
+                                itemBuilder: (context, index) => const Icon(
+                                  Icons.star,
+                                  color: Colors.amber,
+                                ),
+                                itemCount: 5,
+                                itemSize: 25.0,
+                                direction: Axis.horizontal,
+                              ),
                               const SizedBox(
                                 width: 5,
                               ),

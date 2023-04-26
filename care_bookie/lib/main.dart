@@ -4,6 +4,7 @@ import 'package:care_bookie/providers/history_detail_page_provider.dart';
 import 'package:care_bookie/providers/history_page_provider.dart';
 import 'package:care_bookie/providers/home_page_provider.dart';
 import 'package:care_bookie/providers/hospital_detail_page_provider.dart';
+import 'package:care_bookie/providers/review_data_provider.dart';
 import 'package:care_bookie/providers/schedule_data_provider.dart';
 import 'package:care_bookie/providers/schedule_detail_page_provider.dart';
 import 'package:care_bookie/providers/schedule_page_provider.dart';
@@ -38,7 +39,8 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => HistoryDetailPageProvider(),),
         ChangeNotifierProvider(create: (context) => ScheduleDataProvider(),),
         ChangeNotifierProvider(create: (context) => SchedulePageProvider(),),
-        ChangeNotifierProvider(create: (context) => ScheduleDetailPageProvider(),)
+        ChangeNotifierProvider(create: (context) => ScheduleDetailPageProvider(),),
+        ChangeNotifierProvider(create: (context) => ReviewDataProvider(),)
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

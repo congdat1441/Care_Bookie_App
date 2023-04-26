@@ -12,7 +12,7 @@ Future<List<Doctor>> getAllDoctorFirebase() async {
 
   List<String> listDoctorId = [];
 
-  await fireStore.collection("doctors").where("fields", isEqualTo: "Chuyên Khoa Mắt").get()
+  await fireStore.collection("doctors").get()
       .then((value){
     for (var element in value.docs) {
       doctors.add(Doctor.fromJson(element.data()));
@@ -75,20 +75,83 @@ Future<Doctor> getDoctorByIdFirebase(String id) async{
 
 }
 
-Future<bool> createReviewDoctor(Review review,String doctorId) async{
+Future<bool> createReviewDoctorFireBase(Review review,String doctorId,double starMedium) async{
 
   FirebaseFirestore fireStore = FirebaseFirestore.instance;
 
-  var response = await fireStore.collection("doctors").doc(doctorId).collection("reviews").add(
+  await fireStore.collection("doctors").doc(doctorId).collection("reviews").add(
     review.toJson()
-  ).then((value) {
-    return true;
-  })
-  .catchError((e){
+  ).catchError((e) {
+    // ignore: invalid_return_type_for_catch_error
     return false;
   });
-  
-  return response;
+
+  await fireStore.collection("doctors").doc(doctorId).update({
+    'star' : starMedium
+  }).then((value) {
+    return true;
+  }).catchError((e) {
+    return false;
+  });
+
+  return true;
+
+}
+
+Future<ReviewResponseData> reviewExistsByUserIdFirebase(String userId,String doctorId) async {
+
+
+  FirebaseFirestore fireStore = FirebaseFirestore.instance;
+
+
+
+  late int reviewLength;
+
+  late num star;
+
+  await fireStore.collection("doctors").doc(doctorId).collection("reviews").get().then((value) => {
+    reviewLength = value.docs.length
+  });
+
+  await fireStore.collection("doctors").doc(doctorId).get().then((value) => {
+    star = value.data()!['star']
+  });
+
+  ReviewResponseData data = ReviewResponseData(reviewDocId: "", starUser: 0,reviewLength: reviewLength, starTotal: star);
+
+  await fireStore.collection("doctors").doc(doctorId).collection("reviews").where("user_id", isEqualTo: userId).get()
+      .then((value){
+        if(value.docs.isNotEmpty) {
+          data = ReviewResponseData(reviewDocId: value.docs[0].id, starUser: value.docs[0].data()['star'],reviewLength: reviewLength, starTotal: star);
+        }
+  });
+
+  return data;
+
+}
+
+Future<bool> updateReviewByUserIdFirebase(Review review,String doctorId,double starMedium, String reviewId) async {
+
+
+  FirebaseFirestore fireStore = FirebaseFirestore.instance;
+
+  await fireStore.collection("doctors").doc(doctorId).collection("reviews").doc(reviewId).update(
+      review.toJson()
+  ).catchError((e) {
+    // ignore: invalid_return_type_for_catch_error
+    return false;
+  });
+
+  await fireStore.collection("doctors").doc(doctorId).update({
+    'star' : starMedium
+  }).then((value) {
+    return true;
+  }).catchError((e) {
+    return false;
+  });
+
+  return true;
+
 
 }
 
