@@ -317,6 +317,8 @@ class _AddReviewDoctorState extends State<AddReviewDoctor> {
 
                   }
                 }
+
+                reviewDataProvider.setStarDefault(4);
               },
               child: const Padding(
                 padding: EdgeInsets.only(

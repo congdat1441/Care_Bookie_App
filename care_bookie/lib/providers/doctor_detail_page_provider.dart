@@ -2,7 +2,7 @@
 import 'package:flutter/cupertino.dart';
 
 import '../firebases/firebase_doctor_data.dart';
-import '../firebases/firebase_hopital_data.dart';
+import '../firebases/firebase_hospital_data.dart';
 import '../models/doctor.dart';
 import '../models/hospital.dart';
 import '../models/schedule.dart';

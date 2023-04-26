@@ -1,7 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:provider/provider.dart';
+import '../../../../models/doctor.dart';
+import '../../../../models/hospital.dart';
+import '../../../../providers/history_detail_page_provider.dart';
+import '../../../../providers/home_page_provider.dart';
+import '../../../../providers/review_data_provider.dart';
+import '../../../../providers/schedule_page_provider.dart';
+import '../../../../providers/user_login_provider.dart';
 import '../../../../res/constants/colors.dart';
+import '../../layouts_page/navbar_layout.dart';
 
 
 
@@ -54,6 +64,9 @@ class _AddReviewClinicState extends State<AddReviewClinic> {
   }
 
   Widget addYourComment() {
+
+    var reviewDataProvider = Provider.of<ReviewDataProvider>(context,listen: false);
+
     return SingleChildScrollView(
       scrollDirection: Axis.vertical,
       child: Padding(
@@ -85,7 +98,7 @@ class _AddReviewClinicState extends State<AddReviewClinic> {
                     color: Colors.amber,
                   ),
                   onRatingUpdate: (rating) {
-                    print(rating);
+                    reviewDataProvider.setStarDefault(rating);
                   },
                 ),
               ),
@@ -140,6 +153,17 @@ class _AddReviewClinicState extends State<AddReviewClinic> {
   }
 
   Widget submit() {
+
+    var reviewDataProvider = Provider.of<ReviewDataProvider>(context,listen: false);
+
+    var historyDetailPageProvider = Provider.of<HistoryDetailPageProvider>(context,listen: false);
+
+    var userLoginProvider = Provider.of<UserLoginProvider>(context,listen: false);
+
+    var homePageProvider = Provider.of<HomePageProvider>(context,listen: false);
+
+    var schedulePageProvider = Provider.of<SchedulePageProvider>(context,listen: false);
+
     return Padding(
         padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
         child: Container(
@@ -156,9 +180,149 @@ class _AddReviewClinicState extends State<AddReviewClinic> {
                   borderRadius: BorderRadius.circular(10.0),
                 ),
               ),
-              onPressed: () {
+              onPressed: () async{
 
-                print("Time ------------------> ${DateTime.now().day}/${DateTime.now().month}/${DateTime.now().year}");
+                if(_controllerTextWord.text.isEmpty) {
+                  Fluttertoast.showToast(
+                      msg: "Vui Lòng Nhập Đánh Giá Về Bác Sỹ",
+                      toastLength: Toast.LENGTH_SHORT,
+                      gravity: ToastGravity.TOP,
+                      timeInSecForIosWeb: 1,
+                      backgroundColor: Colors.red,
+                      textColor: Colors.white,
+                      fontSize: 16.0
+                  );
+                } else {
+
+                  UserReview user = UserReview(
+                      id: userLoginProvider.userLogin.id,
+                      fullName: userLoginProvider.userLogin.fullName,
+                      image: userLoginProvider.userLogin.image
+                  );
+
+                  String day = DateTime.now().day.toString();
+                  String month = DateTime.now().month.toString();
+
+                  if(DateTime.now().day < 10) {
+                    day = '0$day';
+                  }
+
+                  if(DateTime.now().month < 10) {
+                    month = '0$month';
+                  }
+
+
+                  Review review = Review(
+                      content: _controllerTextWord.text,
+                      star: reviewDataProvider.starDefault,
+                      reviewDay: '$day/$month/${DateTime.now().year}',
+                      user: user,
+                      userId: user.id
+                  );
+
+                  ReviewResponseData reviewData =   await reviewDataProvider.reviewExistsByHospitalId(user.id, historyDetailPageProvider.historyDetail!.hospital.id);
+
+                  print("reviewData");
+
+
+                  if(reviewData.reviewDocId.isEmpty) {
+
+                    var starTotal = (reviewData.starTotal * reviewData.reviewLength).round();
+
+                    var starMedium = (starTotal + reviewDataProvider.starDefault) / (reviewData.reviewLength + 1);
+
+                    var staMediumAsFixed = starMedium.toStringAsFixed(1);
+
+                    bool isSuccess =  await reviewDataProvider.createReviewHospital(
+                      review,
+                      historyDetailPageProvider.historyDetail!.hospital.id,
+                      double.parse(staMediumAsFixed),
+                    );
+
+                    if(isSuccess){
+                      homePageProvider.listHospital = [];
+                      schedulePageProvider.schedules = [];
+                      Fluttertoast.showToast(
+                          msg: "Đánh Giá Phòng Khám Thành Công",
+                          toastLength: Toast.LENGTH_SHORT,
+                          gravity: ToastGravity.TOP,
+                          timeInSecForIosWeb: 1,
+                          backgroundColor: Colors.green,
+                          textColor: Colors.white,
+                          fontSize: 16.0
+                      );
+                      // ignore: use_build_context_synchronously
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const NavbarLayout(index: 0,),
+                          )
+                      );
+                    } else {
+                      Fluttertoast.showToast(
+                          msg: "Không Thể Đánh Giá Phòng Khám",
+                          toastLength: Toast.LENGTH_SHORT,
+                          gravity: ToastGravity.TOP,
+                          timeInSecForIosWeb: 1,
+                          backgroundColor: Colors.red,
+                          textColor: Colors.white,
+                          fontSize: 16.0
+                      );
+                    }
+
+                  } else {
+
+                    var totalStar = (reviewData.starTotal * reviewData.reviewLength).round();
+
+                    var starChange = totalStar - reviewData.starUser;
+
+                    var star = ((starChange + reviewDataProvider.starDefault) / reviewData.reviewLength).toStringAsFixed(1);
+
+                    bool isSuccess =  await reviewDataProvider.updateReviewByHospitalId(
+                        review,
+                        historyDetailPageProvider.historyDetail!.hospital.id,
+                        double.parse(star),
+                        reviewData.reviewDocId
+                    );
+
+                    if(isSuccess){
+
+                      homePageProvider.listHospital = [];
+                      schedulePageProvider.schedules = [];
+
+                      Fluttertoast.showToast(
+                          msg: "Cập Nhập Đánh Giá Phòng Khám Thành Công",
+                          toastLength: Toast.LENGTH_SHORT,
+                          gravity: ToastGravity.TOP,
+                          timeInSecForIosWeb: 1,
+                          backgroundColor: Colors.green,
+                          textColor: Colors.white,
+                          fontSize: 16.0
+                      );
+                      // ignore: use_build_context_synchronously
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const NavbarLayout(index: 0,),
+                          )
+                      );
+                    } else {
+                      Fluttertoast.showToast(
+                          msg: "Không Thể Đánh Giá Phòng Khám",
+                          toastLength: Toast.LENGTH_SHORT,
+                          gravity: ToastGravity.TOP,
+                          timeInSecForIosWeb: 1,
+                          backgroundColor: Colors.red,
+                          textColor: Colors.white,
+                          fontSize: 16.0
+                      );
+                    }
+
+                  }
+
+                }
+
+                reviewDataProvider.setStarDefault(4);
 
 
               },

@@ -75,28 +75,6 @@ Future<Doctor> getDoctorByIdFirebase(String id) async{
 
 }
 
-Future<bool> createReviewDoctorFireBase(Review review,String doctorId,double starMedium) async{
-
-  FirebaseFirestore fireStore = FirebaseFirestore.instance;
-
-  await fireStore.collection("doctors").doc(doctorId).collection("reviews").add(
-    review.toJson()
-  ).catchError((e) {
-    // ignore: invalid_return_type_for_catch_error
-    return false;
-  });
-
-  await fireStore.collection("doctors").doc(doctorId).update({
-    'star' : starMedium
-  }).then((value) {
-    return true;
-  }).catchError((e) {
-    return false;
-  });
-
-  return true;
-
-}
 
 Future<ReviewResponseData> reviewExistsByUserIdFirebase(String userId,String doctorId) async {
 
@@ -127,6 +105,29 @@ Future<ReviewResponseData> reviewExistsByUserIdFirebase(String userId,String doc
   });
 
   return data;
+
+}
+
+Future<bool> createReviewDoctorFireBase(Review review,String doctorId,double starMedium) async{
+
+  FirebaseFirestore fireStore = FirebaseFirestore.instance;
+
+  await fireStore.collection("doctors").doc(doctorId).collection("reviews").add(
+      review.toJson()
+  ).catchError((e) {
+    // ignore: invalid_return_type_for_catch_error
+    return false;
+  });
+
+  await fireStore.collection("doctors").doc(doctorId).update({
+    'star' : starMedium
+  }).then((value) {
+    return true;
+  }).catchError((e) {
+    return false;
+  });
+
+  return true;
 
 }
 

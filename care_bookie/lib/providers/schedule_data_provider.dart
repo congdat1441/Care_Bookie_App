@@ -93,6 +93,7 @@ class ScheduleDataProvider extends ChangeNotifier{
         shareHistory: historySchedule,
         userId: user!.id,
         user: user!,
+        hospitalId: hospitalSchedule.id
     );
 
     return await createScheduleFirebase(schedule);
