@@ -46,17 +46,6 @@ class _ReviewClinicState extends State<ReviewClinic> {
               Navigator.pop(context);
             },
           ),
-          actions: [
-            IconButton(
-                onPressed: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => const AddReviewClinic()));
-                },
-                icon: const Icon(
-                  IconlyLight.editSquare,
-                  color: Colors.black,
-                  size: 30,
-                ))
-          ],
           bottomOpacity: 0,
           elevation: 0,
         ),

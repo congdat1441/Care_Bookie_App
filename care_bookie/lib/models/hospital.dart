@@ -124,12 +124,14 @@ class Review {
   final String reviewDay;
   final int star;
   final UserReview user;
+  final String userId;
 
   Review({
     required this.content,
     required this.star,
     required this.reviewDay,
-    required this.user
+    required this.user,
+    required this.userId
   });
 
   factory Review.fromJson(Map<String,dynamic> json) {
@@ -142,7 +144,8 @@ class Review {
         content: json['content'],
         star: json['star'],
         reviewDay: json['review_day'],
-        user: userReview
+        user: userReview,
+        userId: json['user_id']
     );
   }
 
@@ -151,7 +154,8 @@ class Review {
     return {
       'content' : content,
       'review_day' : reviewDay,
-      'user' : user.toJson()
+      'user' : user.toJson(),
+      'user_id' : userId
     };
 
   }

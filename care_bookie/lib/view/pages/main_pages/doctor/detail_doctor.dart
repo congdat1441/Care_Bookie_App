@@ -225,7 +225,7 @@ class _DetailDoctorState extends State<DetailDoctor>
                         if(doctorDetailProvider.scheduleWithHospital != null) {
 
                           Fluttertoast.showToast(
-                              msg: "Bạn Đã Đặt Lịch Khám Ở Phòng Khám Nà",
+                              msg: "Bạn Đã Đặt Lịch Khám Ở Phòng Khám Này",
                               toastLength: Toast.LENGTH_SHORT,
                               gravity: ToastGravity.TOP,
                               timeInSecForIosWeb: 1,

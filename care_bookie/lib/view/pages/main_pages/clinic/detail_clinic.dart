@@ -269,7 +269,7 @@ class _DetailClinicState extends State<DetailClinic>
                                         builder: (context) =>
                                         const ReviewClinic()));
                               },
-                              child: const Text("Đánh giá",
+                              child: const Text("Xem đánh giá",
                                   style: TextStyle(
                                       height: 1.5,
                                       fontSize: 18,

@@ -75,3 +75,20 @@ Future<Doctor> getDoctorByIdFirebase(String id) async{
 
 }
 
+Future<bool> createReviewDoctor(Review review,String doctorId) async{
+
+  FirebaseFirestore fireStore = FirebaseFirestore.instance;
+
+  var response = await fireStore.collection("doctors").doc(doctorId).collection("reviews").add(
+    review.toJson()
+  ).then((value) {
+    return true;
+  })
+  .catchError((e){
+    return false;
+  });
+  
+  return response;
+
+}
+
