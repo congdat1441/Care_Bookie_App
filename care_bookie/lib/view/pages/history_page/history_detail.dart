@@ -8,6 +8,7 @@ import '../main_pages/main_page_widget/order_widget/describe_problem.dart';
 import '../history_page/note_from_doctor.dart';
 import '../main_pages/main_page_widget/order_widget/info_order_detail.dart';
 import '../main_pages/main_page_widget/order_widget/price_order.dart';
+import '../review_page/review_clinic_page/add_review_clinic.dart';
 import '../review_page/review_doctor_page/add_review_doctor.dart';
 
 class HistoryDetail extends StatefulWidget {
@@ -19,6 +20,7 @@ class HistoryDetail extends StatefulWidget {
 
 class _HistoryDetailState extends State<HistoryDetail> {
   bool _isExpanded = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -75,7 +77,9 @@ class _HistoryDetailState extends State<HistoryDetail> {
                               margin: const EdgeInsets.only(left: 10),
                               child: Align(
                                 alignment: Alignment.centerRight,
-                                child: Text(historyDetailPageProvider.historyDetail!.hospital.hospitalName,
+                                child: Text(
+                                    historyDetailPageProvider
+                                        .historyDetail!.hospital.hospitalName,
                                     maxLines: 2,
                                     style: const TextStyle(
                                         fontWeight: FontWeight.w500,
@@ -101,20 +105,21 @@ class _HistoryDetailState extends State<HistoryDetail> {
                                   fontSize: 15,
                                   overflow: TextOverflow.visible)),
                           Expanded(
-                            child: Container(
-                              margin: const EdgeInsets.only(left: 10),
-                              child: Align(
-                                alignment: Alignment.centerRight,
-                                child: Text(historyDetailPageProvider.historyDetail!.doctor.fullName,
+                              child: Container(
+                            margin: const EdgeInsets.only(left: 10),
+                            child: Align(
+                              alignment: Alignment.centerRight,
+                              child: Text(
+                                  historyDetailPageProvider
+                                      .historyDetail!.doctor.fullName,
                                   maxLines: 2,
                                   style: const TextStyle(
                                       fontWeight: FontWeight.w500,
                                       color: Colors.black54,
                                       fontSize: 15,
                                       overflow: TextOverflow.ellipsis)),
-                              ),
-                            )
-                          ),
+                            ),
+                          )),
                         ],
                       ),
                       const Divider(
@@ -132,18 +137,19 @@ class _HistoryDetailState extends State<HistoryDetail> {
                                   overflow: TextOverflow.visible)),
                           Expanded(
                             child: Container(
-                              margin: const EdgeInsets.only(left: 10),
-                              child: Align(
-                                alignment: Alignment.centerRight,
-                                child: Text(historyDetailPageProvider.historyDetail!.appointment,
-                                  maxLines: 2,
-                                  style: const TextStyle(
-                                      fontWeight: FontWeight.w500,
-                                      color: Colors.black54,
-                                      fontSize: 15,
-                                      overflow: TextOverflow.ellipsis)),
-                              )
-                            ),
+                                margin: const EdgeInsets.only(left: 10),
+                                child: Align(
+                                  alignment: Alignment.centerRight,
+                                  child: Text(
+                                      historyDetailPageProvider
+                                          .historyDetail!.appointment,
+                                      maxLines: 2,
+                                      style: const TextStyle(
+                                          fontWeight: FontWeight.w500,
+                                          color: Colors.black54,
+                                          fontSize: 15,
+                                          overflow: TextOverflow.ellipsis)),
+                                )),
                           ),
                         ],
                       ),
@@ -162,18 +168,19 @@ class _HistoryDetailState extends State<HistoryDetail> {
                                   overflow: TextOverflow.visible)),
                           Expanded(
                             child: Container(
-                              margin: const EdgeInsets.only(left: 10),
-                              child: Align(
-                                alignment: Alignment.centerRight,
-                                child: Text(historyDetailPageProvider.historyDetail!.user.fullName,
-                                  maxLines: 2,
-                                  style: const TextStyle(
-                                      fontWeight: FontWeight.w500,
-                                      color: Colors.black54,
-                                      fontSize: 15,
-                                      overflow: TextOverflow.ellipsis)),
-                              )
-                            ),
+                                margin: const EdgeInsets.only(left: 10),
+                                child: Align(
+                                  alignment: Alignment.centerRight,
+                                  child: Text(
+                                      historyDetailPageProvider
+                                          .historyDetail!.user.fullName,
+                                      maxLines: 2,
+                                      style: const TextStyle(
+                                          fontWeight: FontWeight.w500,
+                                          color: Colors.black54,
+                                          fontSize: 15,
+                                          overflow: TextOverflow.ellipsis)),
+                                )),
                           ),
                         ],
                       ),
@@ -192,18 +199,19 @@ class _HistoryDetailState extends State<HistoryDetail> {
                                   overflow: TextOverflow.visible)),
                           Expanded(
                             child: Container(
-                              margin: const EdgeInsets.only(left: 10),
-                              child: Align(
-                                alignment: Alignment.centerRight,
-                                child: Text(historyDetailPageProvider.historyDetail!.doctor.fields,
-                                  maxLines: 2,
-                                  style: const TextStyle(
-                                      fontWeight: FontWeight.w500,
-                                      color: Colors.black54,
-                                      fontSize: 15,
-                                      overflow: TextOverflow.ellipsis)),
-                              )
-                            ),
+                                margin: const EdgeInsets.only(left: 10),
+                                child: Align(
+                                  alignment: Alignment.centerRight,
+                                  child: Text(
+                                      historyDetailPageProvider
+                                          .historyDetail!.doctor.fields,
+                                      maxLines: 2,
+                                      style: const TextStyle(
+                                          fontWeight: FontWeight.w500,
+                                          color: Colors.black54,
+                                          fontSize: 15,
+                                          overflow: TextOverflow.ellipsis)),
+                                )),
                           ),
                         ],
                       ),
@@ -222,18 +230,21 @@ class _HistoryDetailState extends State<HistoryDetail> {
                                   overflow: TextOverflow.visible)),
                           Expanded(
                             child: Container(
-                              margin: const EdgeInsets.only(left: 10),
-                              child: Align(
-                                alignment: Alignment.centerRight,
-                                child: Text(historyDetailPageProvider.historyDetail!.shareHistory ? "Có" : "Không",
-                                  maxLines: 2,
-                                  style: const TextStyle(
-                                      fontWeight: FontWeight.w500,
-                                      color: Colors.black54,
-                                      fontSize: 15,
-                                      overflow: TextOverflow.ellipsis)),
-                              )
-                            ),
+                                margin: const EdgeInsets.only(left: 10),
+                                child: Align(
+                                  alignment: Alignment.centerRight,
+                                  child: Text(
+                                      historyDetailPageProvider
+                                              .historyDetail!.shareHistory
+                                          ? "Có"
+                                          : "Không",
+                                      maxLines: 2,
+                                      style: const TextStyle(
+                                          fontWeight: FontWeight.w500,
+                                          color: Colors.black54,
+                                          fontSize: 15,
+                                          overflow: TextOverflow.ellipsis)),
+                                )),
                           ),
                         ],
                       ),
@@ -260,19 +271,21 @@ class _HistoryDetailState extends State<HistoryDetail> {
                       ],
                     ),
                     Container(
-                      margin: const EdgeInsets.symmetric(horizontal: 5, vertical: 10),
+                      margin: const EdgeInsets.symmetric(
+                          horizontal: 5, vertical: 10),
                       width: double.maxFinite,
                       decoration: BoxDecoration(
-                        //color: Colors.white,
+                          //color: Colors.white,
                           borderRadius: BorderRadius.circular(25),
-                          border:
-                          Border.all(color: CupertinoColors.systemGrey3, width: 0.5)),
+                          border: Border.all(
+                              color: CupertinoColors.systemGrey3, width: 0.5)),
                       child: Align(
                         alignment: Alignment.centerLeft,
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Text(
-                              historyDetailPageProvider.historyDetail!.diagnosis,
+                              historyDetailPageProvider
+                                  .historyDetail!.diagnosis,
                               style: const TextStyle(
                                 fontWeight: FontWeight.w500,
                                 color: Colors.black54,
@@ -304,13 +317,14 @@ class _HistoryDetailState extends State<HistoryDetail> {
                       ],
                     ),
                     Container(
-                      margin: const EdgeInsets.symmetric(horizontal: 5, vertical: 10),
+                      margin: const EdgeInsets.symmetric(
+                          horizontal: 5, vertical: 10),
                       width: double.maxFinite,
                       decoration: BoxDecoration(
-                        //color: Colors.white,
+                          //color: Colors.white,
                           borderRadius: BorderRadius.circular(25),
-                          border:
-                          Border.all(color: CupertinoColors.systemGrey3, width: 0.5)),
+                          border: Border.all(
+                              color: CupertinoColors.systemGrey3, width: 0.5)),
                       child: Align(
                         alignment: Alignment.centerLeft,
                         child: Padding(
@@ -353,13 +367,14 @@ class _HistoryDetailState extends State<HistoryDetail> {
                       ],
                     ),
                     Container(
-                      margin: const EdgeInsets.symmetric(horizontal: 5, vertical: 10),
+                      margin: const EdgeInsets.symmetric(
+                          horizontal: 5, vertical: 10),
                       width: double.maxFinite,
                       decoration: BoxDecoration(
-                        //color: Colors.white,
+                          //color: Colors.white,
                           borderRadius: BorderRadius.circular(25),
-                          border:
-                          Border.all(color: CupertinoColors.systemGrey3, width: 0.5)),
+                          border: Border.all(
+                              color: CupertinoColors.systemGrey3, width: 0.5)),
                       child: Align(
                         alignment: Alignment.centerLeft,
                         child: Padding(
@@ -400,7 +415,9 @@ class _HistoryDetailState extends State<HistoryDetail> {
                           margin: const EdgeInsets.only(right: 10),
                           child: Align(
                             alignment: Alignment.centerRight,
-                            child: Text(historyDetailPageProvider.historyDetail!.totalCost.total,
+                            child: Text(
+                                historyDetailPageProvider
+                                    .historyDetail!.totalCost.total,
                                 maxLines: 2,
                                 style: const TextStyle(
                                     fontWeight: FontWeight.w500,
@@ -411,29 +428,32 @@ class _HistoryDetailState extends State<HistoryDetail> {
                         ),
                       ],
                     ),
-                    ...historyDetailPageProvider.historyDetail!.totalCost.details.map((e) => Container(
-                      width: MediaQuery.of(context).size.width,
-                      margin: const EdgeInsets.only(left: 20,right: 20,top: 10),
-                      height: 30,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            e.serviceName,
-                            style: const TextStyle(
-                              fontSize: 15,
-                              fontWeight: FontWeight.w600
-                            ),
-                          ),
-                          Text(
-                            e.price,
-                            style: const TextStyle(
-                              fontSize: 15,
-                            ),
-                          )
-                        ],
-                      ),
-                    ))
+                    ...historyDetailPageProvider
+                        .historyDetail!.totalCost.details
+                        .map((e) => Container(
+                              width: MediaQuery.of(context).size.width,
+                              margin: const EdgeInsets.only(
+                                  left: 20, right: 20, top: 10),
+                              height: 30,
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    e.serviceName,
+                                    style: const TextStyle(
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.w600),
+                                  ),
+                                  Text(
+                                    e.price,
+                                    style: const TextStyle(
+                                      fontSize: 15,
+                                    ),
+                                  )
+                                ],
+                              ),
+                            ))
                   ],
                 ),
                 const SizedBox(
@@ -441,62 +461,8 @@ class _HistoryDetailState extends State<HistoryDetail> {
                 ),
               ],
             ),
-          )
-      ),
+          )),
       bottomNavigationBar: bottomNavigatorBar(),
-    );
-  }
-
-  Widget bottomNavigatorBar() {
-    return Container(
-      height: 120,
-      color: Colors.white,
-      child: Column(
-        children: [notifyReview(), addReview()],
-      ),
-    );
-  }
-
-  Widget certification() {
-    return SliverToBoxAdapter(
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-        child: Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(30.0),
-            color: Colors.white,
-            boxShadow: [
-              BoxShadow(
-                  color: Colors.grey.withOpacity(0.2),
-                  spreadRadius: 5,
-                  blurRadius: 7,
-                  offset: const Offset(0, 10))
-            ],
-          ),
-          child: ExpansionTile(
-            tilePadding: const EdgeInsets.symmetric(horizontal: 20.0),
-            title: const Text(
-              'Chứng nhận/ Bằng cấp',
-              style: TextStyle(
-                fontWeight: FontWeight.w600,
-                fontSize: 20.0,
-              ),
-            ),
-            trailing: const Icon(Icons.keyboard_arrow_down),
-            children: [
-              Padding(
-                padding: const EdgeInsets.fromLTRB(20, 0, 0, 10),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: const [
-
-                  ],
-                ),
-              )
-            ],
-          ),
-        ),
-      ),
     );
   }
 
@@ -514,7 +480,7 @@ class _HistoryDetailState extends State<HistoryDetail> {
               child: Align(
                 alignment: Alignment.center,
                 child: Text(
-                    "Vui lòng thêm nhận xét của bạn về bác sỹ tại phòng khám",
+                    "Vui lòng thêm nhận xét của bạn về bác sỹ và dịch vụ phòng khám",
                     style: TextStyle(fontSize: 17, color: Colors.grey)),
               ),
             ),
@@ -524,32 +490,124 @@ class _HistoryDetailState extends State<HistoryDetail> {
     );
   }
 
-  Widget addReview() {
-    return Padding(
-        padding: const EdgeInsets.fromLTRB(5, 0, 5, 0),
-        child: InkWell(
-          onTap: () {
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => const AddReviewDoctor()));
-          },
-          child: Container(
-            width: double.maxFinite,
-            height: 40,
-            decoration: BoxDecoration(
-                border: Border.all(width: 1, color: Colors.amber),
-                borderRadius: BorderRadius.circular(20)),
-            child: const Center(
-              child: Text(
-                "Thêm nhận xét",
-                style: TextStyle(
-                    fontSize: 21,
-                    color: Colors.amber,
-                    fontWeight: FontWeight.w600),
-              ),
-            ),
+  Widget bottomNavigatorBar() {
+    return Container(
+      height: 130,
+      color: Colors.white,
+      child: Column(
+        children: [
+          notifyReview(),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              reviewDoctor(),
+              reviewClinic()
+            ],
+          )
+        ],
+      ),
+    );
+  }
+
+  Widget reviewDoctor() {
+    return Container(
+
+      width: 160,
+      height: 60,
+      decoration: BoxDecoration(
+          border: Border.all(width: 1, color: Colors.transparent),
+          borderRadius: BorderRadius.circular(15)),
+      child: ElevatedButton(
+        onPressed: () {
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => const AddReviewDoctor()));
+        },
+        style: ElevatedButton.styleFrom(
+          primary: Colors.white,
+
+          elevation: 1,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10.0),
           ),
-        ));
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: const [
+                Text(
+                  "Đánh giá",
+                  style: TextStyle(
+                      fontSize: 15, color: Colors.amber, fontWeight: FontWeight.w600),
+                ),
+                Text(
+                  "bác sỹ",
+                  style: TextStyle(
+                      fontSize: 16, color: Colors.amber, fontWeight: FontWeight.w600),
+                ),
+              ],
+            ),
+            const Icon(
+              IconlyBold.editSquare,
+              color: Colors.amber,
+              size: 25,
+            )
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget reviewClinic() {
+    return Container(
+      margin: const EdgeInsets.fromLTRB(10,0,0,0),
+      width: 160,
+      height: 60,
+      decoration: BoxDecoration(
+          border: Border.all(width: 1, color: Colors.transparent),
+          borderRadius: BorderRadius.circular(15)),
+      child: ElevatedButton(
+        onPressed: () {
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => const AddReviewClinic()));
+        },
+        style: ElevatedButton.styleFrom(
+          primary: Colors.white,
+
+          elevation: 1,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10.0),
+          ),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: const [
+                Text(
+                  "Đánh giá",
+                  style: TextStyle(
+                      fontSize: 15, color: Colors.amber, fontWeight: FontWeight.w600),
+                ),
+                Text(
+                  "phòng khám",
+                  style: TextStyle(
+                      fontSize: 16, color: Colors.amber, fontWeight: FontWeight.w600),
+                ),
+              ],
+            ),
+            const Icon(
+              IconlyBold.editSquare,
+              color: Colors.amber,
+              size: 25,
+            )
+          ],
+        ),
+      ),
+    );
   }
 }
