@@ -36,7 +36,7 @@ class _ClinicsNearbyState extends State<ClinicsNearby> {
               child: ListView.builder(
                     itemCount: homePageProvider.listHospital.length,
                     itemBuilder: (context, index) => Padding(
-                      padding: const EdgeInsets.fromLTRB(30, 0, 10, 0),
+                      padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
                       child: Container(
                         margin: const EdgeInsets.fromLTRB(5, 5, 5, 10),
                         height: 120,
