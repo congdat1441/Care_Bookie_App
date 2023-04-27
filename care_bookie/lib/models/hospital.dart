@@ -12,7 +12,7 @@ class Hospital {
   final String workingHours;
   final String information;
   final List certifications;
-  final List wards;
+  final List<Wards> wards;
   late final List<DoctorHospital> doctors;
   late final List<Review> reviews;
 
@@ -63,20 +63,26 @@ class Hospital {
 
   }
 
-  Map<String,dynamic> toJson() => {
-    'id' : id,
-    'hospital_name' : hospitalName,
-    'image' : image,
-    'fee' : fee,
-    'address' : address,
-    'phone' : phone,
-    'star' : star,
-    'services' : services,
-    'working_hours' : workingHours,
-    'information' : information,
-    'certifications' : certifications,
-    'wards' : wards
-  };
+  Map<String,dynamic> toJson() {
+
+    List wardsJson = wards.map((e) => e.toJson()).toList();
+
+    return {
+      'id' : id,
+      'hospital_name' : hospitalName,
+      'image' : image,
+      'fee' : fee,
+      'address' : address,
+      'phone' : phone,
+      'star' : star,
+      'services' : services,
+      'working_hours' : workingHours,
+      'information' : information,
+      'certifications' : certifications,
+      'wards' : wardsJson
+    };
+
+  }
 
 }
 
@@ -207,6 +213,15 @@ class Wards {
 
   factory Wards.fromJson(Map<String,dynamic> json) {
     return Wards(doctors: json['doctors'], wardsName: json['wards_name']);
+  }
+
+  Map<String,dynamic> toJson() {
+
+    return {
+      'doctors' : doctors,
+      'wards_name' : wardsName
+    };
+
   }
 
 }

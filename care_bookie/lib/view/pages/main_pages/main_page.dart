@@ -1,3 +1,4 @@
+import 'package:care_bookie/providers/favorite_page_provider.dart';
 import 'package:care_bookie/providers/home_page_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:care_bookie/providers/schedule_page_provider.dart';
@@ -46,6 +47,8 @@ class _MainPageState extends State<MainPage> {
     var loadSchedule =
         Provider.of<SchedulePageProvider>(context, listen: false);
 
+    var loadFavorite = Provider.of<FavoritePageProvider>(context,listen: false);
+
     if (loadHistory.histories.isEmpty) {
       loadHistory.getAllHospital(userLogin.userLogin.id);
     }
@@ -53,6 +56,11 @@ class _MainPageState extends State<MainPage> {
     if (loadSchedule.schedules.isEmpty) {
       loadSchedule.getAllScheduleByUserId(userLogin.userLogin.id);
     }
+
+    if(loadFavorite.favorite == null) {
+      loadFavorite.getFavoriteDataByUserId(userLogin.userLogin.id);
+    }
+
   }
 
   @override
@@ -68,7 +76,7 @@ class _MainPageState extends State<MainPage> {
             //logout(),
             hiPatient(),
             const SearchButton(),
-            const FavoriteInfos(),
+            const FavoriteInfo(),
             doctorTitle(),
             const SizedBox(height: 200, child: Doctors()),
             clinicsNearbyTitles(),

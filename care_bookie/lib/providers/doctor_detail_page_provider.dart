@@ -19,6 +19,11 @@ class DoctorDetailPageProvider extends ChangeNotifier {
 
   Schedule? scheduleWithHospital;
 
+  void resetData() {
+    scheduleWithDoctor = null;
+    scheduleWithHospital = null;
+  }
+
   void setDoctorDetail(Doctor doctor) {
     doctorDetail = doctor;
   }

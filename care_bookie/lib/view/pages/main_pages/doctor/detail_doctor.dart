@@ -101,6 +101,8 @@ class _DetailDoctorState extends State<DetailDoctor>
 
     var scheduleDataProvider = Provider.of<ScheduleDataProvider>(context,listen: false);
 
+    var hospitalDetailPageProvider = Provider.of<HospitalDetailPageProvider>(context,listen: false);
+
 
     return SliverAppBar(
       title: Padding(
@@ -121,9 +123,11 @@ class _DetailDoctorState extends State<DetailDoctor>
       backgroundColor: Colors.transparent,
       leading: IconButton(
         onPressed: () {
-          doctorDetailProvider.scheduleWithDoctor = null;
-          doctorDetailProvider.scheduleWithHospital = null;
+
+          doctorDetailProvider.resetData();
           scheduleDataProvider.resetData();
+
+          hospitalDetailPageProvider.scheduleWithHospital = null;
 
           Navigator.pop(context);
         },
@@ -586,7 +590,7 @@ class _DetailDoctorState extends State<DetailDoctor>
                   if(doctorDetailPageProvider.scheduleWithHospital != null) {
 
                     Fluttertoast.showToast(
-                        msg: "Bạn Đã Đặt Lịch Khám Ở Phòng Khám Nà",
+                        msg: "Bạn Đã Đặt Lịch Khám Ở Phòng Khám Này",
                         toastLength: Toast.LENGTH_SHORT,
                         gravity: ToastGravity.TOP,
                         timeInSecForIosWeb: 1,

@@ -9,6 +9,7 @@ import '../../../../../res/constants/colors.dart';
 import 'package:flutter_expandable_text/flutter_expandable_text.dart';
 import '../../../../providers/hospital_detail_page_provider.dart';
 import '../../../../providers/schedule_detail_page_provider.dart';
+import '../../../../providers/schedule_page_provider.dart';
 import '../../review_page/review_clinic_page/review_clinic.dart';
 import '../../schedule/schedule_detail_accept.dart';
 import '../doctor/detail_doctor.dart';
@@ -613,6 +614,14 @@ class _DetailClinicState extends State<DetailClinic>
                 ),
                 onPressed: () {
 
+                  final schedulePageProvider = Provider.of<SchedulePageProvider>(context,listen: false);
+
+                  for (var element in schedulePageProvider.schedules) {
+                    if(element.hospital.id == hospitalDetailPageProvider.hospitalDetails!.id) {
+                      hospitalDetailPageProvider.setScheduleWithHospital(element);
+                    }
+                  }
+
                   scheduleDetailPageProvider.setScheduleDetail(hospitalDetailPageProvider.scheduleWithHospital!);
 
                   if(hospitalDetailPageProvider.scheduleWithHospital!.accept) {
@@ -703,8 +712,16 @@ class _DetailClinicState extends State<DetailClinic>
 
                                     final doctorDetailProvider = Provider.of<DoctorDetailPageProvider>(context,listen: false);
 
+                                    final schedulePageProvider = Provider.of<SchedulePageProvider>(context,listen: false);
+
                                     doctorDetailProvider.setIsDoctorWithHospital(true);
                                     doctorDetailProvider.setIdDoctorWithHospital(e.id);
+
+                                    for (var element in schedulePageProvider.schedules) {
+                                      if(element.hospital.id == hospitalDetailPageProvider.hospitalDetails!.id) {
+                                        hospitalDetailPageProvider.setScheduleWithHospital(element);
+                                      }
+                                    }
 
                                     if(hospitalDetailPageProvider.scheduleWithHospital != null) {
 
@@ -715,6 +732,7 @@ class _DetailClinicState extends State<DetailClinic>
                                       }
 
                                     }
+
 
                                     Navigator.push(
                                         context,

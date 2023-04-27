@@ -72,9 +72,35 @@ Future<Hospital> getHospitalByIdFirebase(String hospitalId) async {
 
   FirebaseFirestore fireStore = FirebaseFirestore.instance;
 
+  List<DoctorHospital> doctors = [];
+
+  List<Review> reviews = [];
+
   await fireStore.collection("hospitals").doc(hospitalId).get().then((value) {
 
     hospital = Hospital.fromJson(value.data()!);
+
+  });
+
+  await fireStore.collection("hospitals").doc(hospitalId).collection("doctors").get()
+  .then((value) {
+
+    for(var element in value.docs) {
+      doctors.add(DoctorHospital.fromJson(element.data()));
+    }
+
+    hospital.setDoctors(doctors);
+
+  });
+
+  await fireStore.collection("hospitals").doc(hospitalId).collection("reviews").get()
+      .then((value) {
+
+    for(var element in value.docs) {
+      reviews.add(Review.fromJson(element.data()));
+    }
+
+    hospital.setReviews(reviews);
 
   });
 
@@ -150,29 +176,35 @@ Future<bool> createReviewHospitalFireBase(Review review,String hospitalId,double
     return false;
   });
 
-  late Schedule scheduleResponse;
+  Schedule? scheduleResponse;
+
+  HospitalSchedule? hospitalSchedule;
 
   await fireStore.collection("schedules").where("hospital_id", isEqualTo: hospitalId).get()
   .then((value){
-    scheduleResponse = Schedule.fromJson(value.docs[0].data());
+    if(value.docs.isNotEmpty) {
+      scheduleResponse = Schedule.fromJson(value.docs[0].data());
+      hospitalSchedule = HospitalSchedule(
+          id: scheduleResponse!.hospital.id,
+          hospitalName: scheduleResponse!.hospital.hospitalName,
+          image: scheduleResponse!.hospital.image,
+          fee: scheduleResponse!.hospital.fee,
+          address: scheduleResponse!.hospital.address,
+          star: starMedium
+      );
+    }
+
   });
 
-  HospitalSchedule hospitalSchedule = HospitalSchedule(
-      id: scheduleResponse.hospital.id,
-      hospitalName: scheduleResponse.hospital.hospitalName,
-      image: scheduleResponse.hospital.image,
-      fee: scheduleResponse.hospital.fee,
-      address: scheduleResponse.hospital.address,
-      star: starMedium
-  );
-
-  await fireStore.collection("schedules").doc(scheduleResponse.id).update({
-    'hospital' : hospitalSchedule.toJson()
-  }).then((value) {
-    return true;
-  }).catchError((e) {
-    return false;
-  });
+  if(scheduleResponse != null) {
+    await fireStore.collection("schedules").doc(scheduleResponse!.id).update({
+      'hospital' : hospitalSchedule!.toJson()
+    }).then((value) {
+      return true;
+    }).catchError((e) {
+      return false;
+    });
+  }
 
   return true;
 
@@ -198,29 +230,35 @@ Future<bool> updateReviewByHospitalIdFirebase(Review review,String hospitalId,do
     return false;
   });
 
-  late Schedule scheduleResponse;
+  Schedule? scheduleResponse;
+
+  HospitalSchedule? hospitalSchedule;
 
   await fireStore.collection("schedules").where("hospital_id", isEqualTo: hospitalId).get()
       .then((value){
-    scheduleResponse = Schedule.fromJson(value.docs[0].data());
+    if(value.docs.isNotEmpty) {
+      scheduleResponse = Schedule.fromJson(value.docs[0].data());
+      hospitalSchedule = HospitalSchedule(
+          id: scheduleResponse!.hospital.id,
+          hospitalName: scheduleResponse!.hospital.hospitalName,
+          image: scheduleResponse!.hospital.image,
+          fee: scheduleResponse!.hospital.fee,
+          address: scheduleResponse!.hospital.address,
+          star: starMedium
+      );
+    }
+
   });
 
-  HospitalSchedule hospitalSchedule = HospitalSchedule(
-      id: scheduleResponse.hospital.id,
-      hospitalName: scheduleResponse.hospital.hospitalName,
-      image: scheduleResponse.hospital.image,
-      fee: scheduleResponse.hospital.fee,
-      address: scheduleResponse.hospital.address,
-      star: starMedium
-  );
-
-  await fireStore.collection("schedules").doc(scheduleResponse.id).update({
-    'hospital' : hospitalSchedule.toJson()
-  }).then((value) {
-    return true;
-  }).catchError((e) {
-    return false;
-  });
+  if(scheduleResponse != null) {
+    await fireStore.collection("schedules").doc(scheduleResponse!.id).update({
+      'hospital' : hospitalSchedule!.toJson()
+    }).then((value) {
+      return true;
+    }).catchError((e) {
+      return false;
+    });
+  }
 
   return true;
 

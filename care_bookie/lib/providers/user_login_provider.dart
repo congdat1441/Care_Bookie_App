@@ -4,7 +4,7 @@ import 'package:flutter/foundation.dart';
 
 class UserLoginProvider extends ChangeNotifier {
 
-  User userLogin = User(
+  UserData userLogin = UserData(
       id: "88zfUPPgwLxGq9mRchRD",
       fullName: "Nguyễn Bích Phương",
       email: "nguyenbichphuong@gmail.com",

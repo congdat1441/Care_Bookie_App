@@ -1,5 +1,5 @@
 
-class User {
+class UserData {
 
   final String id;
   final String fullName;
@@ -9,7 +9,7 @@ class User {
   final String dob;
   final String image;
 
-  User({
+  UserData({
     required this.id,
     required this.fullName,
     required this.email,
@@ -19,8 +19,8 @@ class User {
     required this.image
   });
 
-  factory User.fromJson(Map<String,dynamic> json) {
-    return User(
+  factory UserData.fromJson(Map<String,dynamic> json) {
+    return UserData(
         id: json['id'],
         fullName: json['full_name'],
         email: json['email'],
