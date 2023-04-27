@@ -1,6 +1,8 @@
 import 'package:care_bookie/models/doctor.dart';
+import 'package:care_bookie/models/favorite.dart';
 import 'package:care_bookie/models/hospital.dart';
 import 'package:care_bookie/providers/hospital_detail_page_provider.dart';
+import 'package:care_bookie/providers/user_login_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_expandable_text/flutter_expandable_text.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
@@ -9,6 +11,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import '../../../../providers/doctor_detail_page_provider.dart';
 import '../../../../providers/doctor_detail_page_provider.dart';
+import '../../../../providers/favorite_dotor_data_provider.dart';
 import '../../../../providers/schedule_data_provider.dart';
 import '../../../../providers/schedule_detail_page_provider.dart';
 import '../../../../res/constants/colors.dart';
@@ -29,6 +32,8 @@ class _DetailDoctorState extends State<DetailDoctor>
   bool isLoading = false;
   bool isExpanded = false;
   late TabController _tabControl;
+
+  bool check = false;
 
   @override
   void initState() {
@@ -103,6 +108,9 @@ class _DetailDoctorState extends State<DetailDoctor>
 
     var hospitalDetailPageProvider = Provider.of<HospitalDetailPageProvider>(context,listen: false);
 
+    var favoriteDoctorDataProvider = Provider.of<FavoriteDoctorDataProvider>(context,listen: false);
+
+    var userLoginProvider = Provider.of<UserLoginProvider>(context,listen: false);
 
     return SliverAppBar(
       title: Padding(
@@ -138,8 +146,30 @@ class _DetailDoctorState extends State<DetailDoctor>
       ),
       actions: [
         IconButton(
-          onPressed: () {},
-          icon: const Icon(
+          onPressed: () {
+            setState(() {
+              check = !check;
+
+              if(check) {
+
+                DoctorFavorite doctorFavorite = DoctorFavorite(
+                    id: doctorDetailProvider.doctorDetail!.id,
+                    fullName: doctorDetailProvider.doctorDetail!.fullName,
+                    fields: doctorDetailProvider.doctorDetail!.fields,
+                    image: doctorDetailProvider.doctorDetail!.image,
+                    hospitalId: doctorDetailProvider.doctorDetail!.hospitalId
+                );
+
+                favoriteDoctorDataProvider.createDoctorFavorite(doctorFavorite, userLoginProvider.userLogin.id);
+              }
+
+            });
+          },
+          icon: check  ?  const Icon(
+            IconlyBold.heart,
+            size: 30,
+            color: Colors.redAccent,
+          ) : const Icon(
             IconlyLight.heart,
             size: 30,
           ),

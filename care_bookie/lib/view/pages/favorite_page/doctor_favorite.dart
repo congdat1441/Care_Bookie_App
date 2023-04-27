@@ -20,8 +20,6 @@ class DoctorFavorite extends StatefulWidget {
 }
 
 class _DoctorFavoriteState extends State<DoctorFavorite> {
-
-
   @override
   Widget build(BuildContext context) {
     return Consumer2<FavoritePageProvider,HospitalDetailPageProvider>(
@@ -167,13 +165,16 @@ class _DoctorFavoriteState extends State<DoctorFavorite> {
                                                   fontFamily: 'Merriweather Sans'))),
                                       Row(
                                         children: [
-                                          Text(favoritePageProvider.favorite!.doctors[index].fields,
-                                              style: const TextStyle(
-                                                  fontSize: 14,
-                                                  //overflow: TextOverflow.ellipsis,
-                                                  color: ColorConstant.Grey01,
-                                                  fontWeight: FontWeight.w400,
-                                                  fontFamily: 'Merriweather Sans')),
+                                          Expanded(
+                                            child: Text(favoritePageProvider.favorite!.doctors[index].fields,
+                                                overflow: TextOverflow.ellipsis,
+                                                style: const TextStyle(
+                                                    fontSize: 14,
+                                                    //overflow: TextOverflow.ellipsis,
+                                                    color: ColorConstant.Grey01,
+                                                    fontWeight: FontWeight.w400,
+                                                    fontFamily: 'Merriweather Sans')),
+                                          ),
                                         ],
                                       )
                                     ],
