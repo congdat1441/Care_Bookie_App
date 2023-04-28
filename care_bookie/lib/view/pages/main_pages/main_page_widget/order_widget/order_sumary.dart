@@ -1,5 +1,3 @@
-
-
 import 'package:care_bookie/providers/hospital_detail_page_provider.dart';
 import 'package:care_bookie/providers/schedule_data_provider.dart';
 import 'package:care_bookie/providers/user_login_provider.dart';
@@ -228,7 +226,7 @@ class _OrderSummaryState extends State<OrderSummary> {
                 width: 200,
                 child: Align(
                   alignment: Alignment.centerRight,
-                  child: Text(userLoginProvider.userLogin.fullName,
+                  child: Text(userLoginProvider.userLogin.fullName!,
                       maxLines: 2,
                       style: const TextStyle(
                           fontWeight: FontWeight.w500,

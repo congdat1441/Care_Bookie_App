@@ -47,11 +47,11 @@ class _MainPageState extends State<MainPage> {
         Provider.of<SchedulePageProvider>(context, listen: false);
 
     if (loadHistory.histories.isEmpty) {
-      loadHistory.getAllHospital(userLogin.userLogin.id);
+      loadHistory.getAllHospital(userLogin.userLogin.id!);
     }
 
     if (loadSchedule.schedules.isEmpty) {
-      loadSchedule.getAllScheduleByUserId(userLogin.userLogin.id);
+      loadSchedule.getAllScheduleByUserId(userLogin.userLogin.id!);
     }
   }
 

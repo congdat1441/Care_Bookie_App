@@ -4,10 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:provider/provider.dart';
 import '../../../res/constants/colors.dart';
-import '../main_pages/main_page_widget/order_widget/describe_problem.dart';
-import '../history_page/note_from_doctor.dart';
-import '../main_pages/main_page_widget/order_widget/info_order_detail.dart';
-import '../main_pages/main_page_widget/order_widget/price_order.dart';
 import '../review_page/review_clinic_page/add_review_clinic.dart';
 import '../review_page/review_doctor_page/add_review_doctor.dart';
 

@@ -22,7 +22,7 @@ class ScheduleDataProvider extends ChangeNotifier{
 
   Hospital? hospital;
 
-  User? user;
+  UserData? user;
 
 
   void setScheduleDoctor(DoctorHospital doctor) {
@@ -45,7 +45,7 @@ class ScheduleDataProvider extends ChangeNotifier{
     this.hospital = hospital;
   }
 
-  void setUser(User user) {
+  void setUser(UserData user) {
     this.user = user;
   }
 
@@ -91,7 +91,7 @@ class ScheduleDataProvider extends ChangeNotifier{
         fee: hospital!.fee,
         accept: false,
         shareHistory: historySchedule,
-        userId: user!.id,
+        userId: user!.id!,
         user: user!,
     );
 

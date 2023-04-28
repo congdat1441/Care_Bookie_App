@@ -12,6 +12,8 @@ class SearchScreen extends StatefulWidget {
 class _SearchScreenState extends State<SearchScreen> {
   TextEditingController _searchController = TextEditingController();
   String _searchText = "";
+  int _selectStar = -1;
+  final List<String> _optionListStar = ['1', '2', '3', '4', '5'];
 
   @override
   void initState() {
@@ -29,7 +31,6 @@ class _SearchScreenState extends State<SearchScreen> {
       appBar: AppBar(
         backgroundColor: Colors.white,
         shape: const RoundedRectangleBorder(
-
           borderRadius: BorderRadius.vertical(
             bottom: Radius.circular(10),
           ),
@@ -76,22 +77,79 @@ class _SearchScreenState extends State<SearchScreen> {
         child: Column(
           children: [
             const SizedBox(height: 10),
-            // Expanded(
-            //   child: ListView.builder(
-            //     itemCount: 20,
-            //     itemBuilder: (BuildContext context, int index) {
-            //       return ListTile(
-            //         title: Text("phòng khám giá rẻ $index",style: const TextStyle(
-            //             fontWeight: FontWeight.w500,
-            //             fontSize: 17,
-            //             color: Colors.black,
-            //             fontFamily: 'Poppins'
-            //         ),
-            //         ),
-            //       );
-            //     },
-            //   ),
-            // ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
+              child: SizedBox(
+                height: 100,
+                child: Row(
+                  children: [
+                    Container(
+                      margin: const EdgeInsets.symmetric(horizontal: 5),
+
+                    ),
+                    GridView.count(
+                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                      crossAxisCount: 3,
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      childAspectRatio: (1 / .4),
+                      children: List.generate(
+                        _optionListStar.length,
+                            (index) {
+                          return GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                _selectStar = index;
+                              });
+                            },
+                            child: Container(
+                              //height: 100,
+                              margin: const EdgeInsets.symmetric(horizontal: 5.0),
+                              decoration: BoxDecoration(
+                                color: _optionListStar == index
+                                    ? ColorConstant.BLue02
+                                    : const Color(0xFFf6f6f6),
+                                borderRadius: BorderRadius.circular(20.0),
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.all(0.0),
+                                child: Column(
+                                  children: [
+                                    // Text(
+                                    //   _optionListStar[index],
+                                    //   style: TextStyle(
+                                    //     fontSize: 15,
+                                    //     fontWeight: FontWeight.w400,
+                                    //     fontFamily: 'Poppins',
+                                    //     color: _selectStar == index
+                                    //         ? Colors.white
+                                    //         : Colors.black,
+                                    //   ),
+                                    // ),
+                                    Text(
+                                      _optionListStar[index],
+                                      style: TextStyle(
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.w400,
+                                        fontFamily: 'Poppins',
+                                        color: _selectStar == index
+                                            ? Colors.white
+                                            : Colors.black,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+
+                  ],
+                ),
+              ),
+            )
           ],
         ),
       ),

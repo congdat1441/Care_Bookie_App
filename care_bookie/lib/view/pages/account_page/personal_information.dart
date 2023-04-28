@@ -1,20 +1,46 @@
-
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 
+import '../../../models/user.dart';
 import '../../../res/constants/colors.dart';
 
-class PersonalInfomation extends StatefulWidget {
-  const PersonalInfomation({Key? key}) : super(key: key);
+class PersonalInformation extends StatefulWidget {
+  const PersonalInformation({Key? key}) : super(key: key);
 
   @override
-  State<PersonalInfomation> createState() => _PersonalInfomationState();
+  State<PersonalInformation> createState() => _PersonalInformationState();
 }
 
-class _PersonalInfomationState extends State<PersonalInfomation> {
+class _PersonalInformationState extends State<PersonalInformation> {
+   UserData _userData = UserData();
+
+  @override
+  void initState(){
+    super.initState();
+    _getUserData();
+  }
+
+  Future<void> _getUserData() async{
+    final FirebaseAuth _auth = FirebaseAuth.instance;
+    final User? user = _auth.currentUser;
+    if(user != null) {
+      final DocumentSnapshot snapshot = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(user.uid)
+          .get();
+      setState(() {
+        _userData = UserData.fromJson(snapshot.data()!);
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    if(_userData == null ){
+      return const Center(child: CircularProgressIndicator(),);
+    }
     return Scaffold(
         backgroundColor: ColorConstant.BackGroundColor,
         appBar: AppBar(
@@ -50,15 +76,15 @@ class _PersonalInfomationState extends State<PersonalInfomation> {
           elevation: 0.0,
         ),
         body: SingleChildScrollView(
-            scrollDirection: Axis.vertical, child: content()));
+            scrollDirection: Axis.vertical, child: content(context)));
   }
 
-  Widget content() {
+  Widget content(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.fromLTRB(15, 0, 30, 8.0),
       child: Column(
         children: [
-          name(),
+          nameAndAva(),
           email(),
           numberPhone(),
           gender(),
@@ -71,58 +97,33 @@ class _PersonalInfomationState extends State<PersonalInfomation> {
     );
   }
 
-  Widget avatar() {
+  Widget avatarInName() {
     return Padding(
         padding: const EdgeInsets.fromLTRB(20, 20, 0, 0),
         child: Center(
           child: Stack(
             children: [
-              Container(
-                width: 135,
-                height: 135,
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(100),
-                  boxShadow: [
-                    BoxShadow(
-                        color: Colors.grey.withOpacity(0.1),
-                        spreadRadius: 0.1,
-                        blurRadius: 2,
-                        offset: const Offset(0, 5))
-                  ],
-                ),
-              ),
               Padding(
-                padding: const EdgeInsets.all(13),
-                child: Container(
-                  width: 110,
-                  height: 110,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(100),
-                    boxShadow: [
-                      BoxShadow(
-                          color: Colors.grey.withOpacity(0.2),
-                          spreadRadius: 1,
-                          blurRadius: 2,
-                          offset: const Offset(0, 5))
-                    ],
-                  ),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(60),
-                    child: Image.network(FirebaseAuth.instance.currentUser!.photoURL!,
-                        width: 60, height: 60, fit: BoxFit.cover),
+                padding: const EdgeInsets.all(14),
+                child: Padding(
+                  padding: const EdgeInsets.all(0),
+                  child: CircleAvatar(
+                    backgroundImage: NetworkImage(_userData.image ?? " ${FirebaseAuth.instance.currentUser!.displayName}",
+                        scale: 2),
+                    radius: 70,
                   ),
                 ),
-              ),
+              )
+,
             ],
           ),
         ));
   }
 
-  Widget name() {
+  Widget nameAndAva() {
     return Column(
       children: [
-        avatar(),
+        avatarInName(),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -138,52 +139,7 @@ class _PersonalInfomationState extends State<PersonalInfomation> {
                       color: ColorConstant.Grey01),
                 ),
                 Text(
-                  "${FirebaseAuth.instance.currentUser!.displayName}",
-                  style: const TextStyle(
-                      fontFamily: 'Poppins',
-                      fontSize: 16,
-                      fontWeight: FontWeight.w400,
-                      color: Colors.black),
-                ),
-              ],
-            ),
-            IconButton(
-                onPressed: () {},
-                icon: const Icon(
-                  IconlyBold.edit,
-                  size: 30,
-                  color: ColorConstant.Grey01,
-                ))
-          ],
-        ),
-        const Divider(
-          height: 30,
-          color: Color(0xFFF3EFEF),
-          thickness: 1.5,
-        ),
-      ],
-    );
-  }
-
-  Widget numberPhone() {
-    return Column(
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children:  [
-                const Text(
-                  "Số điện thoại",
-                  style: TextStyle(
-                      fontFamily: 'Poppins',
-                      fontSize: 15,
-                      fontWeight: FontWeight.w500,
-                      color: ColorConstant.Grey01),
-                ),
-                Text(
-                  "${FirebaseAuth.instance.currentUser!.phoneNumber}",
+                  _userData.fullName ?? "${FirebaseAuth.instance.currentUser!.displayName}",
                   style: const TextStyle(
                       fontFamily: 'Poppins',
                       fontSize: 16,
@@ -211,6 +167,45 @@ class _PersonalInfomationState extends State<PersonalInfomation> {
   }
 
   Widget email() {
+     return Column(
+       children: [
+         Row(
+           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+           children: [
+             Column(
+               crossAxisAlignment: CrossAxisAlignment.start,
+               children:   [
+                 const Text(
+                   "Email",
+                   style: TextStyle(
+                       fontFamily: 'Poppins',
+                       fontSize: 15,
+                       fontWeight: FontWeight.w500,
+                       color: ColorConstant.Grey01),
+                 ),
+                 Text(
+                   _userData.email ?? '${FirebaseAuth.instance.currentUser!.email}',
+                   style: const TextStyle(
+                       fontFamily: 'Poppins',
+                       fontSize: 16,
+                       fontWeight: FontWeight.w400,
+                       color: Colors.black),
+                 ),
+               ],
+             ),
+
+           ],
+         ),
+         const Divider(
+           height: 30,
+           color: Color(0xFFF3EFEF),
+           thickness: 1.5,
+         ),
+       ],
+     );
+   }
+
+  Widget numberPhone() {
     return Column(
       children: [
         Row(
@@ -218,9 +213,9 @@ class _PersonalInfomationState extends State<PersonalInfomation> {
           children: [
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              children:   [
+              children:  [
                 const Text(
-                  "Địa chỉ Email",
+                  "Số điện thoại",
                   style: TextStyle(
                       fontFamily: 'Poppins',
                       fontSize: 15,
@@ -228,7 +223,7 @@ class _PersonalInfomationState extends State<PersonalInfomation> {
                       color: ColorConstant.Grey01),
                 ),
                 Text(
-                  "${FirebaseAuth.instance.currentUser!.email}",
+                  _userData.phone ?? "--",
                   style: const TextStyle(
                       fontFamily: 'Poppins',
                       fontSize: 16,
@@ -237,7 +232,13 @@ class _PersonalInfomationState extends State<PersonalInfomation> {
                 ),
               ],
             ),
-
+            IconButton(
+                onPressed: () {},
+                icon: const Icon(
+                  IconlyBold.edit,
+                  size: 30,
+                  color: ColorConstant.Grey01,
+                ))
           ],
         ),
         const Divider(
@@ -257,8 +258,9 @@ class _PersonalInfomationState extends State<PersonalInfomation> {
           children: [
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: const [
-                Text(
+              children:
+               [
+                const Text(
                   "Giới tính",
                   style: TextStyle(
                       fontFamily: 'Poppins',
@@ -267,8 +269,8 @@ class _PersonalInfomationState extends State<PersonalInfomation> {
                       color: ColorConstant.Grey01),
                 ),
                 Text(
-                  "-Chọn-",
-                  style: TextStyle(
+                  "${_userData.gender ?? 'Unknown'}",
+                  style: const TextStyle(
                       fontFamily: 'Poppins',
                       fontSize: 16,
                       fontWeight: FontWeight.w400,
@@ -302,8 +304,8 @@ class _PersonalInfomationState extends State<PersonalInfomation> {
           children: [
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: const [
-                Text(
+              children:  [
+                const Text(
                   "Ngày sinh",
                   style: TextStyle(
                       fontFamily: 'Poppins',
@@ -312,8 +314,8 @@ class _PersonalInfomationState extends State<PersonalInfomation> {
                       color: ColorConstant.Grey01),
                 ),
                 Text(
-                  "DD/MM/YYYY",
-                  style: TextStyle(
+                  _userData.phone ?? " abc",
+                  style: const TextStyle(
                       fontFamily: 'Poppins',
                       fontSize: 16,
                       fontWeight: FontWeight.w400,
@@ -338,51 +340,6 @@ class _PersonalInfomationState extends State<PersonalInfomation> {
       ],
     );
   }
-
-  // Widget job() {
-  //   return Column(
-  //     children: [
-  //       Row(
-  //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-  //         children: [
-  //           Column(
-  //             crossAxisAlignment: CrossAxisAlignment.start,
-  //             children: const [
-  //               Text(
-  //                 "Nghề nghiệp",
-  //                 style: TextStyle(
-  //                     fontFamily: 'Poppins',
-  //                     fontSize: 15,
-  //                     fontWeight: FontWeight.w500,
-  //                     color: ColorConstant.Grey01),
-  //               ),
-  //               Text(
-  //                 "-Chọn-",
-  //                 style: TextStyle(
-  //                     fontFamily: 'Poppins',
-  //                     fontSize: 16,
-  //                     fontWeight: FontWeight.w400,
-  //                     color: Colors.black),
-  //               ),
-  //             ],
-  //           ),
-  //           IconButton(
-  //               onPressed: () {},
-  //               icon: const Icon(
-  //                 IconlyBold.edit,
-  //                 size: 30,
-  //                 color: ColorConstant.Grey01,
-  //               ))
-  //         ],
-  //       ),
-  //       const Divider(
-  //         height: 30,
-  //         color: Color(0xFFF3EFEF),
-  //         thickness: 1.5,
-  //       ),
-  //     ],
-  //   );
-  // }
 
   Widget changePassword() {
     return Container(

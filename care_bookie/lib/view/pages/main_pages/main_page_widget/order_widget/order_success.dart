@@ -2,13 +2,9 @@ import 'package:care_bookie/providers/schedule_data_provider.dart';
 import 'package:care_bookie/providers/user_login_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
 import '../../../../../providers/schedule_page_provider.dart';
 import '../../../../../res/constants/colors.dart';
 import '../../../layouts_page/navbar_layout.dart';
-import '../../main_page.dart';
-import 'info_order_detail.dart';
-import 'price_order.dart';
 
 class OrderSuccess extends StatefulWidget {
   const OrderSuccess({Key? key}) : super(key: key);
@@ -173,7 +169,7 @@ class _OrderSuccessState extends State<OrderSuccess> {
                 width: 200,
                 child: Align(
                   alignment: Alignment.centerRight,
-                  child: Text(userLoginProvider.userLogin.fullName,
+                  child: Text(userLoginProvider.userLogin.fullName!,
                       maxLines: 2,
                       style: const TextStyle(
                           fontWeight: FontWeight.w500,

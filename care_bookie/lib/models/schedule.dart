@@ -13,7 +13,7 @@ class Schedule {
   final String time;
   final String symptom;
   final String userId;
-  final User user;
+  final UserData user;
   final String fee;
   final bool accept;
   final List<HistorySchedule> shareHistory;
@@ -78,7 +78,7 @@ class Schedule {
         time: json['time'],
         symptom: json['symptom'],
         userId: json['user_id'],
-        user: User.fromJson(json['user']),
+        user: UserData.fromJson(json['user']),
         fee: json['fee'],
         accept: json['accept'],
         shareHistory: shareHistory

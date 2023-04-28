@@ -1,9 +1,5 @@
 import 'package:flutter/material.dart';
-
 import '../../../../models/app_banner.dart';
-
-
-
 
 class BannerItem extends StatelessWidget {
   final AppBanner appBanner;

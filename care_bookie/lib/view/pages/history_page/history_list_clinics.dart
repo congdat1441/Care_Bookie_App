@@ -1,7 +1,4 @@
-import 'package:care_bookie/firebases/firebase_history_data.dart';
-import 'package:care_bookie/models/history.dart';
 import 'package:care_bookie/providers/history_page_provider.dart';
-import 'package:care_bookie/providers/user_login_provider.dart';
 import 'package:care_bookie/view/pages/history_page/history_detail.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

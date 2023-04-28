@@ -8,7 +8,6 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import '../../../../providers/doctor_detail_page_provider.dart';
-import '../../../../providers/doctor_detail_page_provider.dart';
 import '../../../../providers/schedule_data_provider.dart';
 import '../../../../providers/schedule_detail_page_provider.dart';
 import '../../../../res/constants/colors.dart';

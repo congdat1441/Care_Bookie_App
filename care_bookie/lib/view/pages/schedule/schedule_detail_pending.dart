@@ -253,7 +253,7 @@ class _ScheduleDetailPendingState extends State<ScheduleDetailPending> {
                 width: 200,
                 child: Align(
                   alignment: Alignment.centerRight,
-                  child: Text(scheduleDetailPageProvider.scheduleDetail!.user.fullName,
+                  child: Text(scheduleDetailPageProvider.scheduleDetail!.user.fullName!,
                       maxLines: 2,
                       style: const TextStyle(
                           fontWeight: FontWeight.w500,

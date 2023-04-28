@@ -16,7 +16,6 @@ class _EmailIdState extends State<EmailId> {
       // color: Colors.orange,
       width: 330,
       child: TextFormField(
-          // textAlign: TextAlign.left,
           style: const TextStyle(color: Colors.black),
           validator: (value) {
             if (value == null || value.isEmpty) {

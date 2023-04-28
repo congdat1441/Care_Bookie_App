@@ -2,7 +2,6 @@ import 'package:care_bookie/view/pages/login_signup_page/reset_password.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import '../../../firebases/firebase_auth_function.dart';
-import '../../../firebases/firebase_auth_services.dart';
 import '../layouts_page/navbar_layout.dart';
 
 class LoginForm extends StatefulWidget {
@@ -20,9 +19,10 @@ class _LoginFormState extends State<LoginForm> {
   String password = '';
   String fullname = '';
   String dob = '';
-  String gender = '';
+  bool gender = false;
   String image = '';
   String phone = '';
+
   bool login = true;
 
   void _toggleObscured() {
@@ -32,7 +32,7 @@ class _LoginFormState extends State<LoginForm> {
         return; // If focus is on text field, dont unfocus
       }
       textFieldFocusNode.canRequestFocus =
-      false; // Prevents focus if tap on eye
+          false; // Prevents focus if tap on eye
     });
   }
 
@@ -40,19 +40,20 @@ class _LoginFormState extends State<LoginForm> {
   Widget build(BuildContext context) {
     return Scaffold(
         body: SingleChildScrollView(
-          child: SizedBox(
-            height: MediaQuery.of(context).size.height - 50,
-            width: MediaQuery.of(context).size.width,
-            child: Column(
-              children: [
-                customTopCircle(),
-                formLoginAndSignup(),
-                googleLogin(),
-              ],
-            ),
-          ),
-        ));
+      child: SizedBox(
+        height: MediaQuery.of(context).size.height - 30,
+        width: MediaQuery.of(context).size.width,
+        child: Column(
+          children: [
+            customTopCircle(),
+            formLoginAndSignup(),
+            googleLogin(),
+          ],
+        ),
+      ),
+    ));
   }
+
   Widget customTopCircle() {
     return Expanded(
       child: Stack(
@@ -121,13 +122,13 @@ class _LoginFormState extends State<LoginForm> {
       child: Container(
         height: 400,
         //color: Colors.orange,
-        margin: const EdgeInsets.fromLTRB(20,0, 20, 0),
+        margin: const EdgeInsets.fromLTRB(20, 0, 20, 0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             login ? addEmail() : nameAccount(),
             login ? addPassword() : addEmail(),
-            login ? forgotPassword() : addPassword(),
+            login ? Container() : addPassword(),
             Container(
               margin: const EdgeInsets.fromLTRB(20, 0, 50, 10),
               height: 55,
@@ -138,8 +139,28 @@ class _LoginFormState extends State<LoginForm> {
                       _formKey.currentState!.save();
                       login
                           ? AuthServices.signinUser(email, password, context)
-                          : AuthServices.signupUser(
-                          email, password, fullname, dob, gender, image, phone, context);
+                          : AuthServices.signupUser(email, password, fullname,
+                                  dob, gender, image, phone, context)
+                              .then((value) {
+                              if (value) {
+                                Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => const LoginForm()),
+                                );
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    content: Text(
+                                        'Please verify your email to login'),
+                                  ),
+                                );
+                              } else {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                        content: Text(
+                                            "Please verify your email to login")));
+                              }
+                            });
                     }
                   },
                   style: ElevatedButton.styleFrom(
@@ -261,10 +282,10 @@ class _LoginFormState extends State<LoginForm> {
           decoration: const InputDecoration(
             enabledBorder: UnderlineInputBorder(
                 borderRadius: BorderRadius.all(
-                  Radius.circular(0),
-                )),
+              Radius.circular(0),
+            )),
             label:
-            Text("Enter Full Name", style: TextStyle(color: Colors.black)),
+                Text("Enter Full Name", style: TextStyle(color: Colors.black)),
             prefixIcon: SizedBox(
               width: 0,
               child: Align(
@@ -303,8 +324,8 @@ class _LoginFormState extends State<LoginForm> {
           decoration: const InputDecoration(
             enabledBorder: UnderlineInputBorder(
                 borderRadius: BorderRadius.all(
-                  Radius.circular(0),
-                )),
+              Radius.circular(0),
+            )),
             label: Text("Email", style: TextStyle(color: Colors.black)),
             prefixIcon: SizedBox(
               width: 0,
@@ -343,10 +364,10 @@ class _LoginFormState extends State<LoginForm> {
           decoration: InputDecoration(
             enabledBorder: const UnderlineInputBorder(
                 borderRadius: BorderRadius.all(
-                  Radius.circular(0),
-                )),
+              Radius.circular(0),
+            )),
             label:
-            const Text("Password", style: TextStyle(color: Colors.black)),
+                const Text("Password", style: TextStyle(color: Colors.black)),
             prefixIcon: const SizedBox(
               width: 0,
               child: Align(
@@ -384,16 +405,11 @@ class _LoginFormState extends State<LoginForm> {
       child: TextButton(
         child: const Text(
           "Forgot password",
-          style: TextStyle(
-              fontFamily: 'Poppins',
-              color: Color(0xFF168AD8)),
+          style: TextStyle(fontFamily: 'Poppins', color: Color(0xFF168AD8)),
         ),
         onPressed: () {
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) =>
-                  const ResetPassword()));
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => const ResetPassword()));
         },
       ),
     );
@@ -406,23 +422,22 @@ class _LoginFormState extends State<LoginForm> {
         InkWell(
           onTap: () async {
             await AuthServices().signInWithGoogle();
-            print('>>done');
+            //print('>>done');
             // ignore: use_build_context_synchronously
             Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
                     builder: (context) => const NavbarLayout(
-                      index: 0,
-                    ))
-            );
+                          index: 0,
+                        )));
           },
           child: Row(
-            children:  [
+            children: [
               Padding(
                 padding: const EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 0.0),
                 child: SvgPicture.asset(
                   "assets/images/icons8-google.svg",
-                  width: 35,
+                  width: 40,
                 ),
               ),
               const Padding(
@@ -430,7 +445,7 @@ class _LoginFormState extends State<LoginForm> {
                 child: Text(
                   "Google",
                   style: TextStyle(
-                    fontSize: 18,
+                    fontSize: 30,
                   ),
                 ),
               ),

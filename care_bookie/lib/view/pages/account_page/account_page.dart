@@ -1,13 +1,17 @@
 import 'package:care_bookie/view/pages/account_page/sliverbox_content.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../../res/constants/colors.dart';
 
-class AccountPage extends StatelessWidget {
+class AccountPage extends StatefulWidget {
   const AccountPage({Key? key}) : super(key: key);
 
+  @override
+  State<AccountPage> createState() => _AccountPageState();
+}
+
+class _AccountPageState extends State<AccountPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -100,25 +104,25 @@ class AccountPage extends StatelessWidget {
               padding: const EdgeInsets.fromLTRB(100, 250, 100, 10),
               child: Center(
                 child: Column(
-                  children:  [
-                    Text(
-                      "${FirebaseAuth.instance.currentUser!.displayName}",
-                      style: const TextStyle(
-                          height: 1.2,
-                          fontWeight: FontWeight.bold,
-                          fontFamily: 'Poppins',
-                          fontSize: 20,
-                          color: Colors.white),
-                    ),
-                    Text(
-                      "${FirebaseAuth.instance.currentUser!.email}",
-                      style: const TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.w400,
-                          fontFamily: 'Poppins',
-                          letterSpacing: 0.1,
-                          fontSize: 13),
-                    )
+                  children:  const [
+                    // Text(
+                    //   "${FirebaseAuth.instance.currentUser!.displayName}",
+                    //   style: const TextStyle(
+                    //       height: 1.2,
+                    //       fontWeight: FontWeight.bold,
+                    //       fontFamily: 'Poppins',
+                    //       fontSize: 20,
+                    //       color: Colors.white),
+                    // ),
+                    // Text(
+                    //   "${FirebaseAuth.instance.currentUser!.email}",
+                    //   style: const TextStyle(
+                    //       color: Colors.white,
+                    //       fontWeight: FontWeight.w400,
+                    //       fontFamily: 'Poppins',
+                    //       letterSpacing: 0.1,
+                    //       fontSize: 13),
+                    // )
                   ],
                 ),
               ),
@@ -163,5 +167,4 @@ class AccountPage extends StatelessWidget {
       ),
     );
   }
-
 }

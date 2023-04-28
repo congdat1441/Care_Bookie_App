@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
-
 import '../../../providers/hospital_detail_page_provider.dart';
 import '../../../providers/schedule_detail_page_provider.dart';
 import '../../../providers/schedule_page_provider.dart';
@@ -176,7 +175,7 @@ class _ScheduleDetailAcceptState extends State<ScheduleDetailAccept> {
                 width: 200,
                 child: Align(
                   alignment: Alignment.centerRight,
-                  child: Text(scheduleDetailPageProvider.scheduleDetail!.user.fullName,
+                  child: Text(scheduleDetailPageProvider.scheduleDetail!.user.fullName!,
                       maxLines: 2,
                       style: const TextStyle(
                           fontWeight: FontWeight.w500,

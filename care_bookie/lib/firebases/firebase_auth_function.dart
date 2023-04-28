@@ -1,37 +1,47 @@
+import 'package:care_bookie/view/pages/login_signup_page/login_page.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
+// import 'package:care_bookie/models/user.dart';
+import '../models/user.dart';
+import '../view/pages/layouts_page/navbar_layout.dart';
 import 'firestore_services.dart';
 
 class AuthServices {
   final _auth = FirebaseAuth.instance;
   final _googleSignIn = GoogleSignIn();
+  final _db = FirebaseFirestore.instance;
 
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
 
-  static signupUser(String email, String password, String name, String dob,
-      String gender, String image, String phone, BuildContext context) async {
+  static Future<bool> signupUser(
+      String email,
+      String password,
+      String name,
+      String dob,
+      bool gender,
+      String image,
+      String phone,
+      BuildContext context) async {
     try {
-      List<String> providers =
-      await FirebaseAuth.instance.fetchSignInMethodsForEmail(email);
-      if (providers.contains('google.com')) {
-        throw Exception('This email has already been registered with Google');
-      }
-
       UserCredential userCredential = await FirebaseAuth.instance
           .createUserWithEmailAndPassword(email: email, password: password);
+      await FirebaseAuth.instance.currentUser!.updateDisplayName(name);
+      await FirebaseAuth.instance.currentUser!.updateEmail(email);
 
       // Gửi email xác thực đến địa chỉ email đăng ký của người dùng
       await userCredential.user!.sendEmailVerification();
-
-      await FirebaseAuth.instance.currentUser!.updateDisplayName(name);
-      await FirebaseAuth.instance.currentUser!.updateEmail(email);
+      await userCredential.user!.reload();
       await FirestoreServices.saveUser(
           dob, email, name, gender, userCredential.user!.uid, image, phone);
-      ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Registration Successful')));
+
+      if (userCredential.user!.emailVerified) {
+        return true;
+      } else {
+        return false;
+      }
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -40,18 +50,46 @@ class AuthServices {
         ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(content: Text('Email Provided already Exists')));
       }
+      return false;
     } catch (e) {
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text(e.toString())));
+      return true;
     }
+  }
+
+  static saveUser(String email, String password, String name, String dob,
+      bool gender, String image, String phone, BuildContext context) async {
+    UserCredential userCredential = await FirebaseAuth.instance
+        .createUserWithEmailAndPassword(email: email, password: password);
+
+    await FirestoreServices.saveUser(
+        dob, email, name, gender, userCredential.user!.uid, image, phone);
   }
 
   static signinUser(String email, String password, BuildContext context) async {
     try {
-      await FirebaseAuth.instance
+      UserCredential userCredential = await FirebaseAuth.instance
           .signInWithEmailAndPassword(email: email, password: password);
-      ScaffoldMessenger.of(context)
-          .showSnackBar(const SnackBar(content: Text('You are Logged in')));
+
+      // Kiểm tra xem email đã được xác minh hay chưa
+      if (userCredential.user!.emailVerified) {
+        // ignore: use_build_context_synchronously
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const NavbarLayout(index: 0)),
+        );
+      } else {
+        // ignore: use_build_context_synchronously
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const LoginForm()),
+        );
+        // ignore: use_build_context_synchronously
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Please verify your email to login'),
+          ),
+        );
+      }
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -96,7 +134,8 @@ class AuthServices {
         final String newId = newDocument.id;
 
         if (user != null) {
-          final CollectionReference usersCollection = firestore.collection('users');
+          final CollectionReference usersCollection =
+              firestore.collection('users');
           final DocumentReference userRef = usersCollection.doc(user.uid);
           final DocumentSnapshot userSnapshot = await userRef.get();
 
@@ -105,12 +144,12 @@ class AuthServices {
           } else {
             await userRef.set({
               'id': newId,
-              'dob': '',
+              'dob': '---',
               'email': user.email,
               'full_name': user.displayName,
-              'gender': '',
+              'gender': '---',
               'image': user.photoURL,
-              'phone': '',
+              'phone': '---',
             });
           }
         }
@@ -124,10 +163,5 @@ class AuthServices {
   signOut() async {
     await _auth.signOut();
     await _googleSignIn.signOut();
-  }
-
-  getUserInfo(){
-    String id = FirebaseAuth.instance.currentUser!.uid;
-    // FirebaseFirestore.instance.collection(('users').doc(uid).snapshots().listen)
   }
 }

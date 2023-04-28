@@ -1,12 +1,10 @@
 import 'package:care_bookie/firebases/firebase_auth_function.dart';
-import 'package:care_bookie/view/pages/account_page/personal_informarion.dart';
+import 'package:care_bookie/view/pages/account_page/notification.dart';
+import 'package:care_bookie/view/pages/account_page/personal_information.dart';
 import 'package:care_bookie/view/pages/login_signup_page/login_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
-
-import '../../../firebases/firebase_auth_services.dart';
-import '../login_signup_page/login.dart';
 
 class SliverToBoxAdapterContent extends StatefulWidget {
   const SliverToBoxAdapterContent({Key? key}) : super(key: key);
@@ -37,7 +35,7 @@ class _SliverToBoxAdapterContentState extends State<SliverToBoxAdapterContent> {
           ),
         ),
         onPressed: () {
-          Navigator.push(context, MaterialPageRoute(builder: (context) => const PersonalInfomation()));
+          Navigator.push(context, MaterialPageRoute(builder: (context) => const PersonalInformation()));
         },
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -86,7 +84,9 @@ class _SliverToBoxAdapterContentState extends State<SliverToBoxAdapterContent> {
             ),
           ),
         ),
-        onPressed: () {},
+        onPressed: () {
+          Navigator.push(context, MaterialPageRoute(builder: (context) => const NotificationUser()));
+        },
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -185,7 +185,7 @@ class _SliverToBoxAdapterContentState extends State<SliverToBoxAdapterContent> {
         onPressed: () async {
           await AuthServices().signOut();
           // ignore: use_build_context_synchronously
-          Navigator.push(
+          Navigator.pushReplacement(
               context,
               MaterialPageRoute(
                   builder: (context) => const LoginForm()));

@@ -4,29 +4,37 @@ import 'package:firebase_auth/firebase_auth.dart';
 import '../models/user.dart';
 
 class FirestoreServices {
-  static saveUser(
-      String dob, email, full_name, gender, id, image, phone) async {
+  static Future saveUser(
+      String dob,
+      String email,
+      String fullName,
+      bool gender,
+      String id,
+      String image,
+      String phone
+      ) async {
     await FirebaseFirestore.instance.collection('users').doc(id).set({
       'email': email,
-      'full_name': full_name,
-      'uid': id,
-      'dob': dob,
-      'gender': gender,
-      'image': image,
-      'phone': phone,
+      'full_name': fullName,
+      'id': id,
+      'dob': "00/00/0000",
+      'gender': true,
+      'image': "https://media.istockphoto.com/id/1337144146/vector/default-avatar-profile-icon-vector.jpg?s=612x612&w=0&k=20&c=BIbFwuv7FxTWvh5S3vB6bkT0Qv8Vn8N5Ffseq84ClGI=",
+      'phone': "000...",
     });
   }
 
-  static saveUserGoogle(String dob, String email, String full_name, String gender,
+  static saveUserGoogle(String dob, String email, String fullName, bool gender,
       String id, String image, String phone) async {
     await FirebaseFirestore.instance.collection('users').doc(id).set({
       'dob': dob,
       'email': email,
-      'full_name': full_name,
+      'full_name': fullName,
       'gender': gender,
       'image': image,
       'phone': phone,
-      'uid': id,
+      'id': id,
     });
   }
+
 }

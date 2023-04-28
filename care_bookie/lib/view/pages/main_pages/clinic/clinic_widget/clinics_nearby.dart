@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
 import '../../../../../providers/home_page_provider.dart';
 import '../../../../../providers/hospital_detail_page_provider.dart';
 import '../../../../../providers/schedule_page_provider.dart';
@@ -20,7 +19,7 @@ class _ClinicsNearbyState extends State<ClinicsNearby> {
     return Consumer3<HomePageProvider, HospitalDetailPageProvider,SchedulePageProvider>(
       builder: (context, homePageProvider, hospitalDetailPageProvider,schedulePageProvider, child) {
         if(homePageProvider.listHospital.isEmpty) {
-          return Center(child: CircularProgressIndicator(),);
+          return const Center(child: CircularProgressIndicator(),);
         } else {
           return SizedBox(
             width: MediaQuery.of(context).size.width,
