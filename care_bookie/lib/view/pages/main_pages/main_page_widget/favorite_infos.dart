@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 
 import '../../../../res/constants/colors.dart';
 
-class FavoriteInfos extends StatefulWidget {
-  const FavoriteInfos({Key? key}) : super(key: key);
+class FavoriteInfo extends StatefulWidget {
+  const FavoriteInfo({Key? key}) : super(key: key);
 
   @override
-  State<FavoriteInfos> createState() => _FavoriteInfosState();
+  State<FavoriteInfo> createState() => _FavoriteInfoState();
 }
 
-class _FavoriteInfosState extends State<FavoriteInfos> {
+class _FavoriteInfoState extends State<FavoriteInfo> {
   @override
   Widget build(BuildContext context) {
     return Stack(

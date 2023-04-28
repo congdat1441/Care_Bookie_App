@@ -12,7 +12,7 @@ class Hospital {
   final String workingHours;
   final String information;
   final List certifications;
-  final List wards;
+  final List<Wards> wards;
   late final List<DoctorHospital> doctors;
   late final List<Review> reviews;
 
@@ -63,20 +63,26 @@ class Hospital {
 
   }
 
-  Map<String,dynamic> toJson() => {
-    'id' : id,
-    'hospital_name' : hospitalName,
-    'image' : image,
-    'fee' : fee,
-    'address' : address,
-    'phone' : phone,
-    'star' : star,
-    'services' : services,
-    'working_hours' : workingHours,
-    'information' : information,
-    'certifications' : certifications,
-    'wards' : wards
-  };
+  Map<String,dynamic> toJson() {
+
+    List wardsJson = wards.map((e) => e.toJson()).toList();
+
+    return {
+      'id' : id,
+      'hospital_name' : hospitalName,
+      'image' : image,
+      'fee' : fee,
+      'address' : address,
+      'phone' : phone,
+      'star' : star,
+      'services' : services,
+      'working_hours' : workingHours,
+      'information' : information,
+      'certifications' : certifications,
+      'wards' : wardsJson
+    };
+
+  }
 
 }
 
@@ -122,14 +128,16 @@ class Review {
 
   final String content;
   final String reviewDay;
-  final int star;
+  final num star;
   final UserReview user;
+  final String userId;
 
   Review({
     required this.content,
     required this.star,
     required this.reviewDay,
-    required this.user
+    required this.user,
+    required this.userId
   });
 
   factory Review.fromJson(Map<String,dynamic> json) {
@@ -142,7 +150,8 @@ class Review {
         content: json['content'],
         star: json['star'],
         reviewDay: json['review_day'],
-        user: userReview
+        user: userReview,
+        userId: json['user_id']
     );
   }
 
@@ -151,7 +160,9 @@ class Review {
     return {
       'content' : content,
       'review_day' : reviewDay,
-      'user' : user.toJson()
+      'user' : user.toJson(),
+      'user_id' : userId,
+      'star' : star
     };
 
   }
@@ -202,6 +213,15 @@ class Wards {
 
   factory Wards.fromJson(Map<String,dynamic> json) {
     return Wards(doctors: json['doctors'], wardsName: json['wards_name']);
+  }
+
+  Map<String,dynamic> toJson() {
+
+    return {
+      'doctors' : doctors,
+      'wards_name' : wardsName
+    };
+
   }
 
 }

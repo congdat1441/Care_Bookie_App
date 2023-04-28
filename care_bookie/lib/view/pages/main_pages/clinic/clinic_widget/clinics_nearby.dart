@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
+import '../../../../../providers/favorite_page_provider.dart';
 import '../../../../../providers/home_page_provider.dart';
 import '../../../../../providers/hospital_detail_page_provider.dart';
 import '../../../../../providers/schedule_page_provider.dart';
@@ -67,6 +69,17 @@ class _ClinicsNearbyState extends State<ClinicsNearby> {
                                     }
                                   }
 
+                                  var favoritePageProvider = Provider.of<FavoritePageProvider>(context,listen: false);
+
+
+                                  if(favoritePageProvider.favorite!.hospitals.isNotEmpty)  {
+                                    for(var element in favoritePageProvider.favorite!.hospitals) {
+                                      if(element.id == homePageProvider.listHospital[index].id) {
+                                        hospitalDetailPageProvider.setIsFavorite(true);
+                                        hospitalDetailPageProvider.setHospitalFavorite(element);
+                                      }
+                                    }
+                                  }
 
                                   Navigator.push(
                                       context,

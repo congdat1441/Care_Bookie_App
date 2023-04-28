@@ -1,3 +1,4 @@
+import 'package:care_bookie/providers/favorite_page_provider.dart';
 import 'package:care_bookie/providers/home_page_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:care_bookie/providers/schedule_page_provider.dart';
@@ -31,7 +32,7 @@ class _MainPageState extends State<MainPage> {
     // TODO: implement initState
     super.initState();
     var loadHospitalAndDoctor =
-        Provider.of<HomePageProvider>(context, listen: false);
+    Provider.of<HomePageProvider>(context, listen: false);
     if (loadHospitalAndDoctor.listHospital.isEmpty) {
       loadHospitalAndDoctor.getAllHospital();
     }
@@ -44,15 +45,22 @@ class _MainPageState extends State<MainPage> {
     var userLogin = Provider.of<UserLoginProvider>(context, listen: false);
 
     var loadSchedule =
-        Provider.of<SchedulePageProvider>(context, listen: false);
+    Provider.of<SchedulePageProvider>(context, listen: false);
+
+    var loadFavorite = Provider.of<FavoritePageProvider>(context,listen: false);
 
     if (loadHistory.histories.isEmpty) {
-      loadHistory.getAllHospital(userLogin.userLogin.id!);
+      loadHistory.getAllHospital(userLogin.userLogin.id);
     }
 
     if (loadSchedule.schedules.isEmpty) {
-      loadSchedule.getAllScheduleByUserId(userLogin.userLogin.id!);
+      loadSchedule.getAllScheduleByUserId(userLogin.userLogin.id);
     }
+
+    if(loadFavorite.favorite == null) {
+      loadFavorite.getFavoriteDataByUserId(userLogin.userLogin.id);
+    }
+
   }
 
   @override
@@ -68,7 +76,7 @@ class _MainPageState extends State<MainPage> {
             //logout(),
             hiPatient(),
             const SearchButton(),
-            const FavoriteInfos(),
+            const FavoriteInfo(),
             doctorTitle(),
             const SizedBox(height: 200, child: Doctors()),
             clinicsNearbyTitles(),
@@ -481,21 +489,21 @@ class _MainPageState extends State<MainPage> {
                   ),
                   WidgetSpan(
                       child: Padding(
-                    padding:
+                        padding:
                         EdgeInsets.symmetric(vertical: 3.0, horizontal: 25.0),
-                    child: Text(
-                      "NEARBY",
-                      style: TextStyle(
-                          height: 1,
-                          fontStyle: FontStyle.italic,
-                          fontWeight: FontWeight.w600,
-                          fontSize: 32,
-                          //textBaseline: TextBaseline.alphabetic,
-                          color: Colors.green,
-                          //letterSpacing: 1.5,
-                          fontFamily: 'Poppins'),
-                    ),
-                  )),
+                        child: Text(
+                          "NEARBY",
+                          style: TextStyle(
+                              height: 1,
+                              fontStyle: FontStyle.italic,
+                              fontWeight: FontWeight.w600,
+                              fontSize: 32,
+                              //textBaseline: TextBaseline.alphabetic,
+                              color: Colors.green,
+                              //letterSpacing: 1.5,
+                              fontFamily: 'Poppins'),
+                        ),
+                      )),
                 ]),
                 //textScaleFactor: 0.8,
               ),

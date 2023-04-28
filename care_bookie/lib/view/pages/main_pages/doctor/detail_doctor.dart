@@ -1,6 +1,9 @@
 import 'package:care_bookie/models/doctor.dart';
+import 'package:care_bookie/models/favorite.dart';
 import 'package:care_bookie/models/hospital.dart';
+import 'package:care_bookie/providers/favorite_page_provider.dart';
 import 'package:care_bookie/providers/hospital_detail_page_provider.dart';
+import 'package:care_bookie/providers/user_login_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_expandable_text/flutter_expandable_text.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
@@ -8,6 +11,8 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import '../../../../providers/doctor_detail_page_provider.dart';
+import '../../../../providers/doctor_detail_page_provider.dart';
+import '../../../../providers/favorite_dotor_data_provider.dart';
 import '../../../../providers/schedule_data_provider.dart';
 import '../../../../providers/schedule_detail_page_provider.dart';
 import '../../../../res/constants/colors.dart';
@@ -100,6 +105,11 @@ class _DetailDoctorState extends State<DetailDoctor>
 
     var scheduleDataProvider = Provider.of<ScheduleDataProvider>(context,listen: false);
 
+    var hospitalDetailPageProvider = Provider.of<HospitalDetailPageProvider>(context,listen: false);
+
+    var favoriteDoctorDataProvider = Provider.of<FavoriteDoctorDataProvider>(context,listen: false);
+
+    var userLoginProvider = Provider.of<UserLoginProvider>(context,listen: false);
 
     return SliverAppBar(
       title: Padding(
@@ -120,9 +130,11 @@ class _DetailDoctorState extends State<DetailDoctor>
       backgroundColor: Colors.transparent,
       leading: IconButton(
         onPressed: () {
-          doctorDetailProvider.scheduleWithDoctor = null;
-          doctorDetailProvider.scheduleWithHospital = null;
+
+          doctorDetailProvider.resetData();
           scheduleDataProvider.resetData();
+
+          hospitalDetailPageProvider.scheduleWithHospital = null;
 
           Navigator.pop(context);
         },
@@ -132,9 +144,48 @@ class _DetailDoctorState extends State<DetailDoctor>
         ),
       ),
       actions: [
-        IconButton(
-          onPressed: () {},
-          icon: const Icon(
+        doctorDetailProvider.isDoctorWithFavorite ? Container() : IconButton(
+          onPressed: () async{
+
+            var favoritePageProvider = Provider.of<FavoritePageProvider>(context,listen: false);
+
+            doctorDetailProvider.setIsFavorite(!doctorDetailProvider.isFavorite);
+
+            if(doctorDetailProvider.isFavorite) {
+
+              DoctorFavorite doctorFavorite = DoctorFavorite(
+                  id: doctorDetailProvider.doctorDetail!.id,
+                  fullName: doctorDetailProvider.doctorDetail!.fullName,
+                  fields: doctorDetailProvider.doctorDetail!.fields,
+                  image: doctorDetailProvider.doctorDetail!.image,
+                  hospitalId: doctorDetailProvider.doctorDetail!.hospitalId
+              );
+
+              await favoriteDoctorDataProvider.createDoctorFavorite(doctorFavorite, userLoginProvider.userLogin.id);
+
+              await favoritePageProvider.getFavoriteDataByUserId(userLoginProvider.userLogin.id);
+
+
+            } else {
+
+              bool isSuccess = await favoriteDoctorDataProvider.deleteDoctorFavoriteById(userLoginProvider.userLogin.id,doctorDetailProvider.doctorDetail!.id);
+
+              if(isSuccess) {
+
+                await favoritePageProvider.getFavoriteDataByUserId(userLoginProvider.userLogin.id);
+
+              }
+            }
+
+            setState(() {
+
+            });
+          },
+          icon: doctorDetailProvider.isFavorite  ?  const Icon(
+            IconlyBold.heart,
+            size: 30,
+            color: Colors.redAccent,
+          ) : const Icon(
             IconlyLight.heart,
             size: 30,
           ),
@@ -224,7 +275,7 @@ class _DetailDoctorState extends State<DetailDoctor>
                         if(doctorDetailProvider.scheduleWithHospital != null) {
 
                           Fluttertoast.showToast(
-                              msg: "Bạn Đã Đặt Lịch Khám Ở Phòng Khám Nà",
+                              msg: "Bạn Đã Đặt Lịch Khám Ở Phòng Khám Này",
                               toastLength: Toast.LENGTH_SHORT,
                               gravity: ToastGravity.TOP,
                               timeInSecForIosWeb: 1,
@@ -585,7 +636,7 @@ class _DetailDoctorState extends State<DetailDoctor>
                   if(doctorDetailPageProvider.scheduleWithHospital != null) {
 
                     Fluttertoast.showToast(
-                        msg: "Bạn Đã Đặt Lịch Khám Ở Phòng Khám Nà",
+                        msg: "Bạn Đã Đặt Lịch Khám Ở Phòng Khám Này",
                         toastLength: Toast.LENGTH_SHORT,
                         gravity: ToastGravity.TOP,
                         timeInSecForIosWeb: 1,

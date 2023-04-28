@@ -17,6 +17,7 @@ class Schedule {
   final String fee;
   final bool accept;
   final List<HistorySchedule> shareHistory;
+  final String hospitalId;
 
   Schedule({
     required this.id,
@@ -28,7 +29,8 @@ class Schedule {
     required this.user,
     required this.fee,
     required this.accept,
-    required this.shareHistory
+    required this.shareHistory,
+    required this.hospitalId
   });
 
   Map<String,dynamic> toJson() {
@@ -51,7 +53,8 @@ class Schedule {
       'user' : user.toJson(),
       'fee' : fee,
       'accept' : accept,
-      'share_history' : shareHistoryJson
+      'share_history' : shareHistoryJson,
+      'hospital_id' : hospitalId
     };
 
   }
@@ -81,7 +84,8 @@ class Schedule {
         user: UserData.fromJson(json['user']),
         fee: json['fee'],
         accept: json['accept'],
-        shareHistory: shareHistory
+        shareHistory: shareHistory,
+        hospitalId: "hospital_id"
     );
 
   }
@@ -114,7 +118,7 @@ class HistorySchedule {
   Map<String,dynamic> toJson() {
 
     return {
-     'hospital_name' : hospitalName,
+      'hospital_name' : hospitalName,
       'diagnosis' : diagnosis,
       'appointment' : appointment
     };

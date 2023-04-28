@@ -125,7 +125,8 @@ class HospitalHistory {
     required this.address,
     required this.hospitalName,
     required this.image,
-    required this.phone
+    required this.phone,
+
   });
 
   factory HospitalHistory.fromJson(Map<String,dynamic> json) {
@@ -135,7 +136,8 @@ class HospitalHistory {
         address: json['address'],
         hospitalName: json['hospital_name'],
         image: json['image'],
-        phone: json['phone']
+        phone: json['phone'],
+
     );
 
   }
@@ -145,7 +147,8 @@ class HospitalHistory {
     'address' : address,
     'hospital_name' : hospitalName,
     'image' : image,
-    'phone' : phone
+    'phone' : phone,
+
   };
 
 }
@@ -161,7 +164,7 @@ class DoctorHistory {
     required this.id,
     required this.fields,
     required this.fullName,
-    required this.image
+    required this.image,
   });
 
   factory DoctorHistory.fromJson(Map<String,dynamic> json) {
@@ -170,7 +173,7 @@ class DoctorHistory {
         id: json['id'],
         fields : json['fields'],
         fullName: json['full_name'],
-        image: json['image']
+        image: json['image'],
     );
 
   }
@@ -179,7 +182,7 @@ class DoctorHistory {
     'id' : id,
     'fields' : fields,
     'full_name' : fullName,
-    'image' : image
+    'image' : image,
   };
 
 

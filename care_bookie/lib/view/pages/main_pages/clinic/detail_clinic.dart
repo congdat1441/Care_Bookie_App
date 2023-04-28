@@ -1,13 +1,19 @@
+import 'package:care_bookie/models/favorite.dart';
 import 'package:care_bookie/providers/doctor_detail_page_provider.dart';
+import 'package:care_bookie/providers/favorite_hospital_data_provider.dart';
 import 'package:care_bookie/providers/schedule_data_provider.dart';
+import 'package:care_bookie/providers/user_login_provider.dart';
 import 'package:care_bookie/view/pages/schedule/schedule_detail_pending.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:provider/provider.dart';
 import '../../../../../res/constants/colors.dart';
 import 'package:flutter_expandable_text/flutter_expandable_text.dart';
+import '../../../../providers/favorite_page_provider.dart';
 import '../../../../providers/hospital_detail_page_provider.dart';
 import '../../../../providers/schedule_detail_page_provider.dart';
+import '../../../../providers/schedule_page_provider.dart';
 import '../../review_page/review_clinic_page/review_clinic.dart';
 import '../../schedule/schedule_detail_accept.dart';
 import '../doctor/detail_doctor.dart';
@@ -70,8 +76,10 @@ class _DetailClinicState extends State<DetailClinic>
         backgroundColor: Colors.transparent,
         leading: IconButton(
           onPressed: () {
-            hospitalDetailPageProvider.scheduleWithHospital = null;
+
+            hospitalDetailPageProvider.resetData();
             scheduleDataProvider.resetData();
+
             Navigator.pop(context);
           },
           icon: const Icon(
@@ -80,9 +88,55 @@ class _DetailClinicState extends State<DetailClinic>
           ),
         ),
         actions: [
-          IconButton(
-            onPressed: () {},
-            icon: const Icon(
+          hospitalDetailPageProvider.isHospitalWithFavorite ? Container() : IconButton(
+            onPressed: () async{
+
+              hospitalDetailPageProvider.setIsFavorite(!hospitalDetailPageProvider.isFavorite);
+
+              var favoritePageProvider = Provider.of<FavoritePageProvider>(context,listen: false);
+
+              var favoriteHospitalDataProvider = Provider.of<FavoriteHospitalDataProvider>(context,listen: false);
+
+              var userLoginProvider = Provider.of<UserLoginProvider>(context,listen: false);
+
+              if(hospitalDetailPageProvider.isFavorite) {
+
+
+
+                HospitalFavorite hospitalFavorite = HospitalFavorite(
+                    id: hospitalDetailPageProvider.hospitalDetails!.id,
+                    image: hospitalDetailPageProvider.hospitalDetails!.image,
+                    hospitalName: hospitalDetailPageProvider.hospitalDetails!.hospitalName,
+                    workingHours: hospitalDetailPageProvider.hospitalDetails!.workingHours,
+                    star: hospitalDetailPageProvider.hospitalDetails!.star
+                );
+
+
+                await favoriteHospitalDataProvider.createHospitalFavorite(hospitalFavorite, userLoginProvider.userLogin.id);
+
+                await favoritePageProvider.getFavoriteDataByUserId(userLoginProvider.userLogin.id);
+
+              } else {
+
+                bool isSuccess = await favoriteHospitalDataProvider.deleteHospitalFavoriteById(userLoginProvider.userLogin.id, hospitalDetailPageProvider.hospitalDetails!.id);
+
+                if(isSuccess) {
+
+                  favoritePageProvider.favorite!.hospitals.remove(hospitalDetailPageProvider.hospitalFavorite);
+
+                }
+
+              }
+
+              setState(() {
+
+              });
+            },
+            icon: hospitalDetailPageProvider.isFavorite  ?  const Icon(
+              IconlyBold.heart,
+              size: 30,
+              color: Colors.redAccent,
+            ) : const Icon(
               IconlyLight.heart,
               size: 30,
             ),
@@ -233,21 +287,16 @@ class _DetailClinicState extends State<DetailClinic>
                         children: [
                           Row(
                             children: [
-                              ...[1, 2, 3, 4, 5].map((e) {
-                                if(e <= hospitalDetailPageProvider.hospitalDetails!.star) {
-                                  return const Icon(
-                                    IconlyBold.star,
-                                    size: 25,
-                                    color: Colors.amber,
-                                  );
-                                }
-
-                                return const Icon(
-                                  IconlyBold.star,
-                                  size: 25,
-                                  color: Colors.black12,
-                                );
-                              }),
+                              RatingBarIndicator(
+                                rating: hospitalDetailPageProvider.hospitalDetails!.star.toDouble(),
+                                itemBuilder: (context, index) => const Icon(
+                                  Icons.star,
+                                  color: Colors.amber,
+                                ),
+                                itemCount: 5,
+                                itemSize: 25.0,
+                                direction: Axis.horizontal,
+                              ),
                               const SizedBox(
                                 width: 5,
                               ),
@@ -269,7 +318,7 @@ class _DetailClinicState extends State<DetailClinic>
                                         builder: (context) =>
                                         const ReviewClinic()));
                               },
-                              child: const Text("Đánh giá",
+                              child: const Text("Xem đánh giá",
                                   style: TextStyle(
                                       height: 1.5,
                                       fontSize: 18,
@@ -369,57 +418,57 @@ class _DetailClinicState extends State<DetailClinic>
 
   Widget doctorAndWard() {
     return  SliverToBoxAdapter(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 0),
-            child: Container(
-              height: 285,
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(30),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 0),
+        child: Container(
+          height: 285,
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(30),
+          ),
+          child: Column(
+            children: [
+              SizedBox(
+                //padding: const EdgeInsets.symmetric(horizontal: 40),
+                height: 40,
+                child: TabBar(
+                  controller: _tabController,
+                  tabs: const [
+                    Tab(
+                      child: Text(
+                        "Bác Sỹ",
+                        style: TextStyle(fontSize: 20),
+                      ),
+                    ),
+                    Tab(
+                      child: Text("Khoa", style: TextStyle(fontSize: 20)),
+                    ),
+                  ],
+                  indicatorWeight: 2,
+                  indicatorPadding: const EdgeInsets.symmetric(horizontal: 30),
+                  labelColor: Colors.blue,
+                  unselectedLabelColor: ColorConstant.Grey01,
+                ),
               ),
-              child: Column(
-                children: [
-                  SizedBox(
-                    //padding: const EdgeInsets.symmetric(horizontal: 40),
-                    height: 40,
-                    child: TabBar(
-                      controller: _tabController,
-                      tabs: const [
-                        Tab(
-                          child: Text(
-                            "Bác Sỹ",
-                            style: TextStyle(fontSize: 20),
-                          ),
-                        ),
-                        Tab(
-                          child: Text("Khoa", style: TextStyle(fontSize: 20)),
-                        ),
-                      ],
-                      indicatorWeight: 2,
-                      indicatorPadding: const EdgeInsets.symmetric(horizontal: 30),
-                      labelColor: Colors.blue,
-                      unselectedLabelColor: ColorConstant.Grey01,
+              Expanded(
+                child: TabBarView(controller: _tabController, children: [
+                  Padding(
+                    padding: const EdgeInsets.all(5.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [listDoctor(context)],
                     ),
                   ),
-                  Expanded(
-                    child: TabBarView(controller: _tabController, children: [
-                      Padding(
-                        padding: const EdgeInsets.all(5.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [listDoctor(context)],
-                        ),
-                      ),
-                      Padding(padding: const EdgeInsets.all(10),
-                        child: listWard(context),
-                      )
-                    ]),
-                  ),
-                ],
+                  Padding(padding: const EdgeInsets.all(10),
+                    child: listWard(context),
+                  )
+                ]),
               ),
-            ),
+            ],
           ),
-        );
+        ),
+      ),
+    );
   }
 
   Widget infoClinic() {
@@ -617,6 +666,14 @@ class _DetailClinicState extends State<DetailClinic>
                 ),
                 onPressed: () {
 
+                  final schedulePageProvider = Provider.of<SchedulePageProvider>(context,listen: false);
+
+                  for (var element in schedulePageProvider.schedules) {
+                    if(element.hospital.id == hospitalDetailPageProvider.hospitalDetails!.id) {
+                      hospitalDetailPageProvider.setScheduleWithHospital(element);
+                    }
+                  }
+
                   scheduleDetailPageProvider.setScheduleDetail(hospitalDetailPageProvider.scheduleWithHospital!);
 
                   if(hospitalDetailPageProvider.scheduleWithHospital!.accept) {
@@ -707,8 +764,18 @@ class _DetailClinicState extends State<DetailClinic>
 
                                     final doctorDetailProvider = Provider.of<DoctorDetailPageProvider>(context,listen: false);
 
+                                    final schedulePageProvider = Provider.of<SchedulePageProvider>(context,listen: false);
+
+                                    var favoritePageProvider = Provider.of<FavoritePageProvider>(context,listen: false);
+
                                     doctorDetailProvider.setIsDoctorWithHospital(true);
                                     doctorDetailProvider.setIdDoctorWithHospital(e.id);
+
+                                    for (var element in schedulePageProvider.schedules) {
+                                      if(element.hospital.id == hospitalDetailPageProvider.hospitalDetails!.id) {
+                                        hospitalDetailPageProvider.setScheduleWithHospital(element);
+                                      }
+                                    }
 
                                     if(hospitalDetailPageProvider.scheduleWithHospital != null) {
 
@@ -718,6 +785,15 @@ class _DetailClinicState extends State<DetailClinic>
                                         doctorDetailProvider.setScheduleWithDoctor(hospitalDetailPageProvider.scheduleWithHospital!);
                                       }
 
+                                    }
+
+                                    if(favoritePageProvider.favorite!.doctors.isNotEmpty)  {
+                                      for(var element in favoritePageProvider.favorite!.doctors) {
+                                        if(element.id == e.id) {
+                                          doctorDetailProvider.setIsFavorite(true);
+                                          doctorDetailProvider.setDoctorFavorite(element);
+                                        }
+                                      }
                                     }
 
                                     Navigator.push(
@@ -738,19 +814,6 @@ class _DetailClinicState extends State<DetailClinic>
                                 ),
                               ),
                             ),
-                            // Container(
-                            //   margin: const EdgeInsets.fromLTRB(105, 10, 0, 0),
-                            //   height: 28,
-                            //   width: 28,
-                            //   child: FloatingActionButton(
-                            //       backgroundColor: Colors.white,
-                            //       child: const Icon(
-                            //         IconlyBroken.heart,
-                            //         color: Color(0xffee5353),
-                            //         size: 20,
-                            //       ),
-                            //       onPressed: () {}),
-                            // ),
                           ],
                         ),
                         Padding(

@@ -1,9 +1,13 @@
 import 'package:care_bookie/providers/bottom_navbar_provider.dart';
 import 'package:care_bookie/providers/doctor_detail_page_provider.dart';
+import 'package:care_bookie/providers/favorite_dotor_data_provider.dart';
+import 'package:care_bookie/providers/favorite_hospital_data_provider.dart';
+import 'package:care_bookie/providers/favorite_page_provider.dart';
 import 'package:care_bookie/providers/history_detail_page_provider.dart';
 import 'package:care_bookie/providers/history_page_provider.dart';
 import 'package:care_bookie/providers/home_page_provider.dart';
 import 'package:care_bookie/providers/hospital_detail_page_provider.dart';
+import 'package:care_bookie/providers/review_data_provider.dart';
 import 'package:care_bookie/providers/schedule_data_provider.dart';
 import 'package:care_bookie/providers/schedule_detail_page_provider.dart';
 import 'package:care_bookie/providers/schedule_page_provider.dart';
@@ -16,7 +20,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-void main() async {
+void main() async{
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   runApp(const MyApp());
@@ -31,33 +35,19 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (context) => BottomNavBarProvider()),
-        ChangeNotifierProvider(
-          create: (context) => HomePageProvider(),
-        ),
-        ChangeNotifierProvider(
-          create: (context) => HospitalDetailPageProvider(),
-        ),
-        ChangeNotifierProvider(
-          create: (context) => DoctorDetailPageProvider(),
-        ),
-        ChangeNotifierProvider(
-          create: (context) => HistoryPageProvider(),
-        ),
-        ChangeNotifierProvider(
-          create: (context) => UserLoginProvider(),
-        ),
-        ChangeNotifierProvider(
-          create: (context) => HistoryDetailPageProvider(),
-        ),
-        ChangeNotifierProvider(
-          create: (context) => ScheduleDataProvider(),
-        ),
-        ChangeNotifierProvider(
-          create: (context) => SchedulePageProvider(),
-        ),
-        ChangeNotifierProvider(
-          create: (context) => ScheduleDetailPageProvider(),
-        )
+        ChangeNotifierProvider(create: (context) => HomePageProvider(),),
+        ChangeNotifierProvider(create: (context) => HospitalDetailPageProvider(),),
+        ChangeNotifierProvider(create: (context) => DoctorDetailPageProvider(),),
+        ChangeNotifierProvider(create: (context) => HistoryPageProvider(),),
+        ChangeNotifierProvider(create: (context) => UserLoginProvider(),),
+        ChangeNotifierProvider(create: (context) => HistoryDetailPageProvider(),),
+        ChangeNotifierProvider(create: (context) => ScheduleDataProvider(),),
+        ChangeNotifierProvider(create: (context) => SchedulePageProvider(),),
+        ChangeNotifierProvider(create: (context) => ScheduleDetailPageProvider(),),
+        ChangeNotifierProvider(create: (context) =>  ReviewDataProvider(),),
+        ChangeNotifierProvider(create: (context) => FavoritePageProvider(),),
+        ChangeNotifierProvider(create: (context) => FavoriteDoctorDataProvider(),),
+        ChangeNotifierProvider(create: (context) => FavoriteHospitalDataProvider(),)
       ],
       child: MaterialApp(
           debugShowCheckedModeBanner: false,

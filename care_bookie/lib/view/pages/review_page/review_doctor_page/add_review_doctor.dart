@@ -1,6 +1,19 @@
+import 'package:care_bookie/models/doctor.dart';
+import 'package:care_bookie/models/hospital.dart';
+import 'package:care_bookie/providers/history_detail_page_provider.dart';
+import 'package:care_bookie/providers/user_login_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:provider/provider.dart';
+
+import '../../../../firebases/firebase_doctor_data.dart';
+import '../../../../providers/home_page_provider.dart';
+import '../../../../providers/review_data_provider.dart';
 import '../../../../res/constants/colors.dart';
+import '../../layouts_page/navbar_layout.dart';
+import '../../main_pages/main_page.dart';
 
 class AddReviewDoctor extends StatefulWidget {
   const AddReviewDoctor({Key? key}) : super(key: key);
@@ -11,6 +24,7 @@ class AddReviewDoctor extends StatefulWidget {
 
 class _AddReviewDoctorState extends State<AddReviewDoctor> {
   final TextEditingController _controllerTextWord = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -50,6 +64,9 @@ class _AddReviewDoctorState extends State<AddReviewDoctor> {
   }
 
   Widget addYourComment() {
+
+    var reviewDataProvider = Provider.of<ReviewDataProvider>(context,listen: false);
+
     return SingleChildScrollView(
       scrollDirection: Axis.vertical,
       child: Padding(
@@ -69,15 +86,22 @@ class _AddReviewDoctorState extends State<AddReviewDoctor> {
             Center(
               child: Padding(
                 padding: const EdgeInsets.only(top: 20),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    ...[1, 2, 3, 4, 5].map((e) => const Icon(
-                      IconlyBold.star,
-                      size: 50,
-                      color: Colors.amber,
-                    )),
-                  ],
+                child: RatingBar.builder(
+                  initialRating: reviewDataProvider.starDefault,
+                  minRating: 1,
+                  direction: Axis.horizontal,
+                  allowHalfRating: false,
+                  itemCount: 5,
+                  itemPadding: const EdgeInsets.symmetric(horizontal: 4.0),
+                  itemBuilder: (context, _) => const Icon(
+                    Icons.star,
+                    color: Colors.amber,
+                  ),
+                  onRatingUpdate: (rating) {
+
+                    reviewDataProvider.setStarDefault(rating);
+
+                  },
                 ),
               ),
             ),
@@ -126,12 +150,21 @@ class _AddReviewDoctorState extends State<AddReviewDoctor> {
       height: 80,
       color: Colors.white,
       child: Column(
-        children: [Submit()],
+        children: [submit()],
       ),
     );
   }
 
-  Widget Submit() {
+  Widget submit() {
+
+    var reviewDataProvider = Provider.of<ReviewDataProvider>(context,listen: false);
+
+    var historyDetailPageProvider = Provider.of<HistoryDetailPageProvider>(context,listen: false);
+
+    var userLoginProvider = Provider.of<UserLoginProvider>(context,listen: false);
+
+    var homePageProvider = Provider.of<HomePageProvider>(context,listen: false);
+
     return Padding(
         padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
         child: Container(
@@ -148,7 +181,145 @@ class _AddReviewDoctorState extends State<AddReviewDoctor> {
                   borderRadius: BorderRadius.circular(10.0),
                 ),
               ),
-              onPressed: () {},
+              onPressed: () async{
+
+                if(_controllerTextWord.text.isEmpty) {
+                  Fluttertoast.showToast(
+                      msg: "Vui Lòng Nhập Đánh Giá Về Bác Sỹ",
+                      toastLength: Toast.LENGTH_SHORT,
+                      gravity: ToastGravity.TOP,
+                      timeInSecForIosWeb: 1,
+                      backgroundColor: Colors.red,
+                      textColor: Colors.white,
+                      fontSize: 16.0
+                  );
+                } else {
+
+                  UserReview user = UserReview(
+                      id: userLoginProvider.userLogin.id,
+                      fullName: userLoginProvider.userLogin.fullName,
+                      image: userLoginProvider.userLogin.image
+                  );
+
+                  String day = DateTime.now().day.toString();
+                  String month = DateTime.now().month.toString();
+
+                  if(DateTime.now().day < 10) {
+                    day = '0$day';
+                  }
+
+                  if(DateTime.now().month < 10) {
+                    month = '0$month';
+                  }
+
+
+                  Review review = Review(
+                      content: _controllerTextWord.text,
+                      star: reviewDataProvider.starDefault,
+                      reviewDay: '$day/$month/${DateTime.now().year}',
+                      user: user,
+                      userId: user.id
+                  );
+
+                  ReviewResponseData reviewData =   await reviewDataProvider.reviewExistsByUserId(user.id, historyDetailPageProvider.historyDetail!.doctor.id);
+
+                  if(reviewData.reviewDocId.isNotEmpty) {
+
+                    var totalStar = (reviewData.starTotal * reviewData.reviewLength).round();
+
+                    var starChange = totalStar - reviewData.starUser;
+
+                    var star = ((starChange + reviewDataProvider.starDefault) / reviewData.reviewLength).toStringAsFixed(1);
+
+                    bool isSuccess =  await reviewDataProvider.updateReviewByUserId(
+                        review,
+                        historyDetailPageProvider.historyDetail!.doctor.id,
+                        double.parse(star),
+                        reviewData.reviewDocId
+                    );
+
+                    if(isSuccess){
+
+                      homePageProvider.listDoctor = [];
+
+                      Fluttertoast.showToast(
+                          msg: "Cập Nhập Đánh Giá Bác Sỹ Thành Công",
+                          toastLength: Toast.LENGTH_SHORT,
+                          gravity: ToastGravity.TOP,
+                          timeInSecForIosWeb: 1,
+                          backgroundColor: Colors.green,
+                          textColor: Colors.white,
+                          fontSize: 16.0
+                      );
+                      // ignore: use_build_context_synchronously
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const NavbarLayout(index: 0,),
+                          )
+                      );
+                    } else {
+                      Fluttertoast.showToast(
+                          msg: "Không Thể Đánh Giá Bác Sỹ",
+                          toastLength: Toast.LENGTH_SHORT,
+                          gravity: ToastGravity.TOP,
+                          timeInSecForIosWeb: 1,
+                          backgroundColor: Colors.red,
+                          textColor: Colors.white,
+                          fontSize: 16.0
+                      );
+                    }
+                  } else {
+
+                    var starTotal = (reviewData.starTotal * reviewData.reviewLength).round();
+
+                    var starMedium = (starTotal + reviewDataProvider.starDefault) / (reviewData.reviewLength + 1);
+
+                    var staMediumAsFixed = starMedium.toStringAsFixed(1);
+
+                    bool isSuccess =  await reviewDataProvider.createReviewDoctor(
+                        review,
+                        historyDetailPageProvider.historyDetail!.doctor.id,
+                        double.parse(staMediumAsFixed),
+                    );
+
+                    if(isSuccess){
+                      homePageProvider.listDoctor = [];
+                      Fluttertoast.showToast(
+                          msg: "Đánh Giá Bác Sỹ Thành Công",
+                          toastLength: Toast.LENGTH_SHORT,
+                          gravity: ToastGravity.TOP,
+                          timeInSecForIosWeb: 1,
+                          backgroundColor: Colors.green,
+                          textColor: Colors.white,
+                          fontSize: 16.0
+                      );
+                      // ignore: use_build_context_synchronously
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const NavbarLayout(index: 0,),
+                        )
+                      );
+                    } else {
+                      Fluttertoast.showToast(
+                          msg: "Không Thể Đánh Giá Bác Sỹ",
+                          toastLength: Toast.LENGTH_SHORT,
+                          gravity: ToastGravity.TOP,
+                          timeInSecForIosWeb: 1,
+                          backgroundColor: Colors.red,
+                          textColor: Colors.white,
+                          fontSize: 16.0
+                      );
+                    }
+
+
+
+                  }
+                }
+
+                reviewDataProvider.setStarDefault(4);
+              },
               child: const Padding(
                 padding: EdgeInsets.only(
                   top: 10,

@@ -9,7 +9,7 @@ class Doctor {
   final String image;
   final String hospitalName;
   final String hospitalId;
-  final int star;
+  final num star;
   final int experience;
   final String information;
   final List knowledges;
@@ -63,5 +63,21 @@ class Doctor {
     'fields' : fields,
   };
 
+
+}
+
+class ReviewResponseData {
+
+  final String reviewDocId;
+  final num starUser;
+  final int reviewLength;
+  final num starTotal;
+
+  ReviewResponseData({
+    required this.reviewDocId,
+    required this.starUser,
+    required this.reviewLength,
+    required this.starTotal
+  });
 
 }
