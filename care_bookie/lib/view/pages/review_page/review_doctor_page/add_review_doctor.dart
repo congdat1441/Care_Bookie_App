@@ -196,9 +196,9 @@ class _AddReviewDoctorState extends State<AddReviewDoctor> {
                 } else {
 
                   UserReview user = UserReview(
-                      id: userLoginProvider.userLogin.id,
-                      fullName: userLoginProvider.userLogin.fullName,
-                      image: userLoginProvider.userLogin.image
+                      id: userLoginProvider.userLogin.id!,
+                      fullName: userLoginProvider.userLogin.fullName!,
+                      image: userLoginProvider.userLogin.image!
                   );
 
                   String day = DateTime.now().day.toString();

@@ -161,18 +161,18 @@ class _DetailDoctorState extends State<DetailDoctor>
                   hospitalId: doctorDetailProvider.doctorDetail!.hospitalId
               );
 
-              await favoriteDoctorDataProvider.createDoctorFavorite(doctorFavorite, userLoginProvider.userLogin.id);
+              await favoriteDoctorDataProvider.createDoctorFavorite(doctorFavorite, userLoginProvider.userLogin.id!);
 
-              await favoritePageProvider.getFavoriteDataByUserId(userLoginProvider.userLogin.id);
+              await favoritePageProvider.getFavoriteDataByUserId(userLoginProvider.userLogin.id!);
 
 
             } else {
 
-              bool isSuccess = await favoriteDoctorDataProvider.deleteDoctorFavoriteById(userLoginProvider.userLogin.id,doctorDetailProvider.doctorDetail!.id);
+              bool isSuccess = await favoriteDoctorDataProvider.deleteDoctorFavoriteById(userLoginProvider.userLogin.id!,doctorDetailProvider.doctorDetail!.id);
 
               if(isSuccess) {
 
-                await favoritePageProvider.getFavoriteDataByUserId(userLoginProvider.userLogin.id);
+                await favoritePageProvider.getFavoriteDataByUserId(userLoginProvider.userLogin.id!);
 
               }
             }

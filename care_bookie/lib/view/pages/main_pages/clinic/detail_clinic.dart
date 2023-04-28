@@ -112,13 +112,13 @@ class _DetailClinicState extends State<DetailClinic>
                 );
 
 
-                await favoriteHospitalDataProvider.createHospitalFavorite(hospitalFavorite, userLoginProvider.userLogin.id);
+                await favoriteHospitalDataProvider.createHospitalFavorite(hospitalFavorite, userLoginProvider.userLogin.id!);
 
-                await favoritePageProvider.getFavoriteDataByUserId(userLoginProvider.userLogin.id);
+                await favoritePageProvider.getFavoriteDataByUserId(userLoginProvider.userLogin.id!);
 
               } else {
 
-                bool isSuccess = await favoriteHospitalDataProvider.deleteHospitalFavoriteById(userLoginProvider.userLogin.id, hospitalDetailPageProvider.hospitalDetails!.id);
+                bool isSuccess = await favoriteHospitalDataProvider.deleteHospitalFavoriteById(userLoginProvider.userLogin.id!, hospitalDetailPageProvider.hospitalDetails!.id);
 
                 if(isSuccess) {
 

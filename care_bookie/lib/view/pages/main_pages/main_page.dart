@@ -50,15 +50,15 @@ class _MainPageState extends State<MainPage> {
     var loadFavorite = Provider.of<FavoritePageProvider>(context,listen: false);
 
     if (loadHistory.histories.isEmpty) {
-      loadHistory.getAllHospital(userLogin.userLogin.id);
+      loadHistory.getAllHospital(userLogin.userLogin.id!);
     }
 
     if (loadSchedule.schedules.isEmpty) {
-      loadSchedule.getAllScheduleByUserId(userLogin.userLogin.id);
+      loadSchedule.getAllScheduleByUserId(userLogin.userLogin.id!);
     }
 
     if(loadFavorite.favorite == null) {
-      loadFavorite.getFavoriteDataByUserId(userLogin.userLogin.id);
+      loadFavorite.getFavoriteDataByUserId(userLogin.userLogin.id!);
     }
 
   }

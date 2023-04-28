@@ -149,7 +149,7 @@ class _DoctorFavoriteState extends State<DoctorFavorite> {
 
                                         final userLoginProvider = Provider.of<UserLoginProvider>(context,listen: false);
 
-                                        bool isSuccess = await favoriteDoctorDataProvider.deleteDoctorFavoriteById(userLoginProvider.userLogin.id, favoritePageProvider.favorite!.doctors[index].id);
+                                        bool isSuccess = await favoriteDoctorDataProvider.deleteDoctorFavoriteById(userLoginProvider.userLogin.id!, favoritePageProvider.favorite!.doctors[index].id);
 
                                         if(isSuccess) {
                                           setState(() {

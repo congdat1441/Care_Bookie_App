@@ -189,7 +189,7 @@ class _ClinicFavoriteState extends State<ClinicFavorite> {
 
                             final userLoginProvider = Provider.of<UserLoginProvider>(context,listen: false);
 
-                            bool isSuccess = await favoriteHospitalDataProvider.deleteHospitalFavoriteById(userLoginProvider.userLogin.id, favoritePageProvider.favorite!.hospitals[index].id);
+                            bool isSuccess = await favoriteHospitalDataProvider.deleteHospitalFavoriteById(userLoginProvider.userLogin.id!, favoritePageProvider.favorite!.hospitals[index].id);
 
                             if(isSuccess) {
 
