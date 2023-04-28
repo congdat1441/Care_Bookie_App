@@ -1,8 +1,8 @@
 class Favorite {
 
   final String id;
-  late final List<HospitalFavorite> hospitals;
-  late final List<DoctorFavorite> doctors;
+  late List<HospitalFavorite> hospitals = [];
+  late List<DoctorFavorite> doctors = [];
 
   Favorite({
     required this.id,

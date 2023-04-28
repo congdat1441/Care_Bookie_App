@@ -1,4 +1,5 @@
 
+import 'package:care_bookie/models/favorite.dart';
 import 'package:flutter/cupertino.dart';
 
 import '../firebases/firebase_doctor_data.dart';
@@ -13,15 +14,36 @@ class DoctorDetailPageProvider extends ChangeNotifier {
 
   bool isDoctorWithHospital = false;
 
+  bool isDoctorWithFavorite = false;
+
   String? idDoctorWithHospital;
 
   Schedule? scheduleWithDoctor;
 
   Schedule? scheduleWithHospital;
 
+  bool isFavorite = false;
+
+  DoctorFavorite? doctorFavorite;
+
+  void setIsFavorite(bool value) {
+    isFavorite = value;
+  }
+
+  void setDoctorFavorite(DoctorFavorite doctor) {
+    doctorFavorite = doctor;
+  }
+
+  void setIsDoctorWithFavorite(bool value) {
+    isDoctorWithFavorite = value;
+  }
+
   void resetData() {
     scheduleWithDoctor = null;
     scheduleWithHospital = null;
+    isFavorite = false;
+    doctorFavorite = null;
+    isDoctorWithFavorite = false;
   }
 
   void setDoctorDetail(Doctor doctor) {

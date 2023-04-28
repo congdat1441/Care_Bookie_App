@@ -1,6 +1,7 @@
 import 'package:care_bookie/models/doctor.dart';
 import 'package:care_bookie/models/favorite.dart';
 import 'package:care_bookie/models/hospital.dart';
+import 'package:care_bookie/providers/favorite_page_provider.dart';
 import 'package:care_bookie/providers/hospital_detail_page_provider.dart';
 import 'package:care_bookie/providers/user_login_provider.dart';
 import 'package:flutter/material.dart';
@@ -32,8 +33,6 @@ class _DetailDoctorState extends State<DetailDoctor>
   bool isLoading = false;
   bool isExpanded = false;
   late TabController _tabControl;
-
-  bool check = false;
 
   @override
   void initState() {
@@ -145,27 +144,44 @@ class _DetailDoctorState extends State<DetailDoctor>
         ),
       ),
       actions: [
-        IconButton(
-          onPressed: () {
-            setState(() {
-              check = !check;
+        doctorDetailProvider.isDoctorWithFavorite ? Container() : IconButton(
+          onPressed: () async{
 
-              if(check) {
+            var favoritePageProvider = Provider.of<FavoritePageProvider>(context,listen: false);
 
-                DoctorFavorite doctorFavorite = DoctorFavorite(
-                    id: doctorDetailProvider.doctorDetail!.id,
-                    fullName: doctorDetailProvider.doctorDetail!.fullName,
-                    fields: doctorDetailProvider.doctorDetail!.fields,
-                    image: doctorDetailProvider.doctorDetail!.image,
-                    hospitalId: doctorDetailProvider.doctorDetail!.hospitalId
-                );
+            doctorDetailProvider.setIsFavorite(!doctorDetailProvider.isFavorite);
 
-                favoriteDoctorDataProvider.createDoctorFavorite(doctorFavorite, userLoginProvider.userLogin.id);
+            if(doctorDetailProvider.isFavorite) {
+
+              DoctorFavorite doctorFavorite = DoctorFavorite(
+                  id: doctorDetailProvider.doctorDetail!.id,
+                  fullName: doctorDetailProvider.doctorDetail!.fullName,
+                  fields: doctorDetailProvider.doctorDetail!.fields,
+                  image: doctorDetailProvider.doctorDetail!.image,
+                  hospitalId: doctorDetailProvider.doctorDetail!.hospitalId
+              );
+
+              await favoriteDoctorDataProvider.createDoctorFavorite(doctorFavorite, userLoginProvider.userLogin.id);
+
+              await favoritePageProvider.getFavoriteDataByUserId(userLoginProvider.userLogin.id);
+
+
+            } else {
+
+              bool isSuccess = await favoriteDoctorDataProvider.deleteDoctorFavoriteById(userLoginProvider.userLogin.id,doctorDetailProvider.doctorDetail!.id);
+
+              if(isSuccess) {
+
+                await favoritePageProvider.getFavoriteDataByUserId(userLoginProvider.userLogin.id);
+
               }
+            }
+
+            setState(() {
 
             });
           },
-          icon: check  ?  const Icon(
+          icon: doctorDetailProvider.isFavorite  ?  const Icon(
             IconlyBold.heart,
             size: 30,
             color: Colors.redAccent,

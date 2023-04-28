@@ -1,3 +1,4 @@
+import 'package:care_bookie/providers/favorite_page_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:provider/provider.dart';
@@ -70,6 +71,18 @@ class _DoctorsState extends State<Doctors> {
                             }
                             if(element.hospital.id == homePageProvider.listDoctor[index].hospitalId){
                               doctorDetailProvider.setScheduleWithHospital(element);
+                            }
+                          }
+
+                          var favoritePageProvider = Provider.of<FavoritePageProvider>(context,listen: false);
+
+
+                          if(favoritePageProvider.favorite!.doctors.isNotEmpty)  {
+                            for(var element in favoritePageProvider.favorite!.doctors) {
+                              if(element.id == homePageProvider.listDoctor[index].id) {
+                                doctorDetailProvider.setIsFavorite(true);
+                                doctorDetailProvider.setDoctorFavorite(element);
+                              }
                             }
                           }
 

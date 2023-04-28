@@ -1,11 +1,13 @@
 import 'package:care_bookie/models/hospital.dart';
 import 'package:care_bookie/providers/favorite_page_provider.dart';
+import 'package:care_bookie/providers/user_login_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:provider/provider.dart';
 
 import '../../../providers/doctor_detail_page_provider.dart';
+import '../../../providers/favorite_dotor_data_provider.dart';
 import '../../../providers/home_page_provider.dart';
 import '../../../providers/hospital_detail_page_provider.dart';
 import '../../../providers/schedule_page_provider.dart';
@@ -106,6 +108,8 @@ class _DoctorFavoriteState extends State<DoctorFavorite> {
 
                                             }
 
+                                            doctorDetailProvider.setIsDoctorWithFavorite(true);
+
 
                                             // ignore: use_build_context_synchronously
                                             Navigator.push(
@@ -138,10 +142,27 @@ class _DoctorFavoriteState extends State<DoctorFavorite> {
                                             color: Colors.white70,
                                             borderRadius: BorderRadius.circular(30)
                                         ),
-                                        child: const Icon(
-                                          IconlyBold.closeSquare,
-                                          color: Color(0xffee5353),
-                                          size: 20,
+                                        child: GestureDetector(
+                                          onTap: () async{
+
+                                            final favoriteDoctorDataProvider = Provider.of<FavoriteDoctorDataProvider>(context,listen: false);
+
+                                            final userLoginProvider = Provider.of<UserLoginProvider>(context,listen: false);
+
+                                            bool isSuccess = await favoriteDoctorDataProvider.deleteDoctorFavoriteById(userLoginProvider.userLogin.id, favoritePageProvider.favorite!.doctors[index].id);
+
+                                            if(isSuccess) {
+                                              setState(() {
+                                                favoritePageProvider.favorite!.doctors.remove(favoritePageProvider.favorite!.doctors[index]);
+                                              });
+                                            }
+
+                                          },
+                                          child: const Icon(
+                                            IconlyBold.closeSquare,
+                                            color: Color(0xffee5353),
+                                            size: 20,
+                                          ),
                                         ),
                                       ),
                                     ),

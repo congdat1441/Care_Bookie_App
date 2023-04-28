@@ -97,3 +97,68 @@ Future<bool> userFavoriteExists(String userId) async {
   return response;
 
 }
+
+Future<bool> deleteDoctorFavoriteByIdFirebase(String userId, String doctorId) async {
+
+  FirebaseFirestore fireStore = FirebaseFirestore.instance;
+
+  var response = fireStore.collection("favorites")
+  .doc(userId).collection("doctors")
+  .doc(doctorId)
+  .delete()
+  .then((value) {
+    return true;
+  })
+  .catchError((e) {
+    return false;
+  });
+
+  return response;
+
+}
+
+Future<bool> createHospitalFavoriteFirebase(HospitalFavorite hospitalFavorite,String userId) async {
+
+  FirebaseFirestore fireStore = FirebaseFirestore.instance;
+
+  bool check = await userFavoriteExists(userId);
+
+  if(check == false) {
+    fireStore.collection("favorites").doc(userId).set(
+        Favorite(id: userId).toJson()
+    );
+  }
+
+  var response = await fireStore.collection("favorites")
+  .doc(userId).collection("hospitals")
+  .doc(hospitalFavorite.id).set(hospitalFavorite.toJson())
+  .then((value) {
+    return true;
+  })
+  .catchError((e) {
+    return false;
+  });
+
+  return response;
+
+}
+
+Future<bool> deleteHospitalFavoriteByIdFirebase(String userId, String hospitalId) {
+
+  FirebaseFirestore fireStore = FirebaseFirestore.instance;
+
+  var response = fireStore.collection("favorites")
+      .doc(userId).collection("hospitals")
+      .doc(hospitalId)
+      .delete()
+      .then((value) {
+    return true;
+  })
+      .catchError((e) {
+    return false;
+  });
+
+  return response;
+
+
+}

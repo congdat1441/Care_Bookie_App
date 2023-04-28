@@ -1,4 +1,5 @@
 import 'package:care_bookie/providers/doctor_detail_page_provider.dart';
+import 'package:care_bookie/providers/favorite_hospital_data_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:provider/provider.dart';
@@ -8,6 +9,7 @@ import '../../../providers/favorite_page_provider.dart';
 import '../../../providers/home_page_provider.dart';
 import '../../../providers/hospital_detail_page_provider.dart';
 import '../../../providers/schedule_page_provider.dart';
+import '../../../providers/user_login_provider.dart';
 import '../../../res/constants/colors.dart';
 import '../main_pages/clinic/detail_clinic.dart';
 
@@ -70,6 +72,9 @@ class _ClinicFavoriteState extends State<ClinicFavorite> {
                                         hospitalDetailPageProvider.setScheduleWithHospital(element);
                                       }
                                     }
+
+                                    hospitalDetailPageProvider.setIsHospitalWithFavorite(true);
+
 
 
                                     // ignore: use_build_context_synchronously
@@ -177,10 +182,30 @@ class _ClinicFavoriteState extends State<ClinicFavorite> {
                                 color: Colors.white70,
                                 borderRadius: BorderRadius.circular(30)
                             ),
-                            child: const Icon(
-                              IconlyBold.closeSquare,
-                              color: Color(0xffee5353),
-                              size: 20,
+                            child: GestureDetector(
+                              onTap: () async{
+
+                                final favoriteHospitalDataProvider = Provider.of<FavoriteHospitalDataProvider>(context,listen: false);
+
+                                final userLoginProvider = Provider.of<UserLoginProvider>(context,listen: false);
+
+                                bool isSuccess = await favoriteHospitalDataProvider.deleteHospitalFavoriteById(userLoginProvider.userLogin.id, favoritePageProvider.favorite!.hospitals[index].id);
+
+                                if(isSuccess) {
+
+                                  favoritePageProvider.favorite!.hospitals.remove(favoritePageProvider.favorite!.hospitals[index]);
+
+                                  setState(() {
+
+                                  });
+                                }
+
+                              },
+                              child: const Icon(
+                                IconlyBold.closeSquare,
+                                color: Color(0xffee5353),
+                                size: 20,
+                              ),
                             ),
                           ),
                         )

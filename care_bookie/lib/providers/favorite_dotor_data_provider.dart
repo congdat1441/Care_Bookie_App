@@ -13,6 +13,10 @@ class FavoriteDoctorDataProvider extends ChangeNotifier {
 
   }
 
+  Future<bool> deleteDoctorFavoriteById(String userId,String doctorId) async {
 
+    return await deleteDoctorFavoriteByIdFirebase(userId, doctorId);
+
+  }
 
 }
