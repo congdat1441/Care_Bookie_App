@@ -1,4 +1,5 @@
 import 'package:care_bookie/view/pages/search_page/search_screen.dart';
+import 'package:care_bookie/view/pages/search_page/search_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import '../../../res/constants/colors.dart';
