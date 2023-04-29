@@ -11,23 +11,23 @@ class SearchScreen extends StatefulWidget {
 }
 
 class _SearchScreenState extends State<SearchScreen> {
-  String _selectedStar = '1 Star';
-  String _selectedDisease = 'Disease A';
+  String _selectedStar = '5';
+  String _selectedDisease = 'Non';
 
   final List<String> _starLevels = [
-    '1 Star',
-    '2 Stars',
-    '3 Stars',
-    '4 Stars',
-    '5 Stars'
+    '5',
+    '4',
+    '3',
+    '2',
+    '1',
   ];
   final List<String> _diseases = [
+    'Non',
     'Disease A',
     'Disease B',
     'Disease C',
     'Disease D',
     'Disease E',
-    'Non'
   ];
 
   @override
@@ -69,7 +69,11 @@ class _SearchScreenState extends State<SearchScreen> {
                     Icons.search,
                     color: Colors.black,
                   ),
-                  onPressed: () {},
+                  onPressed: () {
+
+                    print("SEARCH -------------->");
+
+                  },
                 ),
                 filled: true,
               ),
@@ -80,10 +84,7 @@ class _SearchScreenState extends State<SearchScreen> {
         body: SingleChildScrollView(
           scrollDirection: Axis.vertical,
           child: Column(
-            children: [
-              starAndDisease(),
-               content()
-            ],
+            children: [starAndDisease(), content()],
           ),
         ));
   }
@@ -103,6 +104,7 @@ class _SearchScreenState extends State<SearchScreen> {
                   value: _selectedStar,
                   onChanged: (String? value) {
                     setState(() {
+                      print("VALUE ------------> $value");
                       _selectedStar = value!;
                     });
                   },
@@ -147,6 +149,7 @@ class _SearchScreenState extends State<SearchScreen> {
                   onChanged: (String? value) {
                     setState(() {
                       _selectedDisease = value!;
+                      print("VALUE ----------------> $value");
                     });
                   },
                   items: _diseases.map((disease) {
@@ -166,8 +169,6 @@ class _SearchScreenState extends State<SearchScreen> {
               ),
             ],
           ),
-
-
         ],
       ),
     );
